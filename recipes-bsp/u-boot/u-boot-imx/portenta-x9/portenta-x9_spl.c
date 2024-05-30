@@ -37,20 +37,7 @@ DECLARE_GLOBAL_DATA_PTR;
 
 int spl_board_boot_device(enum boot_device boot_dev_spl)
 {
-#ifdef CONFIG_SPL_BOOTROM_SUPPORT
 	return BOOT_DEVICE_BOOTROM;
-#else
-	switch (boot_dev_spl) {
-	case SD1_BOOT:
-	case MMC1_BOOT:
-		return BOOT_DEVICE_MMC1;
-	case SD2_BOOT:
-	case MMC2_BOOT:
-		return BOOT_DEVICE_MMC2;
-	default:
-		return BOOT_DEVICE_NONE;
-	}
-#endif
 }
 
 void spl_board_init(void)
@@ -64,9 +51,17 @@ void spl_board_init(void)
 		printf("Fail to start RNG: %d\n", ret);
 }
 
+extern struct dram_timing_info dram_timing_1600mts;
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing);
+	struct dram_timing_info *ptiming = &dram_timing;
+#if IS_ENABLED(CONFIG_TARGET_IMX91P_9X9_QSB)
+	if (is_voltage_mode(VOLT_LOW_DRIVE))
+		ptiming = &dram_timing_1600mts;
+#endif
+
+	printf("DDR: %uMTS\n", ptiming->fsp_msg[0].drate);
+	ddr_init(ptiming);
 }
 
 #if CONFIG_IS_ENABLED(DM_PMIC_PCA9450)
