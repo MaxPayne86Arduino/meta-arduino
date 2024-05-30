@@ -21,7 +21,6 @@
 #include <dwc3-uboot.h>
 #include <asm/gpio.h>
 
-
 DECLARE_GLOBAL_DATA_PTR;
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_FSEL2 | PAD_CTL_PUE)
@@ -93,16 +92,13 @@ int pd_switch_snk_enable(struct tcpc_port *port)
 {
 	if (port == &port1) {
 		debug("Setup pd switch on port 1\n");
-		return setup_pd_switch(2, 0x71);
-	} else if (port == &port2) {
-		debug("Setup pd switch on port 2\n");
-		return setup_pd_switch(2, 0x73);
+		return setup_pd_switch(0, 0x71);
 	} else
 		return -EINVAL;
 }
 
 struct tcpc_port_config portpd_config = {
-	.i2c_bus = 2, /*i2c3*/
+	.i2c_bus = 0, /*i2c1*/
 	.addr = 0x52,
 	.port_type = TYPEC_PORT_UFP,
 	.max_snk_mv = 20000,
@@ -112,22 +108,10 @@ struct tcpc_port_config portpd_config = {
 };
 
 struct tcpc_port_config port1_config = {
-	.i2c_bus = 2, /*i2c3*/
+	.i2c_bus = 0, /*i2c1*/
 	.addr = 0x50,
 	.port_type = TYPEC_PORT_UFP,
 	.max_snk_mv = 5000,
-	.max_snk_ma = 3000,
-	.max_snk_mw = 40000,
-	.op_snk_mv = 9000,
-	.switch_setup_func = &pd_switch_snk_enable,
-	.disable_pd = true,
-};
-
-struct tcpc_port_config port2_config = {
-	.i2c_bus = 2, /*i2c3*/
-	.addr = 0x51,
-	.port_type = TYPEC_PORT_UFP,
-	.max_snk_mv = 9000,
 	.max_snk_ma = 3000,
 	.max_snk_mw = 40000,
 	.op_snk_mv = 9000,
@@ -143,13 +127,6 @@ static int setup_typec(void)
 	ret = tcpc_init(&portpd, portpd_config, NULL);
 	if (ret) {
 		printf("%s: tcpc portpd init failed, err=%d\n",
-		       __func__, ret);
-	}
-
-	debug("tcpc_init port 2\n");
-	ret = tcpc_init(&port2, port2_config, NULL);
-	if (ret) {
-		printf("%s: tcpc port2 init failed, err=%d\n",
 		       __func__, ret);
 	}
 
@@ -169,11 +146,8 @@ int board_usb_init(int index, enum usb_init_type init)
 	struct tcpc_port *port_ptr;
 
 	debug("board_usb_init %d, type %d\n", index, init);
-
-	if (index == 0)
-		port_ptr = &port1;
-	else
-		port_ptr = &port2;
+	
+	port_ptr = &port1;
 
 	if (init == USB_INIT_HOST)
 		tcpc_setup_dfp_mode(port_ptr);
@@ -189,12 +163,8 @@ int board_usb_cleanup(int index, enum usb_init_type init)
 
 	debug("board_usb_cleanup %d, type %d\n", index, init);
 
-	if (init == USB_INIT_HOST) {
-		if (index == 0)
+	if (init == USB_INIT_HOST)
 			ret = tcpc_disable_src_vbus(&port1);
-		else
-			ret = tcpc_disable_src_vbus(&port2);
-	}
 
 	return ret;
 }
@@ -208,10 +178,7 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
 
 	debug("%s %d\n", __func__, dev_seq(dev));
 
-	if (dev_seq(dev) == 0)
-		port_ptr = &port1;
-	else
-		port_ptr = &port2;
+	port_ptr = &port1;
 
 	tcpc_setup_ufp_mode(port_ptr);
 
@@ -245,16 +212,12 @@ static int setup_eqos(void)
 	struct blk_ctrl_wakeupmix_regs *bctrl =
 		(struct blk_ctrl_wakeupmix_regs *)BLK_CTRL_WAKEUPMIX_BASE_ADDR;
 
-	if (!IS_ENABLED(CONFIG_TARGET_IMX93_14X14_EVK)) {
-		/* set INTF as RGMII, enable RGMII TXC clock */
-		clrsetbits_le32(&bctrl->eqos_gpr,
-				BCTRL_GPR_ENET_QOS_INTF_MODE_MASK,
-				BCTRL_GPR_ENET_QOS_INTF_SEL_RGMII | BCTRL_GPR_ENET_QOS_CLK_GEN_EN);
+	/* set INTF as RGMII, enable RGMII TXC clock */
+	clrsetbits_le32(&bctrl->eqos_gpr,
+			BCTRL_GPR_ENET_QOS_INTF_MODE_MASK,
+			BCTRL_GPR_ENET_QOS_INTF_SEL_RGMII | BCTRL_GPR_ENET_QOS_CLK_GEN_EN);
 
-		return set_clk_eqos(ENET_125MHZ);
-	}
-
-	return 0;
+	return set_clk_eqos(ENET_125MHZ);
 }
 
 static void board_gpio_init(void)
@@ -274,7 +237,7 @@ int board_init(void)
 	if (CONFIG_IS_ENABLED(FEC_MXC))
 		setup_fec();
 
-	if (CONFIG_IS_ENABLED(DWC_ETH_QOS))
+	if (CONFIG_IS_ENABLED(DWC_ETH_QOS) && !is_imx91p0())
 		setup_eqos();
 
 	board_gpio_init();
@@ -300,11 +263,3 @@ int board_late_init(void)
 	return 0;
 }
 
-#ifdef CONFIG_FSL_FASTBOOT
-#ifdef CONFIG_ANDROID_RECOVERY
-int is_recovery_key_pressing(void)
-{
-	return 0;
-}
-#endif /*CONFIG_ANDROID_RECOVERY*/
-#endif /*CONFIG_FSL_FASTBOOT*/
