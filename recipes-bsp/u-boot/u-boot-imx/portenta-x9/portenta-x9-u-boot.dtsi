@@ -145,23 +145,19 @@
 	u-boot,dm-spl;
 };
 
-/* @TODO: PHY ETH1 U19 KTS1622EUAA GPIO0 */
-/*&fec {
-	phy-reset-gpios = <&pcal6524 16 GPIO_ACTIVE_LOW>;
+/* PHY ETH2 U20 KTS1622EUAA GPIO1 */
+&fec {
+	phy-reset-gpios = <&gpioexp_2 1 GPIO_ACTIVE_LOW>;
 	phy-reset-duration = <15>;
 	phy-reset-post-delay = <100>;
-};*/
-
-&eqos {
-	compatible = "fsl,imx-eqos";
 };
 
-/* @TODO: PHY ETH2 U20 KTS1622EUAA GPIO1 */
-/*&ethphy1 {
-	reset-gpios = <&pcal6524 15 GPIO_ACTIVE_LOW>;
+/* PHY ETH1 U19 KTS1622EUAA GPIO0 */
+&ethphy1 {
+	reset-gpios = <&gpioexp_1 0 GPIO_ACTIVE_LOW>;
 	reset-assert-us = <15000>;
 	reset-deassert-us = <100000>;
-};*/
+};
 
 &usbotg1 {
 	status = "okay";

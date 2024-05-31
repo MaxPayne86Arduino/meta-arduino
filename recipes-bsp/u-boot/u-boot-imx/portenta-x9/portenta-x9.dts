@@ -192,6 +192,34 @@
 			};
 		};
 	};
+
+	/* KTS1622EUAA-TR U19 */
+	gpioexp_1: gpio@20 {
+		compatible = "nxp,pca9535";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpioexp_1>;
+		reg = <0x20>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+		interrupt-parent = <&gpio1>;
+		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
+	};
+
+	/* KTS1622EUAA-TR U20 */
+	gpioexp_2: gpio@21 {
+		compatible = "nxp,pca9535";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpioexp_2>;
+		reg = <0x21>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+		interrupt-parent = <&gpio1>;
+		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
+	};
 };
 
 &lpi2c2 {
@@ -303,6 +331,7 @@
 	status = "disabled";
 };
 
+/* ETH2 */
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_fec>;
@@ -326,6 +355,7 @@
 	};
 };
 
+/* ETH1 */
 &eqos {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eqos>;
@@ -400,6 +430,7 @@
 		>;
 	};
 
+	/* ETH1 */
 	pinctrl_eqos: eqosgrp {
 		fsl,pins = <
 			MX93_PAD_ENET1_MDC__ENET_QOS_MDC			0x57e
@@ -443,6 +474,18 @@
 	pinctrl_pca9451a: pca9451agrp {
 		fsl,pins = <
 			MX93_PAD_CCM_CLKO1__GPIO3_IO26			0x1380
+		>;
+	};
+
+	pinctrl_gpioexp_1: gpioexp_1grp {
+		fsl,pins = <
+			MX93_PAD_WDOG_ANY__GPIO1_IO15			0x31e
+		>;
+	};
+
+	pinctrl_gpioexp_2: gpioexp_2grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO07__GPIO2_IO07			0x31e
 		>;
 	};
 
