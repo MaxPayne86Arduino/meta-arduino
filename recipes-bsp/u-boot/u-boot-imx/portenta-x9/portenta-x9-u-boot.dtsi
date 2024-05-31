@@ -104,6 +104,10 @@
 	u-boot,dm-spl;
 };
 
+&lpuart6 {
+	u-boot,dm-spl;
+};
+
 &usdhc1 {
 	u-boot,dm-spl;
 };
