@@ -12,7 +12,7 @@
 	compatible = "fsl,imx93-9x9-qsb", "fsl,imx93";
 
 	chosen {
-		stdout-path = &lpuart6;
+		stdout-path = &lpuart1;
 	};
 
 	reserved-memory {
@@ -225,10 +225,10 @@
 	status = "okay";
 };
 
-&lpuart1 {
+&lpuart1 { /* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &lpuart2 {
@@ -244,13 +244,13 @@
 	status = "disabled";
 };
 
-&lpuart6 { /* console */
+&lpuart6 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart6>;
 	clocks = <&clk IMX93_CLK_LPUART6_GATE>, <&clk IMX93_CLK_LPUART6_GATE>;
 	clock-names = "ipg", "per";
 	uart-has-rtscts = <0>; /* Disable RTS/CTS */
-	status = "okay";
+	status = "disabled";
 };
 
 &mu1 {
