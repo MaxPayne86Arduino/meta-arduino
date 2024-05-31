@@ -33,8 +33,6 @@
 #include <power/pca9450.h>
 #include <asm/arch/trdc.h>
 
-#define DEBUG
-
 DECLARE_GLOBAL_DATA_PTR;
 
 int spl_board_boot_device(enum boot_device boot_dev_spl)
