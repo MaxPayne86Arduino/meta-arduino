@@ -100,10 +100,6 @@
 	u-boot,dm-spl;
 };
 
-&lpuart1 {
-	u-boot,dm-spl;
-};
-
 &lpuart6 {
 	u-boot,dm-spl;
 };
