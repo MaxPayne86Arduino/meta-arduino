@@ -225,6 +225,13 @@
 	status = "disabled";
 };
 
+&lpuart5 {
+	/* Bluetooth */
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart5>;
+	status = "disabled";
+};
+
 &lpuart6 { /* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart6>;
@@ -448,6 +455,15 @@
 		fsl,pins = <
 			MX93_PAD_UART2_TXD__LPUART2_TX			0x31e
 			MX93_PAD_UART2_RXD__LPUART2_RX			0x31e
+		>;
+	};
+
+	pinctrl_uart5: uart5grp {
+		fsl,pins = <
+			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX	0x31e
+			MX93_PAD_DAP_TDI__LPUART5_RX		0x31e
+			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B	0x31e
+			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B	0x31e
 		>;
 	};
 
