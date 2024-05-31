@@ -235,6 +235,8 @@
 &lpuart6 { /* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart6>;
+	clocks = <&clk IMX93_CLK_LPUART6_GATE>, <&clk IMX93_CLK_LPUART6_GATE>;
+	clock-names = "ipg", "per";
 	status = "okay";
 };
 
