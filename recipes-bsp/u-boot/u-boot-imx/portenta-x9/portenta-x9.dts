@@ -12,7 +12,6 @@
 	compatible = "fsl,imx93-9x9-qsb", "fsl,imx93";
 
 	chosen {
-		bootargs = "console=ttyLP5,115200";
 		stdout-path = &lpuart6;
 	};
 
@@ -217,7 +216,7 @@
 &lpuart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &lpuart2 {
@@ -234,6 +233,14 @@
 	status = "okay";
 };
 
+&mu1 {
+	status = "okay";
+};
+
+&mu2 {
+	status = "okay";
+};
+
 &usbotg1 { /* Type-C USB Port USB_HS */
 	dr_mode = "peripheral";
 	hnp-disable;
@@ -242,14 +249,6 @@
 	disable-over-current;
 	samsung,picophy-pre-emp-curr-control = <3>;
 	samsung,picophy-dc-vol-level-adjust = <7>;
-	status = "okay";
-};
-
-&mu1 {
-	status = "okay";
-};
-
-&mu2 {
 	status = "okay";
 };
 
