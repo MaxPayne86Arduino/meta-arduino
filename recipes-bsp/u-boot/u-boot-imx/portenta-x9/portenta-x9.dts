@@ -225,6 +225,11 @@
 	status = "okay";
 };
 
+/*
+@TODO: move console to LPUART6
+SPI0 CIPO: LPUART1 RX
+SPI0 CS: LPUART1 TX
+*/
 &lpuart1 { /* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
