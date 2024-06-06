@@ -326,7 +326,7 @@ SPI0 CS: LPUART1 TX
 	status = "okay";
 };
 
-&usdhc1 {
+&usdhc1 { /* eMMC */
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc1>;
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
@@ -336,7 +336,7 @@ SPI0 CS: LPUART1 TX
 	status = "disabled";
 };
 
-&usdhc2 {
+&usdhc2 { /* SD-Card */
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
@@ -350,7 +350,7 @@ SPI0 CS: LPUART1 TX
 	no-mmc;
 };
 
-&usdhc3 {
+&usdhc3 { /* WiFi Bluetooth IW612 */
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc3>;
 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
