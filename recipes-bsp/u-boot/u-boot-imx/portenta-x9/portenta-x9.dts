@@ -81,13 +81,6 @@
 		off-on-delay-us = <12000>;
 		enable-active-high;
 	};
-
-	reg_vref_1v8: regulator-adc-vref {
-		compatible = "regulator-fixed";
-		regulator-name = "vref_1v8";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-	};
 };
 
 &lpi2c1 {
