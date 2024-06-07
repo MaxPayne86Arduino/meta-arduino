@@ -70,11 +70,6 @@ function launch_uuc() {
 	echo "MSFT100" > os_desc/qw_sign
 	echo 0x40 > os_desc/b_vendor_code
 
-	# create the acm (serial) function
-	mkdir functions/acm.GS0
-	# assign acm function to configuration
-	ln -s functions/acm.GS0 configs/c.1
-
 	if [[ ${cmdline} == *nfsroot* ]]; then
 		mkdir functions/ncm.1
 		ln -s functions/ncm.1 configs/c.1/
@@ -147,16 +142,50 @@ function launch_uuc() {
 
 	fi
 
+	return 0;
+}
+
+function launch_acm() {
+	echo $1 $2
+	mkdir /sys/kernel/config/usb_gadget/$1
+	cd /sys/kernel/config/usb_gadget/$1
+	echo 0x066F > idVendor
+
+	echo 0x9BFF > idProduct
+
+	mkdir strings/0x409
+
+	if [ -e /sys/devices/soc0/soc_uid ]; then
+		cat /sys/devices/soc0/soc_uid > strings/0x409/serialnumber
+	else
+		echo 0000000000000000 > strings/0x409/serialnumber
+	fi
+
+	echo "Arduino Portenta-X9 Board" > strings/0x409/product
+	mkdir configs/c.1
+	echo 5 > configs/c.1/MaxPower
+
+	echo ffs.utp$2
+
+	echo 1 > os_desc/use
+	echo "MSFT100" > os_desc/qw_sign
+	echo 0x40 > os_desc/b_vendor_code
+
+	# create the acm (serial) function
+	mkdir functions/acm.GS0
+	# assign acm function to configuration
+	ln -s functions/acm.GS0 configs/c.1
+
+	# set UDC
+	echo $1 > UDC
+
 	# wait for ttyGS0 to be available
 	while [ ! -e functions/acm.GS0/ttyGS0 ]; do
-	    sleep 1
+		sleep 1
 	done
 
 	# attach cmdline to the acm gadget serial device
 	echo "${cmdline}" > functions/acm.GS0/ttyGS0
-
-	return 0;
-
 }
 
 while true; do
@@ -169,7 +198,8 @@ if test "$(ls -A "$UDC_DIR")"; then
 			id=$last;
 			last=`expr $last + 1`;
 			echo "Found New UDC: $entry";
-			launch_uuc $entry $id &
+			#launch_uuc $entry $id &
+			launch_acm $entry $id &
 		fi
 	done
 	sleep 1
