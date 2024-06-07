@@ -1,4 +1,6 @@
 #!/bin/sh
+set -x
+
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 mount -t sysfs none /sys
