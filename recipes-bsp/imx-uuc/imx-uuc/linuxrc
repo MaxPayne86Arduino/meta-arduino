@@ -155,6 +155,8 @@ function launch_uuc() {
 
 }
 
+set +x
+
 while true; do
 if test "$(ls -A "$UDC_DIR")"; then
 	cd $UDC_DIR
