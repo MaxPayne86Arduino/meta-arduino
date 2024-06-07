@@ -147,8 +147,12 @@ function launch_uuc() {
 
 	fi
 
+	# wait for ttyGS0 to be available
+	while [ ! -e functions/acm.GS0/ttyGS0 ]; do
+	    sleep 1
+	done
+
 	# attach cmdline to the acm gadget serial device
-	sleep 1
 	echo "${cmdline}" > functions/acm.GS0/ttyGS0
 
 	return 0;
