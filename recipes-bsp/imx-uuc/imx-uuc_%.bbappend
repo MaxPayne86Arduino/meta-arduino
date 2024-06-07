@@ -4,6 +4,6 @@ SRC_URI += " \
     file://linuxrc \
 "
 
-do_patch:append () {
+do_configure:prepend () {
     cp ${WORKDIR}/linuxrc ${S}/linuxrc
 }
