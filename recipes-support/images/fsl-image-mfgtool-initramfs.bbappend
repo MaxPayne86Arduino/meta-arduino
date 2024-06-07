@@ -12,4 +12,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     dnsmasq \
     i2c-tools \
     stress-ng \
+    imx-test \
 "
+# NOTES:
+# - We install only memtool from imx-test
