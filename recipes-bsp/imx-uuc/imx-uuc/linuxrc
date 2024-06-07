@@ -179,16 +179,13 @@ function launch_acm() {
 	# set UDC
 	echo $1 > UDC
 
-	# wait for port_num to be available
-	while [ ! -e functions/acm.GS0/port_num ]; do
+	# wait for ttyGS0 to be available
+	while [ ! -e /dev/ttyGS0 ]; do
 		sleep 1
 	done
 
-	# add the console=ttyGS0 parameter
-	cmdline="${cmdline} console=ttyGS0"
-
-	# write the new command line to the cmdline file
-	echo "${cmdline}" > /proc/cmdline
+	# start agetty on ttyGS0
+	/sbin/agetty 115200 ttyGS0 $TERM &
 }
 
 while true; do
