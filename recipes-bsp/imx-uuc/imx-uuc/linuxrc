@@ -179,14 +179,16 @@ function launch_acm() {
 	# set UDC
 	echo $1 > UDC
 
-	# wait for ttyGS0 to be available
-	while [ ! -e functions/acm.GS0/ttyGS0 ]; do
-		ls functions/acm.GS0/*
+	# wait for port_num to be available
+	while [ ! -e functions/acm.GS0/port_num ]; do
 		sleep 1
 	done
 
-	# attach cmdline to the acm gadget serial device
-	echo "${cmdline}" > functions/acm.GS0/ttyGS0
+	# add the console=ttyGS0 parameter
+	cmdline="${cmdline} console=ttyGS0"
+
+	# write the new command line to the cmdline file
+	echo "${cmdline}" > /proc/cmdline
 }
 
 while true; do
