@@ -185,7 +185,7 @@ function launch_acm() {
 	done
 
 	# start agetty on ttyGS0
-	/sbin/agetty --autologin $(whoami) --noclear 115200 ttyGS0 $TERM &
+	/sbin/agetty --autologin $(whoami) --noclear --issue-file /etc/issue 115200 ttyGS0 $TERM &
 }
 
 while true; do
