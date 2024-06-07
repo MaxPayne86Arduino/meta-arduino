@@ -181,6 +181,7 @@ function launch_acm() {
 
 	# wait for ttyGS0 to be available
 	while [ ! -e functions/acm.GS0/ttyGS0 ]; do
+		ls functions/acm.GS0/*
 		sleep 1
 	done
 
