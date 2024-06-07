@@ -186,6 +186,7 @@ function launch_acm() {
 
 	# start agetty on ttyGS0
 	whoami
+	echo "PS1=\"\\u@\\h:\\w\\$ \"" > /home/root/.bashrc
 	/sbin/agetty --autologin root --noclear 115200 ttyGS0 $TERM &
 }
 
