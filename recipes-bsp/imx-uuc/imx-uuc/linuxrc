@@ -84,14 +84,14 @@ function launch_uuc() {
 
 		echo "Start config network"
 
-                ifconfig usb$2 up
-                while [ ! -e /find_one ]
-                do
-                        if [[ `ifconfig usb$2` == *inet6* ]]; then
+		ifconfig usb$2 up
+		while [ ! -e /find_one ]
+		do
+			if [[ `ifconfig usb$2` == *inet6* ]]; then
 				break;
 			fi
 			sleep 1
-                done
+		done
 
 		if [ -e /find_one ]; then
 			exit 0
@@ -113,17 +113,17 @@ function launch_uuc() {
 			remote=${remote[0]}
 		done
 
-                nfs=${cmdline#*nfsroot=}
-                nfs=($nfs)
-                nfs=${nfs[0]}
+		nfs=${cmdline#*nfsroot=}
+		nfs=($nfs)
+		nfs=${nfs[0]}
 
 		nfs=${nfs##*:}
 
-                echo ${remote} ${nfs}
+		echo ${remote} ${nfs}
 
 		mount -t nfs [${remote}%usb$2]:${nfsroot}/${nfs} /mnt/
 
-                cd /
+		cd /
 
 		touch /exit_scan
 
@@ -166,7 +166,6 @@ if test "$(ls -A "$UDC_DIR")"; then
 			echo "Found New UDC: $entry";
 			launch_uuc $entry $id &
 		fi
-
 	done
 	sleep 1
 else
@@ -177,7 +176,7 @@ fi
 if [ -e /exit_scan ]; then
 	echo find one active ncm
 	exec switch_root /mnt /sbin/init
-        exit 1;
+	exit 1;
 fi
 
 done
