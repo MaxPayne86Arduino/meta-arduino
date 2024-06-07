@@ -11,6 +11,8 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     wpa-supplicant \
     dnsmasq \
     i2c-tools \
+    fio \
+    hdparm \
     stress-ng \
     imx-test \
 "
