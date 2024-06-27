@@ -185,8 +185,9 @@ function launch_acm() {
 	done
 
 	# start agetty on ttyGS0
+	hostname portenta-x9
 	echo -n 'Arduino Initramfs 6.6-nanbield \n \l' > /etc/issue
-	/sbin/agetty --autologin $(whoami) --noclear --issue-file /etc/issue 115200 ttyGS0 $TERM &
+	/sbin/agetty --autologin $(whoami) --noclear --issue-file /etc/issue -o '-p -- \\u' 115200 ttyGS0 $TERM &
 }
 
 while true; do
