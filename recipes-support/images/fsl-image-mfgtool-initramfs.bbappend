@@ -21,6 +21,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     stress-ng \
     imx-test \
     bluez5 \
+    kernel-module-btnxpuart \
 "
 # NOTES:
 # - We install only memtool from imx-test
