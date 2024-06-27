@@ -288,12 +288,13 @@ SPI0 CS: LPUART1 TX
 	/* Bluetooth */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
-	/* @TODO: missing pinctrl-assert-gpios */
+	/* @TODO: missing pinctrl-assert-gpios (IND_RST_BT) */
 	status = "okay";
 
-	bluetooth {
+	/* @TODO: btnxpuart is modprobed by hand */
+	/*bluetooth {
 		compatible = "nxp,88w8987-bt";
-	};
+	};*/
 };
 
 &mu1 {
