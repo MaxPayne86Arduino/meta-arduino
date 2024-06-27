@@ -292,9 +292,9 @@ SPI0 CS: LPUART1 TX
 	status = "okay";
 
 	/* @TODO: btnxpuart is modprobed by hand */
-	/*bluetooth {
+	bluetooth {
 		compatible = "nxp,88w8987-bt";
-	};*/
+	};
 };
 
 &mu1 {
