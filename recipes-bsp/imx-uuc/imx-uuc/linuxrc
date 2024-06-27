@@ -184,10 +184,13 @@ function launch_acm() {
 		sleep 1
 	done
 
+	# further delay to allow the device to be recognized by the host
+	sleep 1
+
 	# start agetty on ttyGS0
 	hostname portenta-x9
 	echo -e "root\nroot" | passwd $(whoami)
-	echo -n 'Arduino Initramfs 6.6-nanbield \n \l' > /etc/issue
+	echo -n "Arduino Initramfs 6.6-nanbield \n \l" > /etc/issue
 	/sbin/agetty --autologin $(whoami) --noclear --issue-file /etc/issue -o '-p -- \\u' 115200 ttyGS0 $TERM &
 }
 
