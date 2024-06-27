@@ -185,7 +185,7 @@ function launch_acm() {
 	done
 
 	# start agetty on ttyGS0
-	echo 'Arduino Initramfs 6.6-nanbield' > /etc/issue
+	echo -n 'Arduino Initramfs 6.6-nanbield \n \l' > /etc/issue
 	/sbin/agetty --autologin $(whoami) --noclear --issue-file /etc/issue 115200 ttyGS0 $TERM &
 }
 
