@@ -20,6 +20,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     hdparm \
     stress-ng \
     imx-test \
+    bluez5 \
 "
 # NOTES:
 # - We install only memtool from imx-test
