@@ -312,7 +312,7 @@ SPI0 CS: LPUART1 TX
 	status = "disabled";
 };
 
-/* ETH2 */
+/* ETH1 */
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_fec>;
@@ -336,7 +336,7 @@ SPI0 CS: LPUART1 TX
 	};
 };
 
-/* ETH1 */
+/* ETH2 */
 &eqos {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eqos>;
