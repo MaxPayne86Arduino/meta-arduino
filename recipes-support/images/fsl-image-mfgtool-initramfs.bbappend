@@ -25,3 +25,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 "
 # NOTES:
 # - We install only memtool from imx-test
+
+# Change users and passwords
+EXTRA_USERS_PARAMS = "usermod -P root root;"
