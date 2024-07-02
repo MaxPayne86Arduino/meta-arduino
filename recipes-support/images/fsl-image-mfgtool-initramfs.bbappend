@@ -22,6 +22,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     imx-test \
     bluez5 \
     kernel-module-btnxpuart \
+    systemd \
 "
 # NOTES:
 # - We install only memtool from imx-test
