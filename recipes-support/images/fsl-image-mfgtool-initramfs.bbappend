@@ -30,10 +30,13 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 # Change users and passwords
 # echo -n "password" | openssl passwd -6 -stdin
 # escape any $ character
-HASHED_PASSWORD ?= "\$6\$u/18pXUAGGDZ7ctQ\$ZUAzwtGkx3zhanlobXy6LFM2MZcKk1kNI/aJUrUarZu/Mo01dzJO2v9cRFUT/nXFCOkRdCxF4pQIukKH9ZQTJ1"
-ARDUINO_USER ?= "arduino"
-EXTRA_USERS_PARAMS = "\
-    groupadd ${ARDUINO_USER}; \
-    useradd -p '${HASHED_PASSWORD}' ${ARDUINO_USER}; \
-    usermod -a -G sudo,users,audio,plugdev ${ARDUINO_USER}; \
-"
+#HASHED_PASSWORD ?= "\$6\$u/18pXUAGGDZ7ctQ\$ZUAzwtGkx3zhanlobXy6LFM2MZcKk1kNI/aJUrUarZu/Mo01dzJO2v9cRFUT/nXFCOkRdCxF4pQIukKH9ZQTJ1"
+#ARDUINO_USER ?= "arduino"
+#EXTRA_USERS_PARAMS = "\
+#    groupadd ${ARDUINO_USER}; \
+#    useradd -p '' ${ARDUINO_USER}; \
+#    usermod -a -G sudo,users,audio,plugdev ${ARDUINO_USER}; \
+#"
+inherit extrausers
+EXTRA_USERS_PARAMS = "usermod -p '' root;"
+
