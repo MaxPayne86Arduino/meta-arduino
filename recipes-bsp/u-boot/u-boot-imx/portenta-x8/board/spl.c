@@ -229,6 +229,29 @@ int power_init_board(void)
 	return 0;
 }
 #else
+#define POWER_BD71837_I2C_BUS	1
+#define POWER_BD71837_I2C_ADDR	0x4B
+
+int power_bd71837_init(unsigned char bus)
+{
+	static const char name[] = BD718XX_REGULATOR_DRIVER;
+	struct pmic *p = pmic_alloc();
+
+	if (!p) {
+		log_err("%s: POWER allocation error!\n", __func__);
+		return -ENOMEM;
+	}
+
+	p->name = name;
+	p->interface = I2C_PMIC;
+	p->number_of_regs = BD718XX_MAX_REGISTER;
+	p->hw.i2c.addr = POWER_BD71837_I2C_ADDR;
+	p->hw.i2c.tx_num = 1;
+	p->bus = bus;
+
+	return 0;
+}
+
 int power_init_board(void)
 {
 	struct pmic *p;
