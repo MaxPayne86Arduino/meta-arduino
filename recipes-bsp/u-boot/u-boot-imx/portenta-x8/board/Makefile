@@ -4,8 +4,10 @@
 # SPDX-License-Identifier:      GPL-2.0+
 #
 
-obj-y += portenta-x8.o
+#obj-y += ../../freescale/common/
 obj-y += mmc.o
+
+obj-y += portenta-x8.o
 obj-$(CONFIG_USB_TCPC) += tcpc.o
 
 ifndef CONFIG_SPL_BUILD
