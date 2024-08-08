@@ -18,15 +18,15 @@
 #include <asm/mach-imx/mxc_i2c.h>
 #include <i2c.h>
 #include <asm/io.h>
-#include "../common/tcpc.h"
-#include <power/pmic.h>
-#include <power/bd71837.h>
+#include "../../freescale/common/tcpc.h"
 #include <usb.h>
-#ifdef CONFIG_USB_TCPC
-#include "tcpc.h"
-#endif
+
 #include <imx_sip.h>
 #include <linux/arm-smccc.h>
+#include <power/pmic.h>
+#include <power/bd71837.h>
+#include <mmc.h>
+#include <linux/delay.h>
 
 #include "anx7625.h"
 
@@ -311,8 +311,9 @@ static int setup_fec(void)
 		(struct iomuxc_gpr_base_regs *)IOMUXC_GPR_BASE_ADDR;
 
 	/* Use 125M anatop REF_CLK1 for ENET1, not from external */
-	clrsetbits_le32(&gpr->gpr[1], IOMUXC_GPR_GPR1_GPR_aENET1_TX_CLK_SEL_MASK, 0);
-	return set_clk_enet(ENET_125MHZ);
+	clrsetbits_le32(&gpr->gpr[1], 0x2000, 0);
+
+	return 0;
 }
 
 int board_phy_config(struct phy_device *phydev)
@@ -604,26 +605,27 @@ int board_late_init(void)
 	board_late_mmc_env_init();
 #endif
 
-if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
-	int boot_device = mmc_get_env_dev();
+	if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
+		int boot_device = mmc_get_env_dev();
 
-	env_set_ulong("devnum", boot_device);
-	env_set_ulong("ovldev", boot_device);
-	env_set_ulong("mmcdev", boot_device);
+		env_set_ulong("devnum", boot_device);
+		env_set_ulong("ovldev", boot_device);
+		env_set_ulong("mmcdev", boot_device);
 
-	env_set("board_name", model->board_name);
-	env_set("board_rev", model->board_rev);
-	if (env_get("carrier_custom") == NULL) {
-		if (model->is_on_carrier) {
-			env_set("is_on_carrier", "yes");
-			env_set("carrier_name", model->carrier_name);
-			if (model->has_hat) {
-				env_set("has_hat", "yes");
-				env_set("hat_name", model->hat_name);
+		env_set("board_name", model->board_name);
+		env_set("board_rev", model->board_rev);
+		if (env_get("carrier_custom") == NULL) {
+			if (model->is_on_carrier) {
+				env_set("is_on_carrier", "yes");
+				env_set("carrier_name", model->carrier_name);
+				if (model->has_hat) {
+					env_set("has_hat", "yes");
+					env_set("hat_name", model->hat_name);
+				}
 			}
 		}
 	}
-#endif
+
 	return 0;
 }
 
