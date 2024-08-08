@@ -34,7 +34,7 @@ do_override_files_portenta_x8 () {
     # Overrides
     cp ${WORKDIR}/common/Kconfig ${S}/arch/arm/mach-imx/imx8m/Kconfig
     cp ${WORKDIR}/common/fat.c ${S}/env/fat.c
-    cp ${WORKDIR}/common/spl_mmc.c ${S}/common/spl/spl_mmc.c
+    #cp ${WORKDIR}/common/spl_mmc.c ${S}/common/spl/spl_mmc.c
     cp ${WORKDIR}/devicetree/Makefile ${S}/arch/arm/dts/Makefile
 
     # Machine files (new)
