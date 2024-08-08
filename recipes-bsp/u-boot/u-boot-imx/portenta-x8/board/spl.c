@@ -5,9 +5,12 @@
  */
 
 #include <common.h>
+#include <command.h>
 #include <cpu_func.h>
 #include <hang.h>
+#include <image.h>
 #include <init.h>
+#include <log.h>
 #include <spl.h>
 #include <asm/global_data.h>
 #include <asm/io.h>
@@ -19,18 +22,25 @@
 #include <asm/arch/ddr.h>
 
 #include <power/pmic.h>
+#ifdef CONFIG_POWER_PCA9450
+#include <power/pca9450.h>
+#else
 #include <power/bd71837.h>
+#endif
 #include <asm/mach-imx/gpio.h>
 #include <asm/mach-imx/mxc_i2c.h>
 #include <fsl_esdhc_imx.h>
 #include <mmc.h>
 #include <linux/delay.h>
+#include <fsl_sec.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
 int spl_board_boot_device(enum boot_device boot_dev_spl)
 {
 	switch (boot_dev_spl) {
+	case USB_BOOT:
+		return BOOT_DEVICE_BOARD;
 	case SD2_BOOT:
 	case MMC2_BOOT:
 		return BOOT_DEVICE_MMC1;
@@ -41,8 +51,6 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
 		return BOOT_DEVICE_NOR;
 	case NAND_BOOT:
 		return BOOT_DEVICE_NAND;
-	case USB_BOOT:
-		return BOOT_DEVICE_BOARD;
 	default:
 		return BOOT_DEVICE_NONE;
 	}
@@ -124,7 +132,7 @@ int board_mmc_init(struct bd_info *bis)
 	 * mmc0                    USDHC1
 	 * mmc1                    USDHC2
 	 */
-	for (i = 0; i < CONFIG_SYS_FSL_USDHC_NUM; i++) {
+	for (i = 0; i < CFG_SYS_FSL_USDHC_NUM; i++) {
 		switch (i) {
 		case 0:
 			init_clk_usdhc(1);
@@ -183,9 +191,44 @@ int board_mmc_getcd(struct mmc *mmc)
 	return 1;
 }
 
-#ifdef CONFIG_POWER
+#if CONFIG_IS_ENABLED(POWER_LEGACY)
 #define I2C_PMIC	1
+#ifdef CONFIG_POWER_PCA9450
+int power_init_board(void)
+{
+	struct pmic *p;
+	int ret;
 
+	ret = power_pca9450_init(I2C_PMIC, 0x25);
+	if (ret)
+		printf("power init failed");
+	p = pmic_get("PCA9450");
+	pmic_probe(p);
+
+	/* BUCKxOUT_DVS0/1 control BUCK123 output */
+	pmic_reg_write(p, PCA9450_BUCK123_DVS, 0x29);
+
+	/* Buck 1 DVS control through PMIC_STBY_REQ */
+	pmic_reg_write(p, PCA9450_BUCK1CTRL, 0x59);
+
+	/* Set DVS1 to 0.8v for suspend */
+	pmic_reg_write(p, PCA9450_BUCK1OUT_DVS1, 0x10);
+
+	/* increase VDD_DRAM to 0.95v for 3Ghz DDR */
+	pmic_reg_write(p, PCA9450_BUCK3OUT_DVS0, 0x1C);
+
+	/* VDD_DRAM needs off in suspend, set B1_ENMODE=10 (ON by PMIC_ON_REQ = H && PMIC_STBY_REQ = L) */
+	pmic_reg_write(p, PCA9450_BUCK3CTRL, 0x4a);
+
+	/* set VDD_SNVS_0V8 from default 0.85V */
+	pmic_reg_write(p, PCA9450_LDO2CTRL, 0xC0);
+
+	/* set WDOG_B_CFG to cold reset */
+	pmic_reg_write(p, PCA9450_RESET_CTRL, 0xA1);
+
+	return 0;
+}
+#else
 int power_init_board(void)
 {
 	struct pmic *p;
@@ -225,16 +268,14 @@ int power_init_board(void)
 	return 0;
 }
 #endif
+#endif
 
 void spl_board_init(void)
 {
-#ifndef CONFIG_SPL_USB_SDP_SUPPORT
-	/* Serial download mode */
-	if (is_usb_boot()) {
-		puts("Back to ROM, SDP\n");
-		restore_boot_params();
+	if (IS_ENABLED(CONFIG_FSL_CAAM)) {
+		if (sec_init())
+			printf("\nsec_init failed!\n");
 	}
-#endif
 	puts("Normal Boot\n");
 }
 
