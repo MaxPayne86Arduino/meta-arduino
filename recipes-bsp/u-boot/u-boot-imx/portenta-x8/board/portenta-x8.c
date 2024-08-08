@@ -3,6 +3,9 @@
  * Copyright 2018-2019 NXP
  */
 #include <common.h>
+#include <efi_loader.h>
+#include <env.h>
+#include <init.h>
 #include <miiphy.h>
 #include <netdev.h>
 #include <asm/global_data.h>
@@ -15,6 +18,7 @@
 #include <asm/mach-imx/mxc_i2c.h>
 #include <i2c.h>
 #include <asm/io.h>
+#include "../common/tcpc.h"
 #include <power/pmic.h>
 #include <power/bd71837.h>
 #include <usb.h>
@@ -264,6 +268,23 @@ static void setup_gpmi_nand(void)
 }
 #endif
 
+#if CONFIG_IS_ENABLED(EFI_HAVE_CAPSULE_SUPPORT)
+struct efi_fw_image fw_images[] = {
+	{
+		.image_type_id = IMX_BOOT_IMAGE_GUID,
+		.fw_name = u"IMX8MM-EVK-RAW",
+		.image_index = 1,
+	},
+};
+
+struct efi_capsule_update_info update_info = {
+	.dfu_string = "mmc 2=flash-bin raw 0x42 0x2000 mmcpart 1",
+	.images = fw_images,
+};
+
+u8 num_image_type_guids = ARRAY_SIZE(fw_images);
+#endif /* EFI_HAVE_CAPSULE_SUPPORT */
+
 int board_early_init_f(void)
 {
 	struct wdog_regs *wdog = (struct wdog_regs *)WDOG1_BASE_ADDR;
@@ -290,7 +311,7 @@ static int setup_fec(void)
 		(struct iomuxc_gpr_base_regs *)IOMUXC_GPR_BASE_ADDR;
 
 	/* Use 125M anatop REF_CLK1 for ENET1, not from external */
-	clrsetbits_le32(&gpr->gpr[1], IOMUXC_GPR_GPR1_GPR_ENET1_TX_CLK_SEL_MASK, 0);
+	clrsetbits_le32(&gpr->gpr[1], IOMUXC_GPR_GPR1_GPR_aENET1_TX_CLK_SEL_MASK, 0);
 	return set_clk_enet(ENET_125MHZ);
 }
 
@@ -314,7 +335,6 @@ int board_phy_config(struct phy_device *phydev)
 }
 #endif
 
-/* TODO */
 #if defined(CONFIG_USB_TCPC) && !defined(CONFIG_SPL_BUILD)
 struct tcpc_port port1;
 struct tcpc_port port2;
@@ -510,7 +530,6 @@ static void setup_iomux_fec(void)
 	printf("setup_iomux_fec\n");
 
 	/* reset PHY and ensure RX_DV/CLK125_EN is pulled high to enable TX_REF_CLK */
-	//imx_iomux_v3_setup_multiple_pads(fec1_rst_pads, ARRAY_SIZE(fec1_rst_pads));
 	gpio_request(FEC_RST_PAD, "fec1_rst");
 	gpio_direction_output(FEC_RST_PAD, 0);
 	udelay(500);
@@ -533,11 +552,10 @@ int board_init(void)
 
 	setup_iomux_fec();
 
-#if IS_ENABLED(CONFIG_FEC_MXC)
-	setup_fec();
-#endif
+	if (IS_ENABLED(CONFIG_FEC_MXC))
+		setup_fec();
 
-	/* ANX7625 usb typec controller and power delivery configuration on portenta-m8 */
+	/* ANX7625 usb typec controller and power delivery configuration on portenta-x8 */
 	/* @TODO: selectable with CONFIG_USB_TCPC? */
 #ifndef CONFIG_SPL_BUILD
 	anx7625_probe(1);
@@ -586,7 +604,7 @@ int board_late_init(void)
 	board_late_mmc_env_init();
 #endif
 
-#ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
+if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
 	int boot_device = mmc_get_env_dev();
 
 	env_set_ulong("devnum", boot_device);
@@ -608,6 +626,12 @@ int board_late_init(void)
 #endif
 	return 0;
 }
+
+#ifdef CONFIG_ANDROID_SUPPORT
+bool is_power_key_pressed(void) {
+	return (bool)(!!(readl(SNVS_HPSR) & (0x1 << 6)));
+}
+#endif
 
 #ifdef CONFIG_FSL_FASTBOOT
 #ifdef CONFIG_ANDROID_RECOVERY
