@@ -66,7 +66,6 @@ DTB_OVERLAYS:portenta-x8 += " \
     file://portenta-x8/overlays/ov_carrier_mid_imx219_camera_mipi.dts \
     file://portenta-x8/overlays/ov_carrier_mid_dsi_panel.dts \
     file://portenta-x8/overlays/ov_carrier_mid_dsi_lds101.dts \
-    
 "
 # Ditto Carrier
 DTB_OVERLAYS:portenta-x8 += " \
