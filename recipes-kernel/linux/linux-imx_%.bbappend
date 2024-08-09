@@ -1,8 +1,10 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "file://portenta_x9_defconfig"
+SRC_URI:portenta-x9:append = " \
+    file://portenta-x9/portenta_x9_defconfig \
+"
 
-do_kernel_metadata:prepend () {
-    install -m 0644 ${WORKDIR}/portenta_x9_defconfig ${S}/arch/arm64/configs/
+do_kernel_metadata:prepend:portenta-x9 () {
+    install -m 0644 ${WORKDIR}/portenta-x9/portenta_x9_defconfig ${S}/arch/arm64/configs/
 }
 
