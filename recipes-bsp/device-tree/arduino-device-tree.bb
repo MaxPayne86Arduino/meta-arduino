@@ -15,6 +15,12 @@ PROVIDES = "virtual/dtb"
 # SRC_URI:append:board = "file://overlays_board.dts"
 # COMPATIBLE_MACHINE_board = ".*"
 
+SRC_URI:append:portenta-x8 = " \
+    file://portenta-x8/arduino_portenta-x8.dts \
+    file://portenta-x8/anx7625_base.dtsi \
+"
+COMPATIBLE_MACHINE:portenta-x8 = ".*"
+
 SRC_URI:append:portenta-x9 = " \
     file://portenta-x9/arduino_portenta-x9.dts \
 "
