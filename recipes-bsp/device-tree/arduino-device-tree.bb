@@ -16,6 +16,6 @@ PROVIDES = "virtual/dtb"
 # COMPATIBLE_MACHINE_board = ".*"
 
 SRC_URI:append:portenta-x9 = " \
-    file://arduino_portenta-x9.dts \
+    file://portenta-x9/arduino_portenta-x9.dts \
 "
 COMPATIBLE_MACHINE:portenta-x9 = ".*"
