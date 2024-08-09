@@ -1,0 +1,125 @@
+/**
+ * Portenta-X8 dtb overlay file
+ * Arduino 2021
+ * Enable cs42l52 codec on Arduino Max carrier board
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include "imx8mm-pinfunc.h"
+#include <dt-bindings/clock/imx8mm-clock.h>
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
+
+	fragment@0 {
+		target = <&iomuxc>;
+		__overlay__ {
+			imx8mm {
+				pinctrl_sai5: sai5grp {
+					fsl,pins = <
+						MX8MM_IOMUXC_SAI5_RXD2_SAI5_TX_BCLK			0xd6
+						MX8MM_IOMUXC_SAI5_RXD1_SAI5_TX_SYNC			0xd6
+						MX8MM_IOMUXC_SAI5_RXD0_SAI5_RX_DATA0		0xd6
+						MX8MM_IOMUXC_SAI5_RXD3_SAI5_TX_DATA0		0xd6
+					>;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&sai5>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_sai5>;
+			assigned-clocks = <&clk IMX8MM_CLK_SAI5>;
+			assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+			assigned-clock-rates = <12000000>;
+			#sound-dai-cells = <0>;
+			fsl,shared-interrupt;
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+		__overlay__ {
+			reg_cs42l52_clock: cs42l52_regulator {
+				compatible = "regulator-fixed";
+				regulator-name = "cs42l52-clock-en";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+				gpio = <&x8h7_gpio 0 GPIO_ACTIVE_LOW>; /* stm32h7 PF8 */
+				startup-delay-us = <10000>;
+				enable-active-low;
+			};
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+		__overlay__ {
+			sound-cs42l52 {
+				compatible = "simple-audio-card";
+				simple-audio-card,name = "cs42l52-audio";
+				simple-audio-card,format = "left_j";
+				simple-audio-card,bitclock-master = <&dailink0_master>;
+				simple-audio-card,frame-master = <&dailink0_master>;
+				simple-audio-card,widgets =
+					"Microphone", "Microphone A",
+					"Microphone", "Microphone B",
+					"Line", "Line In Jack",
+					"Headphone", "Headphone Jack",
+					"Speaker", "External Speaker";
+				simple-audio-card,routing =
+					"AIN1L", "Line In Jack" ,
+					"AIN1R", "Line In Jack",
+					"AIN2L", "Line In Jack" ,
+					"AIN2R", "Line In Jack",
+					"AIN3L", "Line In Jack" ,
+					"AIN3R", "Line In Jack",
+					"AIN4L", "Line In Jack" ,
+					"AIN4R", "Line In Jack",
+					"MICA", "Microphone A",
+					"MICB", "Microphone B",
+					"Microphone A", "Mic Bias",
+					"Microphone B", "Mic Bias",
+					"Headphone Jack", "HPOUTA",
+					"Headphone Jack", "HPOUTB",
+					"External Speaker", "SPKOUTA",
+					"External Speaker", "SPKOUTB";
+
+				simple-audio-card,cpu {
+					sound-dai = <&sai5>;
+					dai-tdm-slot-num = <2>;
+					dai-tdm-slot-width = <31>;
+				};
+
+				dailink0_master: simple-audio-card,codec {
+					sound-dai = <&cs42l52>;
+					clocks = <&clk IMX8MM_CLK_SAI5_ROOT>;
+				};
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <&i2c3>;
+		__overlay__ {
+			cs42l52: cs42l52@4a {
+				#sound-dai-cells = <0>;
+				compatible = "cirrus,cs42l52";
+				reg = <0x4a>;
+				cirrus,reset-gpio = <&x8h7_gpio 1 GPIO_ACTIVE_LOW>; /* stm32h7 PF6 */
+				cirrus,chgfreq-divisor = <0x05>;
+				cirrus.mica-differential-cfg;
+				cirrus,micbias-lvl = <5>;
+				cirrus,mclk = <12000000>;
+			};
+		};
+	};
+};

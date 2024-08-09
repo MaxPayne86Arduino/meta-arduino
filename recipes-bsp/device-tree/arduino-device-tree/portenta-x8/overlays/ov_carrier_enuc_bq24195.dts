@@ -1,0 +1,52 @@
+/**
+ * Portenta-X8 dtb overlay file
+ * Arduino 2021
+ * Enable bq24195 power regulator on Arduino Max carrier board.
+ * This overlay should be always included when powering carrier board with
+ * 9Vdc jack connector.
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include "imx8mm-pinfunc.h"
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+
+/ {
+	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
+
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			bat: battery {
+				compatible = "simple-battery";
+				precharge-current-microamp = <256000>;
+				charge-term-current-microamp = <128000>;
+				/*compatible = "simple-battery";
+				voltage-min-design-microvolt = <3200000>;
+				energy-full-design-microwatt-hours = <5290000>;
+				charge-full-design-microamp-hours = <1430000>;
+				precharge-current-microamp = <256000>;
+				charge-term-current-microamp = <128000>;
+				constant-charge-current-max-microamp = <900000>;
+				constant-charge-voltage-max-microvolt = <4200000>;*/
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&i2c3>;
+		__overlay__ {
+			bq24195: charger@6b {
+				compatible = "ti,bq24195";
+				reg = <0x6b>;
+				interrupt-parent = <&x8h7_gpio>;
+				interrupts = <6 IRQ_TYPE_NONE>; /* Edge set in drv module stm32h7 PE11 */
+				monitored-battery = <&bat>;
+				ti,system-minimum-microvolt = <3200000>;
+				omit-battery-class;
+			};
+		};
+	};
+};

@@ -1,0 +1,96 @@
+/**
+ * Portenta-M8 dtb overlay file
+ * Arduino 2021
+ * Enable RS485 full duplex on Arduino eNUC carrier board
+ * where SP330 ic is used.
+ * Gpios:
+ * DE controls tx and is always high (active)
+ * REn controls rx and is always low (active)
+ * this means this interface cannot be used in a bus configuration
+ * but only point to point (similar to rs232 but more robust to noise)
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/clock/imx8mm-clock.h>
+#include "imx8mm-pinfunc.h"
+
+/ {
+	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
+
+	fragment@0 {
+		target = <&iomuxc>;
+		__overlay__ {
+			imx8mm {
+				pinctrl_uart1: uart1grp {
+					fsl,pins = <
+						MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX	0x140
+						MX8MM_IOMUXC_UART1_TXD_UART1_DCE_TX	0x140
+					>;
+				};
+
+				pinctrl_hog: hoggrp {
+					fsl,pins = <
+						MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1   0x44 /* J2 59 PWM1 H/Fn     */
+						MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13  0x44 /* J2 61 PWM2 485/232n */
+						MX8MM_IOMUXC_GPIO1_IO14_GPIO1_IO14  0x44 /* J2 63 PWM3 EN_485   */
+					>;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&uart1>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_uart1>;
+			assigned-clocks = <&clk IMX8MM_CLK_UART1>;
+			assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <&gpio5>;
+		__overlay__ {
+			de {
+				gpio-hog;
+				gpios = <26 0>;
+				output-high;
+				line-name = "DE-gpio";
+			};
+			ren {
+				gpio-hog;
+				gpios = <27 0>;
+				output-low;
+				line-name = "REn-gpio";
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&gpio1>;
+		__overlay__ {
+			HF {
+				gpio-hog;
+				gpios = <1 0>;
+				output-low;
+				line-name = "HF-gpio";
+			};
+			SERIAL_TYPE {
+				gpio-hog;
+				gpios = <13 0>;
+				output-high;
+				line-name = "SERIAL_TYPE-gpio";
+			};
+			SERIAL_EN {
+				gpio-hog;
+				gpios = <14 0>;
+				output-high;
+				line-name = "SERIAL_EN-gpio";
+			};
+		};
+	};
+};

@@ -1,0 +1,117 @@
+/**
+ * Portenta-X8 dtb overlay file
+ * Arduino 2021
+ * This overlay is adding the H7 multifunction external
+ * microcontroller that works on SPI.
+ * The external microcontroller has an interrupt line to
+ * alert main AP processor some data is ready to be sent.
+ * The H7 provides many functionalities like:
+ * - can
+ * - adc
+ * - uart
+ * - gpio
+ * - rtc
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/clock/imx8mm-clock.h>
+#include "imx8mm-pinfunc.h"
+
+/ {
+	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
+
+	fragment@0 {
+		target = <&iomuxc>;
+		__overlay__ {
+			imx8mm {
+				pinctrl_irq_x8h7: x8h7irqgrp {
+					fsl,pins = <
+						/* H7 interrupt pin active low, pullup */
+						MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x151 /* PC1_STM32 */
+					>;
+				};
+
+				pinctrl_gpio_x8h7: gpiox8h7grp {
+					fsl,pins = <
+						MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10		0x151 /* NRST_STM32 Pull Up */
+						MX8MM_IOMUXC_GPIO1_IO11_GPIO1_IO11		0x110 /* BOOT0_STM32 Pull Down */
+						MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x110 /* SWDIO_STM32 Pull Down */
+						MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15		0x110 /* SWCLK_STM32 Pull Down */
+						MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7		0x110 /* PA0_STM32 Pull Down M4 led red */
+						MX8MM_IOMUXC_GPIO1_IO14_GPIO1_IO14		0x151 /* PE5_STM32 Pull Up */
+					>;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&ecspi3>;
+		__overlay__ {
+			status = "okay";
+			x8h7: x8h7@0 {
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "portenta,x8h7";
+				reg = <0>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&pinctrl_irq_x8h7>, <&pinctrl_gpio_x8h7>;
+				interrupt-parent = <&gpio1>;
+				interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
+				flow-ctrl-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
+				spi-max-frequency = <20000000>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+		__overlay__ {
+			x8h7_adc: x8h7adc {
+				compatible = "portenta,x8h7_adc";
+			};
+
+			x8h7_gpio: x8h7gpio {
+				compatible = "portenta,x8h7_gpio";
+				base = <160>;
+				gpio-controller;
+				#gpio-cells = <2>;
+				interrupt-controller;
+				#interrupt-cells = <2>;
+			};
+
+			x8h7_pwm: x8h7pwm {
+				compatible = "portenta,x8h7_pwm";
+				#pwm-cells = <2>;
+			};
+
+			x8h7_rtc: x8h7rtc {
+				compatible = "portenta,x8h7_rtc";
+			};
+
+			can0: can@1 {
+				compatible = "portenta,x8h7_can";
+			};
+
+			can1: can@2 {
+				compatible = "portenta,x8h7_can";
+			};
+
+			x8h7_uart: x8h7uart {
+				compatible = "portenta,x8h7_uart";
+			};
+
+			x8h7_ui: x8h7ui {
+				compatible = "portenta,x8h7_ui";
+			};
+
+			x8h7_h7: x8h7h7 {
+				compatible = "portenta,x8h7_h7";
+			};
+		};
+	};
+};
