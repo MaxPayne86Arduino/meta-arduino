@@ -284,8 +284,7 @@ SPI0 CS: LPUART1 TX
 	status = "okay";
 };
 
-&lpuart5 {
-	/* Bluetooth */
+&lpuart5 { /* Bluetooth IW612 */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
 	/* @TODO: missing pinctrl-assert-gpios (IND_RST_BT) */
@@ -351,7 +350,7 @@ SPI0 CS: LPUART1 TX
 	no-mmc;
 };
 
-&usdhc3 { /* WiFi Bluetooth IW612 */
+&usdhc3 { /* WiFi IW612 */
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc3>;
 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
