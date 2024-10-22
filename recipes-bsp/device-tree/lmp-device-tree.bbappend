@@ -1,7 +1,7 @@
 include recipes-bsp/device-tree/arduino-device-tree.inc
 
 do_move_files_rpi() {
-    mv ${WORKDIR}/raspberrypi4-64/overlays/*.dts ${WORKDIR}/
+    cp ${WORKDIR}/raspberrypi4-64/overlays/*.dts ${WORKDIR}/
 }
 
 python () {
