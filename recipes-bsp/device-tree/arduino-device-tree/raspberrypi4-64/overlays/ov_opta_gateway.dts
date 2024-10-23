@@ -1,5 +1,7 @@
 /*
- * Device tree overlay for Microchip mcp3008 10-Bit A/D Converters
+ * Device tree overlay for Arduino Opta Gateway ARCH1 / ARCH2
+ *
+ * Arduino Oct 2024
  */
 
 /dts-v1/;
@@ -7,6 +9,8 @@
 
 / {
 	compatible = "brcm,bcm2835";
+
+	/* SPI */
 
 	fragment@0 {
 		target = <&spidev0>;
@@ -65,141 +69,71 @@
 	};
 
 	fragment@8 {
-		target = <&spi0>;
-		__dormant__ {
-			status = "okay";
+		target = <&spi6_cs_pins>;
+		__overlay__ {
+			brcm,pins = <18 17 16>;
+			brcm,function = <1>; /* output */
+		};
+	};
+
+	fragment@1 {
+		target = <&spi6>;
+		__overlay__ {
+			/* needed to avoid dtc warning */
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			mcp3008_00: mcp3008@0 {
-				compatible = "microchip,mcp3008";
-				reg = <0>;
-				spi-max-frequency = <1600000>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&spi6_pins &spi6_cs_pins>;
+			cs-gpios = <&gpio 18 1>, <&gpio 17 1>, <&gpio 16 1>;
+			status = "okay";
+
+			/* To ARCH1 */
+			spidev6_0: spidev@0 {
+				compatible = "spidev";
+				reg = <0>;      /* CE0 */
+				#address-cells = <1>;
+				#size-cells = <0>;
+				spi-max-frequency = <125000000>;
+				status = "okay";
+			};
+
+			/* To ARCH1 */
+			spidev6_1: spidev@1 {
+				compatible = "spidev";
+				reg = <1>;      /* CE1 */
+				#address-cells = <1>;
+				#size-cells = <0>;
+				spi-max-frequency = <125000000>;
+				status = "okay";
+			};
+
+			/* Sd Card */
+			spidev6_3: spidev@2 {
+				compatible = "spidev";
+				reg = <2>;      /* CS */
+				#address-cells = <1>;
+				#size-cells = <0>;
+				spi-max-frequency = <125000000>;
+				status = "okay";
 			};
 		};
 	};
 
+	/* I2C */
+
+	/* ID_SD / ID_SC
+	- EEPROM
+	- GPIOEXP1
+	- GPIOEXP2
+	- RTC
+	*/
 	fragment@9 {
-		target = <&spi0>;
-		__dormant__ {
-			status = "okay";
+		target = <&i2c_csi_dsi>;
+		__overlay__ {
 			#address-cells = <1>;
 			#size-cells = <0>;
-
-			mcp3008_01: mcp3008@1 {
-				compatible = "microchip,mcp3008";
-				reg = <1>;
-				spi-max-frequency = <1600000>;
-			};
-		};
-	};
-
-	fragment@10 {
-		target = <&spi1>;
-		__dormant__ {
 			status = "okay";
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mcp3008_10: mcp3008@0 {
-				compatible = "microchip,mcp3008";
-				reg = <0>;
-				spi-max-frequency = <1600000>;
-			};
 		};
-	};
-
-	fragment@11 {
-		target = <&spi1>;
-		__dormant__ {
-			status = "okay";
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mcp3008_11: mcp3008@1 {
-				compatible = "microchip,mcp3008";
-				reg = <1>;
-				spi-max-frequency = <1600000>;
-			};
-		};
-	};
-
-	fragment@12 {
-		target = <&spi1>;
-		__dormant__ {
-			status = "okay";
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mcp3008_12: mcp3008@2 {
-				compatible = "microchip,mcp3008";
-				reg = <2>;
-				spi-max-frequency = <1600000>;
-			};
-		};
-	};
-
-	fragment@13 {
-		target = <&spi2>;
-		__dormant__ {
-			status = "okay";
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mcp3008_20: mcp3008@0 {
-				compatible = "microchip,mcp3008";
-				reg = <0>;
-				spi-max-frequency = <1600000>;
-			};
-		};
-	};
-
-	fragment@14 {
-		target = <&spi2>;
-		__dormant__ {
-			status = "okay";
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mcp3008_21: mcp3008@1 {
-				compatible = "microchip,mcp3008";
-				reg = <1>;
-				spi-max-frequency = <1600000>;
-			};
-		};
-	};
-
-	fragment@15 {
-		target = <&spi2>;
-		__dormant__ {
-			status = "okay";
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			mcp3008_22: mcp3008@2 {
-				compatible = "microchip,mcp3008";
-				reg = <2>;
-				spi-max-frequency = <1600000>;
-			};
-		};
-	};
-
-	__overrides__ {
-		spi0-0-present = <0>, "+0+8";
-		spi0-1-present = <0>, "+1+9";
-		spi1-0-present = <0>, "+2+10";
-		spi1-1-present = <0>, "+3+11";
-		spi1-2-present = <0>, "+4+12";
-		spi2-0-present = <0>, "+5+13";
-		spi2-1-present = <0>, "+6+14";
-		spi2-2-present = <0>, "+7+15";
-		spi0-0-speed = <&mcp3008_00>, "spi-max-frequency:0";
-		spi0-1-speed = <&mcp3008_01>, "spi-max-frequency:0";
-		spi1-0-speed = <&mcp3008_10>, "spi-max-frequency:0";
-		spi1-1-speed = <&mcp3008_11>, "spi-max-frequency:0";
-		spi1-2-speed = <&mcp3008_12>, "spi-max-frequency:0";
-		spi2-0-speed = <&mcp3008_20>, "spi-max-frequency:0";
-		spi2-1-speed = <&mcp3008_21>, "spi-max-frequency:0";
-		spi2-2-speed = <&mcp3008_22>, "spi-max-frequency:0";
 	};
 };
