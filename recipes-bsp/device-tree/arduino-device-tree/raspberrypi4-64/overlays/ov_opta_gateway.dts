@@ -89,6 +89,7 @@
 			status = "okay";
 
 			/* To ARCH1 */
+			/* @TODO: bind devices on ARCH1 */
 			spidev6_0: spidev@0 {
 				compatible = "spidev";
 				reg = <0>;      /* CE0 */
@@ -99,6 +100,7 @@
 			};
 
 			/* To ARCH1 */
+			/* @TODO: bind devices on ARCH1 */
 			spidev6_1: spidev@1 {
 				compatible = "spidev";
 				reg = <1>;      /* CE1 */
@@ -109,6 +111,7 @@
 			};
 
 			/* Sd Card */
+			/* @TODO: compatible mmc-spi */
 			spidev6_3: spidev@2 {
 				compatible = "spidev";
 				reg = <2>;      /* CS */
@@ -123,6 +126,7 @@
 	/* I2C */
 
 	/* ID_SD / ID_SC
+	@TODO: fix i2c node name, bind following devices
 	- EEPROM
 	- GPIOEXP1
 	- GPIOEXP2
@@ -136,4 +140,6 @@
 			status = "okay";
 		};
 	};
+
+	/* @TODO: next nodes */
 };
