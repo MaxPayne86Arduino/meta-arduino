@@ -1,0 +1,29 @@
+From 675c0d326b78f564fdd60393c2f735ce96f75550 Mon Sep 17 00:00:00 2001
+From: Massimo Pennazio <maxipenna@libero.it>
+Date: Fri, 8 Nov 2024 11:13:40 +0000
+Subject: [PATCH 3/4] Changing gid and uid to match the existing user
+
+---
+ adb/adb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/adb/adb.c b/adb/adb.c
+index 611d25fb5a..29d7426d7e 100644
+--- a/adb/adb.c
++++ b/adb/adb.c
+@@ -1369,10 +1369,10 @@ int adb_main(int is_daemon, int server_port)
+         drop_capabilities_bounding_set_if_needed();
+ #endif
+         /* then switch user and group to "shell" */
+-        if (setgid(AID_SHELL) != 0) {
++        if (setgid(1001) != 0) {
+             exit(1);
+         }
+-        if (setuid(AID_SHELL) != 0) {
++        if (setuid(1001) != 0) {
+             exit(1);
+         }
+ 
+-- 
+2.25.1
+

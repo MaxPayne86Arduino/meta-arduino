@@ -1,0 +1,37 @@
+From 30aba5b06805b245799fb1b97209a38153128be0 Mon Sep 17 00:00:00 2001
+From: Massimo Pennazio <maxipenna@libero.it>
+Date: Fri, 8 Nov 2024 11:12:00 +0000
+Subject: [PATCH 2/4] Adding some useful debug prints
+
+---
+ adb/adb.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/adb/adb.c b/adb/adb.c
+index 1aa5acfee5..611d25fb5a 100644
+--- a/adb/adb.c
++++ b/adb/adb.c
+@@ -1396,7 +1396,11 @@ int adb_main(int is_daemon, int server_port)
+         // listen on USB
+         usb_init();
+         usb = 1;
++        fprintf(stderr, "Successfully opened %s or %s\n", USB_ADB_PATH, USB_FFS_ADB_EP0);
+     }
++    else {
++        fprintf(stderr, "Failed to access %s or %s\n", USB_ADB_PATH, USB_FFS_ADB_EP0);
++     }
+ 
+     // If one of these properties is set, also listen on that port
+     // If one of the properties isn't set and we couldn't listen on usb,
+@@ -1432,6 +1436,8 @@ int adb_main(int is_daemon, int server_port)
+     }
+     D("Event loop starting\n");
+ 
++    fprintf(stderr, "Event loop starting\n");
++
+     fdevent_loop();
+ 
+     usb_cleanup();
+-- 
+2.25.1
+

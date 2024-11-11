@@ -1,0 +1,133 @@
+#!/bin/sh
+
+start()
+{
+    if [[ $(cat /sys/class/usb_role/ci_hdrc.0-role-switch/role) == "device" ]]; then
+        echo "Creating Arduino Usb Gadgets..."
+
+        . /etc/default/usbgx
+
+        PID=0061
+        VID=2341
+        # @TODO: BOARDNAME=$(fw_printenv board | cut -d '=' -f 2) or board_name?
+        BOARDNAME="Generic Arduino Board"
+        BOARDPROVIDER="Arduino"
+
+        # go to configfs directory for USB gadgets
+        cd /sys/kernel/config/usb_gadget
+
+        # create gadget directory and enter it
+        mkdir g1
+        cd g1
+
+        # USB ids
+        echo 0x$VID > idVendor
+        echo 0x$PID > idProduct
+        echo 0xEF > bDeviceClass
+        echo 0x02 > bDeviceSubClass
+        echo 0x01 > bDeviceProtocol
+
+        # USB strings, optional
+        mkdir strings/0x409
+        echo $(cat /sys/devices/soc0/serial_number) > strings/0x409/serialnumber
+        echo "$BOARDPROVIDER" > strings/0x409/manufacturer
+        echo "$BOARDNAME" > strings/0x409/product
+
+        # create the (only) configuration
+        mkdir configs/c.1
+
+        # populate config, optional
+        mkdir configs/c.1/strings/0x409
+        CFG_STRING=$(echo $ENABLED_SCHEMAS | tr ' ' '+')
+        echo $CFG_STRING > configs/c.1/strings/0x409/configuration
+        echo 900 > configs/c.1/MaxPower
+
+        # Loop through each element in ENABLED_SCHEMAS
+        acm_count=0
+        ncm_count=0
+        for schema in $ENABLED_SCHEMAS; do
+            case $schema in
+                acm)
+                    # create the acm (serial) function with unique name
+                    mkdir -p functions/acm.GS$acm_count
+                    # assign acm function to configuration
+                    ln -s functions/acm.GS$acm_count configs/c.1
+                    acm_count=$((acm_count + 1))
+                    ;;
+                ffs)
+                    # create a generic ffs for adb
+                    mkdir functions/ffs.adb
+                    # assign generic ffs to configuration
+                    ln -s functions/ffs.adb/ configs/c.1
+                    # create adb ffs device dir and mount it
+                    mkdir -p /dev/usb-ffs/adb
+                    mount -o uid=1000,gid=1000 -t functionfs adb /dev/usb-ffs/adb
+                    ;;
+                ncm)
+                    # create the ncm function with unique name
+                    mkdir -p functions/ncm.usb$ncm_count
+                    # assign ncm function to configuration
+                    ln -s functions/ncm.usb$ncm_count configs/c.1
+                    ncm_count=$((ncm_count + 1))
+                    ;;
+                *)
+                    echo "Unknown schema: $schema"
+                    ;;
+            esac
+        done
+
+        # execute adbd
+        # /usr/bin/adbd
+
+        # bind!
+        # ls /sys/class/udc to see available UDCs
+        # UDC=$(ls /sys/class/udc) && echo $UDC > /sys/kernel/config/usb_gadget/g1/UDC
+    else
+        exit 1
+    fi
+}
+
+stop()
+{
+    echo "Removing Arduino Usb Gadgets..."
+
+    # go to configfs directory for USB gadgets
+    cd /sys/kernel/config/usb_gadget/g1
+
+    # Unbind the gadget
+    echo "" > UDC
+
+    # Remove all functions from configuration
+    find configs/c.1 -type l -exec rm {} \;
+
+    # Remove all function directories
+    rm -rf functions/*
+
+    # Remove configuration
+    rmdir configs/c.1/strings/0x409
+    rmdir configs/c.1
+
+    # Remove strings
+    rmdir strings/0x409
+
+    # Remove gadget directory
+    cd ..
+    rmdir g1
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+exit 0
