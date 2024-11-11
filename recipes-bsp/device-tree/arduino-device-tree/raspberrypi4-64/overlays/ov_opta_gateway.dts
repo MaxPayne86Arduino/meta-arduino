@@ -157,7 +157,7 @@
 				compatible = "nxp,pca9535";
 				pinctrl-names = "default";
 				pinctrl-0 = <&pinctrl_gpioexp_1>;
-				reg = <0x20>;
+				reg = <0x21>;
 				gpio-controller;
 				#gpio-cells = <2>;
 				interrupt-controller;
@@ -167,10 +167,10 @@
 			};
 
 			/* U2_2 GPIO EXP */
-			gpioexp_1: gpio@20 {
+			gpioexp_2: gpio@20 {
 				compatible = "nxp,pca9535";
 				pinctrl-names = "default";
-				pinctrl-0 = <&pinctrl_gpioexp_1>;
+				pinctrl-0 = <&pinctrl_gpioexp_2>;
 				reg = <0x20>;
 				gpio-controller;
 				#gpio-cells = <2>;
