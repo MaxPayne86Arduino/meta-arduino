@@ -190,6 +190,9 @@
 		};
 	};
 
+	/* USB */
+	// You can just load dtparam=dwc2
+
 	/* PINMUX */
 	fragment@11 {
 		target = <&gpio>;
