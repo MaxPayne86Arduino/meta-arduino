@@ -4,7 +4,7 @@ devtype=mmc
 
 # Amended variables, see u-boot default env
 fdt_addr=0x2eff2a00
-fdt_file=broadcom/bcm2711-rpi-cm4.dtb
+fdt_file=/boot2/devicetree/bcm2711-rpi-cm4-merged.dtb
 kernel_addr_r=0x00080000
 
 # Overlay variables
@@ -14,10 +14,11 @@ ovltype=mmc
 ovlpart=2
 ovldev=0
 ovlpath=/boot2/devicetree
-fdtovaddr=0x2f5f2a00
+fdtovaddr=0x2f102c2d # Addr fdt_addr + size fdt_file + 64KB margin
 
 bootcmd_args=setenv bootargs coherent_pool=1M 8250.nr_uarts=1 console=tty1 console=ttyS0,115200 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw
 bootcmd_load_k=fatload ${devtype} ${devnum}:1 ${kernel_addr_r} Image
+bootcmd_load_fdt=ext4load ${devtype} ${devnum}:2 ${fdt_addr} ${fdt_file}
 bootcmd_ovl=fdt addr ${fdt_addr}; fdt resize 0x${filesize}; \
              for ov in ${overlays}; do \
                echo overlaying ${ov}...; \
@@ -25,4 +26,4 @@ bootcmd_ovl=fdt addr ${fdt_addr}; fdt resize 0x${filesize}; \
                fdt apply ${fdtovaddr}; \
              done
 bootcmd_run=booti ${kernel_addr_r} - ${fdt_addr}
-bootcmd=run bootcmd_args; run bootcmd_load_k; run bootcmd_ovl; run bootcmd_run
+bootcmd=run bootcmd_args; run bootcmd_load_k; run bootcmd_load_fdt; run bootcmd_ovl; run bootcmd_run
