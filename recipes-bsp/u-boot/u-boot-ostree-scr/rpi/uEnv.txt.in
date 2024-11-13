@@ -12,7 +12,7 @@ overlays="ov_opta_gateway"
 ovlload=ext4load
 ovltype=mmc
 ovlpart=2
-ovldev=${devnum}
+ovldev=0
 ovlpath=/boot2/devicetree
 fdtovaddr=0x2f5f2a00
 
