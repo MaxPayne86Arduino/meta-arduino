@@ -89,6 +89,7 @@ DTB_OVERLAYS:raspberrypi4-64 += " \
 
 # Raspberry Pi root devicetree
 SRC_URI:append:raspberrypi4-64 = " \
+    file://raspberrypi4-64/bcm2711-rpi-cm4-merged.dts \
     ${DTB_OVERLAYS} \
 "
 COMPATIBLE_MACHINE:raspberrypi4-64 = ".*"
