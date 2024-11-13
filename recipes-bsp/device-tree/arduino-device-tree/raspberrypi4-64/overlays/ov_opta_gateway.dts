@@ -192,9 +192,23 @@
 
 	/* USB */
 	// You can just load dtparam=dwc2
+	fragment@11 {
+		target = <&usb>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		dwc2_usb: __overlay__ {
+				compatible = "brcm,bcm2835-usb";
+				dr_mode = "otg";
+				g-np-tx-fifo-size = <32>;
+				g-rx-fifo-size = <558>;
+				g-tx-fifo-size = <512 512 512 512 512 256 256>;
+				status = "okay";
+		};
+	};
+
 
 	/* PINMUX */
-	fragment@11 {
+	fragment@12 {
 		target = <&gpio>;
 		__overlay__ {
 			pinctrl_gpioexp_1: gpioexp_1grp {
