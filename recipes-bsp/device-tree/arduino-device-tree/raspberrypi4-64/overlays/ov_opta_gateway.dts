@@ -149,7 +149,6 @@
 	fragment@11 {
 		target = <&i2c0if>;
 		__overlay__ {
-			status = "okay";
 			pinctrl-names = "default";
 			pinctrl-0 = <&i2c0_pins>;
 			status = "okay";
