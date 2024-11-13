@@ -131,6 +131,8 @@
 	/* I2C */
 
 	/* ID_SD / ID_SC
+	// See i2c0-overlay.dts
+	// You can just load dtoverlay=i2c0
 	@TODO: fix i2c node name, bind following devices
 	- EEPROM
 	- GPIOEXP1
@@ -138,10 +140,18 @@
 	- RTC
 	*/
 	fragment@10 {
-		target = <&i2c_csi_dsi>;
+		target = <&i2c0mux>;
 		__overlay__ {
-			#address-cells = <1>;
-			#size-cells = <0>;
+			status = "disabled";
+		};
+	};
+
+	fragment@11 {
+		target = <&i2c0if>;
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&i2c0_pins>;
 			status = "okay";
 
 			/* U5 RTC */
@@ -191,8 +201,9 @@
 	};
 
 	/* USB */
-	// You can just load dtparam=dwc2
-	fragment@11 {
+	// See dwc2-overlay.dts
+	// You can just load dtoverlay=dwc2
+	fragment@12 {
 		target = <&usb>;
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -208,7 +219,7 @@
 
 
 	/* PINMUX */
-	fragment@12 {
+	fragment@13 {
 		target = <&gpio>;
 		__overlay__ {
 			pinctrl_gpioexp_1: gpioexp_1grp {
