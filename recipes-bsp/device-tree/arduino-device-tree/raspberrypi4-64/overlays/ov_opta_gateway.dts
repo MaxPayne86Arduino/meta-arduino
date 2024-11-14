@@ -18,62 +18,6 @@
 	/* SPI */
 
 	fragment@0 {
-		target = <&spidev0>;
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@1 {
-		target = <&spidev1>;
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@2 {
-		target-path = "spi1/spidev@0";
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@3 {
-		target-path = "spi1/spidev@1";
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@4 {
-		target-path = "spi1/spidev@2";
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@5 {
-		target-path = "spi2/spidev@0";
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@6 {
-		target-path = "spi2/spidev@1";
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@7 {
-		target-path = "spi2/spidev@2";
-		__dormant__ {
-			status = "disabled";
-		};
-	};
-
-	fragment@8 {
 		target = <&spi6_cs_pins>;
 		__overlay__ {
 			brcm,pins = <18 17 16>;
@@ -81,7 +25,7 @@
 		};
 	};
 
-	fragment@9 {
+	fragment@1 {
 		target = <&spi6>;
 		__overlay__ {
 			/* needed to avoid dtc warning */
@@ -139,14 +83,14 @@
 	- GPIOEXP2
 	- RTC
 	*/
-	fragment@10 {
+	fragment@2 {
 		target = <&i2c0mux>;
 		__overlay__ {
 			status = "disabled";
 		};
 	};
 
-	fragment@11 {
+	fragment@3 {
 		target = <&i2c0if>;
 		__overlay__ {
 			pinctrl-names = "default";
@@ -204,7 +148,7 @@
 	/* USB */
 	// See dwc2-overlay.dts
 	// You can just load dtoverlay=dwc2
-	fragment@12 {
+	fragment@4 {
 		target = <&usb>;
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -220,7 +164,7 @@
 
 
 	/* PINMUX */
-	fragment@13 {
+	fragment@5 {
 		target = <&gpio>;
 		__overlay__ {
 			pinctrl_gpioexp_1: gpioexp_1grp {
