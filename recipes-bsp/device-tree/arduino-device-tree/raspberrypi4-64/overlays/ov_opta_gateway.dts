@@ -54,7 +54,7 @@
 			/* Sd Card */
 			mmc_slot: mmcslot@2 {
 				compatible = "mmc-spi-slot";
-				voltage-ranges = <3300 3300>;
+				voltage-ranges = <2700 3600>;
 				reg = <2>;      /* CS */
 				#address-cells = <1>;
 				#size-cells = <0>;
