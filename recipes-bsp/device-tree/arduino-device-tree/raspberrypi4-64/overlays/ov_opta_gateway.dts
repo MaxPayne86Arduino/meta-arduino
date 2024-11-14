@@ -60,13 +60,12 @@
 			};
 
 			/* Sd Card */
-			/* @TODO: compatible mmc-spi */
 			spidev6_3: spidev@2 {
-				compatible = "spidev";
+				compatible = "mmc-spi-slot";
 				reg = <2>;      /* CS */
 				#address-cells = <1>;
 				#size-cells = <0>;
-				spi-max-frequency = <125000000>;
+				spi-max-frequency = <5000000>;
 				status = "okay";
 			};
 		};
