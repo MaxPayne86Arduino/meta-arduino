@@ -164,29 +164,29 @@
 			/* U2_1 GPIO EXP */
 			gpioexp_1: gpio@21 {
 				compatible = "nxp,pca9535";
-				pinctrl-names = "default";
-				pinctrl-0 = <&pinctrl_gpioexp_1>;
+				//pinctrl-names = "default";
+				//pinctrl-0 = <&pinctrl_gpioexp_1>;
 				reg = <0x21>;
 				gpio-controller;
 				#gpio-cells = <2>;
-				interrupt-controller;
-				#interrupt-cells = <2>;
-				interrupt-parent = <&gpio>;
-				interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
+				//interrupt-controller;
+				//#interrupt-cells = <2>;
+				//interrupt-parent = <&gpio>;
+				//interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
 			};
 
 			/* U2_2 GPIO EXP */
 			gpioexp_2: gpio@20 {
 				compatible = "nxp,pca9535";
-				pinctrl-names = "default";
-				pinctrl-0 = <&pinctrl_gpioexp_2>;
+				//pinctrl-names = "default";
+				//pinctrl-0 = <&pinctrl_gpioexp_2>;
 				reg = <0x20>;
 				gpio-controller;
 				#gpio-cells = <2>;
-				interrupt-controller;
-				#interrupt-cells = <2>;
-				interrupt-parent = <&gpio>;
-				interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
+				//interrupt-controller;
+				//#interrupt-cells = <2>;
+				//interrupt-parent = <&gpio>;
+				//interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
 			};
 
 			/*  U4 EEPROM 0x50 */
