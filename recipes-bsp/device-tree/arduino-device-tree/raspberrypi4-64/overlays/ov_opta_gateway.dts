@@ -162,6 +162,7 @@
 			};
 
 			/* U2_1 GPIO EXP */
+			// See pca953x-overlay.dts
 			gpioexp_1: gpio@21 {
 				compatible = "nxp,pca9535";
 				//pinctrl-names = "default";
@@ -176,6 +177,7 @@
 			};
 
 			/* U2_2 GPIO EXP */
+			// // See pca953x-overlay.dts
 			gpioexp_2: gpio@20 {
 				compatible = "nxp,pca9535";
 				//pinctrl-names = "default";
