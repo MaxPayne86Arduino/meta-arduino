@@ -25,7 +25,8 @@
 			#size-cells = <0>;
 
 			pinctrl-names = "default";
-			pinctrl-0 = <&spi1_gpio16>;
+			pinctrl-0 = <&spi1_pins &spi1_cs_pins>;
+			cs-gpios = <&gpio 18 1>, <&gpio 17 1>, <&gpio 16 1>;
 			status = "okay";
 
 			/* To ARCH1 */
@@ -153,7 +154,6 @@
 		};
 	};
 
-
 	/* PINMUX */
 	fragment@4 {
 		target = <&gpio>;
@@ -166,6 +166,16 @@
 			pinctrl_gpioexp_2: gpioexp_2grp {
 				brcm,pins = <25>;
 				brcm,function = <BCM2835_FSEL_GPIO_OUT>;
+			};
+
+			spi1_pins: spi1pins {
+				brcm,pins = <19 20 21>;
+				brcm,function = <BCM2835_FSEL_ALT5>; /* MISO, MOSI, CK */
+			};
+
+			spi1_cs_pins: spi1cspins {
+				brcm,pins = <18 17 16>; /* CS0, CS1, CS2 */
+				brcm,function = <BCM2835_FSEL_GPIO_OUT>; /* CS SPI1 as GPIOS */
 			};
 		};
 	};
