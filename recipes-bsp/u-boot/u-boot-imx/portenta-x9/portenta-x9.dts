@@ -12,7 +12,7 @@
 	compatible = "fsl,imx93-9x9-qsb", "fsl,imx93";
 
 	chosen {
-		stdout-path = &lpuart1;
+		stdout-path = &lpuart3;
 	};
 
 	reserved-memory {
@@ -98,7 +98,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pca9451a>;
 		interrupt-parent = <&gpio3>;
-		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
+		interrupts = <20 IRQ_TYPE_LEVEL_LOW>;
 
 		regulators {
 			buck1: BUCK1 {
@@ -168,34 +168,6 @@
 			};
 		};
 	};
-
-	/* KTS1622EUAA-TR U19 */
-	gpioexp_1: gpio@20 {
-		compatible = "nxp,pca9535";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_gpioexp_1>;
-		reg = <0x20>;
-		gpio-controller;
-		#gpio-cells = <2>;
-		interrupt-controller;
-		#interrupt-cells = <2>;
-		interrupt-parent = <&gpio1>;
-		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
-	};
-
-	/* KTS1622EUAA-TR U20 */
-	gpioexp_2: gpio@21 {
-		compatible = "nxp,pca9535";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_gpioexp_2>;
-		reg = <0x21>;
-		gpio-controller;
-		#gpio-cells = <2>;
-		interrupt-controller;
-		#interrupt-cells = <2>;
-		interrupt-parent = <&gpio2>;
-		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
-	};
 };
 
 &lpi2c2 {
@@ -218,14 +190,9 @@
 	status = "okay";
 };
 
-/*
-@TODO: move console to LPUART6
-SPI0 CIPO: LPUART1 RX
-SPI0 CS: LPUART1 TX
-*/
-&lpuart1 { /* console */
+&lpuart3 { /* console */
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart1>;
+	pinctrl-0 = <&pinctrl_uart3>;
 	status = "okay";
 };
 
@@ -376,8 +343,8 @@ SPI0 CS: LPUART1 TX
 
 	pinctrl_flexcan2: flexcan2grp {
 		fsl,pins = <
-			MX93_PAD_GPIO_IO25__CAN2_TX	0x139e
-			MX93_PAD_GPIO_IO27__CAN2_RX	0x139e
+			MX93_PAD_SD2_DATA0__CAN2_TX	0x139e
+			MX93_PAD_SD2_DATA1__CAN2_RX	0x139e
 		>;
 	};
 
@@ -470,10 +437,10 @@ SPI0 CS: LPUART1 TX
 		>;
 	};
 
-	pinctrl_uart1: uart1grp {
+	pinctrl_uart3: uart3grp {
 		fsl,pins = <
-			MX93_PAD_UART1_RXD__LPUART1_RX			0x31e
-			MX93_PAD_UART1_TXD__LPUART1_TX			0x31e
+			MX93_PAD_GPIO_IO15__LPUART3_RX			0x31e
+			MX93_PAD_GPIO_IO14__LPUART3_TX			0x31e
 		>;
 	};
 
