@@ -1,6 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI:portenta-x9 += " \
+SRC_URI:append:portenta-x9 = " \
     file://linuxrc.portenta-x9 \
 "
 
