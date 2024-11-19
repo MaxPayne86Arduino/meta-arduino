@@ -1,0 +1,13 @@
+diff --git a/plat/imx/imx93/include/platform_def.h b/plat/imx/imx93/include/platform_def.h
+index 279b4ef29..05a9a3818 100644
+--- a/plat/imx/imx93/include/platform_def.h
++++ b/plat/imx/imx93/include/platform_def.h
+@@ -61,7 +61,7 @@
+ #define MAX_MMAP_REGIONS		17
+ #endif
+ 
+-#define IMX_LPUART_BASE			0x44380000
++#define IMX_LPUART_BASE			0x42570000
+ #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24MHz oscillator */
+ #define IMX_CONSOLE_BAUDRATE		115200
+ 
