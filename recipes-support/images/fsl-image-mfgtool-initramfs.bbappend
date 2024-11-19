@@ -23,6 +23,15 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     imx-test \
     bluez5 \
     systemd \
+    openocd \
+    htop \
+    libgpiod \
+    libgpiod-tools \
+    can-utils \
+    python3-core \
+    python3-smbus2 \
+    python3-periphery \
+    u-boot-tools \
 "
 # NOTES:
 # - We install only memtool from imx-test
