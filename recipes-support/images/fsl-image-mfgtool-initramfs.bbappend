@@ -1,7 +1,7 @@
 # Following packages are already included in
 # MACHINE_EXTRA_RRECOMMENDS
 CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " arduino-device-tree"
-CORE_IMAGE_EXTRA_INSTALL:portenta-x9 += " \
+CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     kernel-module-nxp-wlan \
     firmware-nxp-wifi-nxpiw612-sdio \
     firmware-nxp-wifi \
