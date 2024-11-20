@@ -34,6 +34,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     u-boot-fw-utils \
     ethtool \
     dtc \
+    mdio-tools \
 "
 # NOTES:
 # - We install only memtool from imx-test
