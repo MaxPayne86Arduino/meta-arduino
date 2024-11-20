@@ -14,7 +14,7 @@ DTB_OVERLAYS:portenta-x8 = " \
     file://portenta-x8/overlays/ov_som_x8h7_spidev.dts \
 "
 # Breakout Carrier
-DTB_OVERLAYS:portenta-x8 += " \
+DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_breakout_uart3.dts \
     file://portenta-x8/overlays/ov_carrier_breakout_spdif.dts \
     file://portenta-x8/overlays/ov_carrier_breakout_sdc.dts \
@@ -29,7 +29,7 @@ DTB_OVERLAYS:portenta-x8 += " \
     file://portenta-x8/overlays/ov_carrier_breakout_pwm.dts \
 "
 # Max Carrier
-DTB_OVERLAYS:portenta-x8 += " \
+DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_enuc_lora.dts \
     file://portenta-x8/overlays/ov_carrier_enuc_bq24195.dts \
     file://portenta-x8/overlays/ov_carrier_max_usbfs.dts \
@@ -42,7 +42,7 @@ DTB_OVERLAYS:portenta-x8 += " \
 # HAT Carrier
 FILESEXTRAPATHS:prepend := "${THISDIR}/arduino-device-tree:"
 
-DTB_OVERLAYS:portenta-x8 += " \
+DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_rasptenta_base.dts \
     file://portenta-x8/overlays/ov_carrier_rasptenta_spi.dts \
     file://portenta-x8/overlays/ov_carrier_rasptenta_ov5647_camera_mipi.dts \
@@ -52,7 +52,7 @@ DTB_OVERLAYS:portenta-x8 += " \
     file://portenta-x8/overlays/ov_rasptenta_iqaudio_codec.dts \
 "
 # Mid Carrier
-DTB_OVERLAYS:portenta-x8 += " \
+DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_mid_ov5647_camera_mipi.dts \
     file://portenta-x8/overlays/ov_carrier_mid_pcie_mini.dts \
     file://portenta-x8/overlays/ov_carrier_mid_imx219_camera_mipi.dts \
@@ -60,11 +60,11 @@ DTB_OVERLAYS:portenta-x8 += " \
     file://portenta-x8/overlays/ov_carrier_mid_dsi_lds101.dts \
 "
 # Ditto Carrier
-DTB_OVERLAYS:portenta-x8 += " \
+DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_ditto_base.dts \
 "
 # Pika-Spark Carrier
-DTB_OVERLAYS:portenta-x8 += " \
+DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_pika_spark.dts \
 "
 # Portenta-X8 root devicetree
@@ -83,7 +83,7 @@ COMPATIBLE_MACHINE:portenta-x9 = ".*"
 # Raspberry Pi Section
 
 # Opta Gateway
-DTB_OVERLAYS:raspberrypi4-64 += " \
+DTB_OVERLAYS:append:raspberrypi4-64 = " \
     file://raspberrypi4-64/overlays/ov_opta_gateway.dts \
 "
 
