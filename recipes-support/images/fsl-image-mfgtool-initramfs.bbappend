@@ -31,7 +31,8 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     python3-core \
     python3-smbus2 \
     python3-periphery \
-    u-boot-tools \
+    u-boot-fw-utils \
+    ethtool \
 "
 # NOTES:
 # - We install only memtool from imx-test
