@@ -17,7 +17,9 @@ include recipes-bsp/device-tree/arduino-device-tree.inc
 do_move_dts_files() {
     bbdebug 2 "Moving dts files for MACHINE=${MACHINE}"
     cp ${WORKDIR}/${MACHINE}/*.dts ${WORKDIR}/
-    cp ${WORKDIR}/${MACHINE}/overlays/*.dts ${WORKDIR}/
+    if [ -d "${WORKDIR}/${MACHINE}/overlays" ]; then
+        cp ${WORKDIR}/${MACHINE}/overlays/*.dts ${WORKDIR}/
+    fi
 }
 
 python () {
