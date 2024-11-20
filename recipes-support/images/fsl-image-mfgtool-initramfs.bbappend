@@ -33,6 +33,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     python3-periphery \
     u-boot-fw-utils \
     ethtool \
+    dtc \
 "
 # NOTES:
 # - We install only memtool from imx-test
