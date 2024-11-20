@@ -132,6 +132,9 @@
 	status = "okay";
 };
 
+/* ETH1 */
+/* Hooked to ENET1 */
+/* U7A Eth1 */
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet>;
@@ -159,6 +162,9 @@
 	};
 };
 
+/* ETH2 */
+/* Hooked to ENET QOS */
+/* U7B Eth2 */
 &eqos {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eqos>;
@@ -383,6 +389,7 @@
 };
 
 &iomuxc {
+	/* ETH2 */
 	pinctrl_eqos: eqosgrp {
 		fsl,pins = <
 			MX93_PAD_ENET1_MDC__ENET_QOS_MDC			0x57e
@@ -399,9 +406,11 @@
 			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x57e
 			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x5fe
 			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x57e
+			MX93_PAD_CCM_CLKO2__GPIO3_IO27				0x31e
 		>;
 	};
 
+	/* ETH1 */
 	pinctrl_enet: enetgrp {
 		fsl,pins = <
 			MX93_PAD_ENET2_MDC__ENET1_MDC			0x57e
@@ -418,6 +427,7 @@
 			MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3			0x57e
 			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x5fe
 			MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC			0x57e
+			MX93_PAD_CCM_CLKO1__GPIO3_IO26			0x31e
 		>;
 	};
 
