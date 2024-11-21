@@ -281,9 +281,8 @@
 	status = "disabled";
 };
 
-/* ETH2 */
 /* Hooked to ENET1 */
-/* U7B Eth2 */
+/* U7B ETH2 */
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_fec>;
@@ -305,9 +304,8 @@
 	};
 };
 
-/* ETH1 */
 /* Hooked to ENET QOS */
-/* U7A Eth1 */
+/* U7A ETH1 */
 &eqos {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eqos>;

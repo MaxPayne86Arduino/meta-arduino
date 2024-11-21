@@ -8,7 +8,7 @@ do_configure:prepend:portenta-x9 () {
     cp ${WORKDIR}/linuxrc.portenta-x9 ${S}/linuxrc
 }
 
-SRC_URI:portenta-x8 += " \
+SRC_URI:append:portenta-x8 = " \
     file://linuxrc.portenta-x8 \
 "
 
