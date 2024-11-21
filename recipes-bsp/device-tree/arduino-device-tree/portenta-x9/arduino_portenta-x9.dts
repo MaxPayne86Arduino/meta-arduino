@@ -142,6 +142,9 @@
 	phy-handle = <&ethphy2>;
 	fsl,magic-packet;
 	status = "okay";
+	phy-reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
+	phy-reset-duration = <10>;
+	phy-reset-post-delay = <80>;
 
 	mdio {
 		#address-cells = <1>;
@@ -152,9 +155,6 @@
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <2>;
 			eee-broken-1000t;
-			reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <10000>;
-			reset-deassert-us = <80000>;
 			realtek,clkout-disable;
 		};
 	};
