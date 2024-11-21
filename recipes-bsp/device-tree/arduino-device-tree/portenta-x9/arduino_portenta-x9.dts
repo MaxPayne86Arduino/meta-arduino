@@ -107,9 +107,9 @@
 
 		led-0 {
 			color = <LED_COLOR_ID_GREEN>;
-			function = LED_FUNCTION_ACTIVITY;
+			function = LED_FUNCTION_HEARTBEAT;
 			gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "activity";
+			linux,default-trigger = "heartbeat";
 		};
 		led-1 {
 			color = <LED_COLOR_ID_YELLOW>;
