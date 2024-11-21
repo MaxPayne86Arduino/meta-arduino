@@ -13,6 +13,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
 
 # Install extra packages
 CORE_IMAGE_EXTRA_INSTALL += " \
+    packagegroup-core-full-cmdline-extended \
     procps \
     iw \
     net-tools \
