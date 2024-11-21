@@ -145,18 +145,16 @@
 	u-boot,dm-spl;
 };
 
-/* ETH1 */
 /* Hooked to ENET1 */
-/* U7B Eth2 */
+/* U7B ETH2 */
 &fec {
 	phy-reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
 	reset-assert-us = <15000>;
 	reset-deassert-us = <100000>;
 };
 
-/* ETH1 */
 /* Hooked to ENET QOS */
-/* U7A Eth1 */
+/* U7A ETH1 */
 &ethphy1 {
 	reset-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
 	reset-assert-us = <15000>;
