@@ -187,8 +187,8 @@ function launch_acm() {
 	echo "Arduino Initramfs 6.6-nanbield \n \l" > /etc/issue
 	/sbin/agetty --issue-file /etc/issue -o '-p -- \\u' 115200 ttyGS0 $TERM &
 
-	# start agetty on ttyLP0
-	/sbin/agetty --issue-file /etc/issue -o '-p -- \\u' 115200 ttyLP0 $TERM &
+	# start agetty on ttyLP2
+	/sbin/agetty --issue-file /etc/issue -o '-p -- \\u' 115200 ttyLP2 $TERM &
 }
 
 while true; do
