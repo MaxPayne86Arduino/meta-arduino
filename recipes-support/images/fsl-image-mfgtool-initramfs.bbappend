@@ -1,3 +1,6 @@
+# Setup image features
+IMAGE_FEATURES:append = " ssh-server-dropbear"
+
 # Following packages are already included in
 # MACHINE_EXTRA_RRECOMMENDS
 CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " arduino-device-tree"
