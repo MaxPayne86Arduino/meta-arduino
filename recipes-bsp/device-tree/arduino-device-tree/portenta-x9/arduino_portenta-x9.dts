@@ -132,9 +132,9 @@
 	status = "okay";
 };
 
-/* ETH1 */
+/* ETH2 */
 /* Hooked to ENET1 */
-/* U7A Eth1 */
+/* U7B Eth2 */
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_fec>;
@@ -153,7 +153,7 @@
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <2>;
 			eee-broken-1000t;
-			reset-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
+			reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <80000>;
 			realtek,clkout-disable;
@@ -163,7 +163,7 @@
 
 /* ETH2 */
 /* Hooked to ENET QOS */
-/* U7B Eth2 */
+/* U7A Eth1 */
 &eqos {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_eqos>;
@@ -180,7 +180,7 @@
 		ethphy1: ethernet-phy@1 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <1>;
-			reset-gpios = <&gpio3 27 GPIO_ACTIVE_LOW>;
+			reset-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <80000>;
 			realtek,clkout-disable;
@@ -387,7 +387,7 @@
 };
 
 &iomuxc {
-	/* ETH2 */
+	/* ETH1 */
 	pinctrl_eqos: eqosgrp {
 		fsl,pins = <
 			MX93_PAD_ENET1_MDC__ENET_QOS_MDC			0x57e
@@ -404,11 +404,11 @@
 			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x57e
 			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x58e
 			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x57e
-			MX93_PAD_CCM_CLKO2__GPIO3_IO27				0x91e /* Open Drain Enabled, PU Disabled, X4 Strenght */
+			MX93_PAD_CCM_CLKO1__GPIO3_IO26			0x91e /* Open Drain Enabled, PU Disabled, X4 Strenght */
 		>;
 	};
 
-	/* ETH1 */
+	/* ETH2 */
 	pinctrl_fec: fecgrp {
 		fsl,pins = <
 			MX93_PAD_ENET2_MDC__ENET1_MDC			0x57e
@@ -425,11 +425,11 @@
 			MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3			0x57e
 			MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC			0x58e
 			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x57e
-			MX93_PAD_CCM_CLKO1__GPIO3_IO26			0x91e /* Open Drain Enabled, PU Disabled, X4 Strenght */
+			MX93_PAD_CCM_CLKO2__GPIO3_IO27				0x91e /* Open Drain Enabled, PU Disabled, X4 Strenght */
 		>;
 	};
 
-	/* ETH1 */
+	/* ETH2 */
 	pinctrl_fec_sleep: fecsleepgrp {
 		fsl,pins = <
 			MX93_PAD_ENET2_MDC__GPIO4_IO14			0x51e
@@ -438,14 +438,15 @@
 			MX93_PAD_ENET2_RD1__GPIO4_IO25			0x51e
 			MX93_PAD_ENET2_RD2__GPIO4_IO26			0x51e
 			MX93_PAD_ENET2_RD3__GPIO4_IO27			0x51e
-			MX93_PAD_ENET2_RXC__GPIO4_IO23                  0x51e
+			MX93_PAD_ENET2_RXC__GPIO4_IO23			0x51e
 			MX93_PAD_ENET2_RX_CTL__GPIO4_IO22		0x51e
 			MX93_PAD_ENET2_TD0__GPIO4_IO19			0x51e
 			MX93_PAD_ENET2_TD1__GPIO4_IO18			0x51e
 			MX93_PAD_ENET2_TD2__GPIO4_IO17			0x51e
 			MX93_PAD_ENET2_TD3__GPIO4_IO16			0x51e
-			MX93_PAD_ENET2_TXC__GPIO4_IO21                  0x51e
-			MX93_PAD_ENET2_TX_CTL__GPIO4_IO20               0x51e
+			MX93_PAD_ENET2_TXC__GPIO4_IO21			0x51e
+			MX93_PAD_ENET2_TX_CTL__GPIO4_IO20		0x51e
+			MX93_PAD_CCM_CLKO2__GPIO3_IO27			0x91e /* Open Drain Enabled, PU Disabled, X4 Strenght */
 		>;
 	};
 
