@@ -414,9 +414,9 @@
 
 &usdhc3 { /* WiFi IW612 */
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc3>;
-	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_wlan>;
+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>, <&pinctrl_wlan>;
+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>, <&pinctrl_wlan>;
 	vmmc-supply = <&reg_usdhc3_vmmc>;
 	/* @TODO: missing pinctrl-assert-gpios */
 	bus-width = <4>;
@@ -663,6 +663,14 @@
 			MX93_PAD_GPIO_IO25__USDHC3_DATA1	0x400013fe
 			MX93_PAD_GPIO_IO26__USDHC3_DATA2	0x400013fe
 			MX93_PAD_GPIO_IO27__USDHC3_DATA3	0x400013fe
+		>;
+	};
+
+	pinctrl_wlan: wlanctrlgrp {
+		fsl,pins = <
+			MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10	0x31e
+			MX93_PAD_I2C2_SCL__GPIO1_IO02			0x31e
+			MX93_PAD_I2C2_SDA__GPIO1_IO03			0x31e
 		>;
 	};
 
