@@ -31,11 +31,19 @@ static iomux_v3_cfg_t const uart_pads[] = {
 	MX93_PAD_GPIO_IO14__LPUART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
 };
 
+static iomux_v3_cfg_t const eth_reset_pads[] = {
+	MX93_PAD_CCM_CLKO1__GPIO3_IO26 | MUX_PAD_CTRL(PAD_CTL_ODE| PAD_CTL_PDE),
+	MX93_PAD_CCM_CLKO2__GPIO3_IO27 | MUX_PAD_CTRL(PAD_CTL_ODE| PAD_CTL_PDE),
+};
+
 int board_early_init_f(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
 
 	init_uart_clk(LPUART3_CLK_ROOT);
+
+	/* Ethernet resets start as CLKOUT, get them in GPIO mode as soon as possible */
+	imx_iomux_v3_setup_multiple_pads(eth_reset_pads, ARRAY_SIZE(eth_reset_pads));
 
 	return 0;
 }
