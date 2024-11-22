@@ -111,13 +111,13 @@
 			gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
+
 		led-1 {
 			color = <LED_COLOR_ID_YELLOW>;
 			function = LED_FUNCTION_BOOT;
 			gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "boot";
 		};
-
 	};
 };
 
