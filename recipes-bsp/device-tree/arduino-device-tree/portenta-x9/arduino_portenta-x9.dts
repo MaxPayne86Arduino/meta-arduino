@@ -372,6 +372,20 @@
 	};
 };
 
+/* IW612 SPI 802.15.4 */
+&lpspi1 {
+	fsl,spi-num-chipselects = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpspi1>;
+	status = "okay";
+
+	spidev0: spi@0 {
+		reg = <0>;
+		compatible = "lwn,bk4";
+		spi-max-frequency = <1000000>;
+	};
+};
+
 &mu1 {
 	status = "okay";
 };
@@ -694,6 +708,27 @@
 			MX93_PAD_SD3_CMD__GPIO3_IO21		0x31e
 		>;
 	};
+
+	pinctrl_lpspi1: lpspi1grp {
+		fsl,pins = <
+			MX93_PAD_SAI1_TXFS__LPSPI1_PCS0		0x3fe
+			MX93_PAD_SAI1_TXD0__LPSPI1_SCK		0x3fe
+			MX93_PAD_SAI1_TXC__LPSPI1_SIN		0x3fe
+			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT		0x3fe
+		>;
+	};
+
+	pinctrl_lpspi4: lpspi4grp {
+		fsl,pins = <
+			MX93_PAD_GPIO_IO16__LPSPI4_PCS2		0x3fe
+			MX93_PAD_GPIO_IO17__LPSPI4_PCS1		0x3fe
+			MX93_PAD_GPIO_IO18__LPSPI4_PCS0		0x3fe
+			MX93_PAD_GPIO_IO19__LPSPI4_SIN		0x3fe
+			MX93_PAD_GPIO_IO20__LPSPI4_SOUT		0x3fe
+			MX93_PAD_GPIO_IO21__LPSPI4_SCK		0x3fe
+		>;
+	};
+
 };
 
 &epxp {
