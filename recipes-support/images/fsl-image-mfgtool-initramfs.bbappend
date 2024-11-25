@@ -40,6 +40,9 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ethtool \
     dtc \
     mdio-tools \
+    usbutils \
+    networkmanager-nmcli \
+    iperf3 \
 "
 # NOTES:
 # - We install only memtool from imx-test
