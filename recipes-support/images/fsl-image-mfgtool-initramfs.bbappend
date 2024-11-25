@@ -11,10 +11,9 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     kernel-module-btnxpuart \
 "
 
-# Install extra packages
+# Install extra packages (minimal)
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline-extended \
-    packagegroup-base \
     procps \
     iw \
     net-tools \
@@ -23,29 +22,34 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     dnsmasq \
     i2c-tools \
     fio \
-    hdparm \
     stress-ng \
     imx-test \
     bluez5 \
-    systemd \
-    openocd \
-    htop \
     libgpiod \
     libgpiod-tools \
     can-utils \
-    python3-core \
-    python3-smbus2 \
-    python3-periphery \
     u-boot-fw-utils \
     ethtool \
-    dtc \
-    mdio-tools \
     usbutils \
-    networkmanager-nmcli \
-    iperf3 \
 "
 # NOTES:
 # - We install only memtool from imx-test
+
+# Install extra packages (extra), comment if too big
+CORE_IMAGE_EXTRA_INSTALL += " \
+    packagegroup-base \
+    systemd \
+    networkmanager-nmcli \
+    mdio-tools \
+    iperf3 \
+    openocd \
+    htop \
+    hdparm \
+    dtc \
+    python3-core \
+    python3-smbus2 \
+    python3-periphery \
+"
 
 # Change users and passwords
 # echo -n "password" | openssl passwd -6 -stdin
