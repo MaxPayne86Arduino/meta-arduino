@@ -9,7 +9,6 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     firmware-nxp-wifi-nxpiw612-sdio \
     firmware-nxp-wifi \
     kernel-module-btnxpuart \
-    packagegroup-nxp-zigbee-rcp \
 "
 
 # Install extra packages
