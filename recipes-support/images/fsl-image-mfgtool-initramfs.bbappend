@@ -49,6 +49,8 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     python3-core \
     python3-smbus2 \
     python3-periphery \
+    android-tools \
+    android-tools-adbd \
 "
 
 # Change users and passwords
