@@ -13,3 +13,5 @@ do_install:append () {
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/arduino-android-gadget-setup ${D}${bindir}
 }
+
+RDEPENDS:${PN}:append = " libusbgx-config"
