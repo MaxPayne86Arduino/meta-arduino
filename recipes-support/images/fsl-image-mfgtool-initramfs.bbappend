@@ -59,6 +59,24 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 inherit extrausers
 EXTRA_USERS_PARAMS = "usermod -p '' root;"
 
+ARDUINO-USER = "arduino"
+ARDUINO-UID = "1001"
+ARDUINO-GID = "1001"
+
+# Create arduino user and add to groups
+EXTRA_USERS_PARAMS += " \
+    groupadd -g ${ARDUINO-GID} ${ARDUINO-USER}; \
+    useradd -u ${ARDUINO-UID} -g ${ARDUINO-GID} -p '' -G audio,sudo,users,plugdev -d /home/${ARDUINO-USER} -r -s /bin/bash ${ARDUINO-USER} \
+"
+
+# Create home directory for arduino user and set permissions
+create_arduino_home() {
+    mkdir -p ${IMAGE_ROOTFS}/home/${ARDUINO-USER}
+    chown ${ARDUINO-UID}:${ARDUINO-GID} ${IMAGE_ROOTFS}/home/${ARDUINO-USER}
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "create_arduino_home; "
+
 inherit systemd
 # @TODO: disabling following services since we're in a initramfs image
 SYSTEMD_DISABLE_SERVICES += "proc-fs-nfsd.mount"
