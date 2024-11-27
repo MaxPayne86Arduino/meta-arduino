@@ -119,6 +119,20 @@
 			linux,default-trigger = "boot";
 		};
 	};
+
+	/* TypeC, but with usb micro functionality */
+	usb1_connector: usb1-connector {
+		compatible = "usb-b-connector";
+		label = "USBC";
+		self-powered;
+		type = "micro";
+
+		port {
+			usb_dr_connector: endpoint {
+				remote-endpoint = <&usb1_drd_sw>;
+			};
+		};
+	};
 };
 
 &cm33 {
@@ -394,18 +408,28 @@
 	status = "okay";
 };
 
-&usbotg1 { /* Type-C USB Port USB_HS */
-	dr_mode = "peripheral";
+/* USB1 OTG Port */
+/* Since we expose OTG_ID pin, better to handle as otg */
+&usbotg1 {
+	dr_mode = "otg";
 	hnp-disable;
 	srp-disable;
 	adp-disable;
+	usb-role-switch;
 	disable-over-current;
 	samsung,picophy-pre-emp-curr-control = <3>;
 	samsung,picophy-dc-vol-level-adjust = <7>;
 	status = "okay";
+
+	port {
+		usb1_drd_sw: endpoint {
+			remote-endpoint = <&usb_dr_connector>;
+		};
+	};
 };
 
-&usbotg2 { /* USB_FS */
+/* USB2 HOST Port */
+&usbotg2 {
 	dr_mode = "host";
 	hnp-disable;
 	srp-disable;
