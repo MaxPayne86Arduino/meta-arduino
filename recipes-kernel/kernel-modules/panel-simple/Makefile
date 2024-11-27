@@ -1,4 +1,4 @@
-obj-m += panel-jadard-ek79202d.o
+obj-m += panel-simple.o
 
 SRC := $(shell pwd)
 
