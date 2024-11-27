@@ -119,20 +119,6 @@
 			linux,default-trigger = "boot";
 		};
 	};
-
-	/* TypeC, but with usb micro functionality */
-	usb1_connector: usb1-connector {
-		compatible = "usb-b-connector";
-		label = "USBC";
-		self-powered;
-		type = "micro";
-
-		port {
-			usb_dr_connector: endpoint {
-				remote-endpoint = <&usb1_drd_sw>;
-			};
-		};
-	};
 };
 
 &cm33 {
@@ -424,6 +410,20 @@
 	port {
 		usb1_drd_sw: endpoint {
 			remote-endpoint = <&usb_dr_connector>;
+		};
+	};
+
+	/* TypeC, but with usb micro functionality */
+	usb1_connector: usb1-connector {
+		compatible = "usb-b-connector";
+		label = "USB-C";
+		self-powered;
+		type = "micro";
+
+		port {
+			usb_dr_connector: endpoint {
+				remote-endpoint = <&usb1_drd_sw>;
+			};
 		};
 	};
 };
