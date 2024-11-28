@@ -1,4 +1,4 @@
-
+FILESEXTRAPATHS:prepend := "${THISDIR}/arduino-device-tree:"
 
 # Device tree and overlays to be provided by the BSP layer
 # E.g.:
@@ -40,8 +40,6 @@ DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_max_pcie_mini.dts \
 "
 # HAT Carrier
-FILESEXTRAPATHS:prepend := "${THISDIR}/arduino-device-tree:"
-
 DTB_OVERLAYS:append:portenta-x8 = " \
     file://portenta-x8/overlays/ov_carrier_rasptenta_base.dts \
     file://portenta-x8/overlays/ov_carrier_rasptenta_spi.dts \
@@ -88,12 +86,10 @@ SRC_URI:append:portenta-x9 = " \
 COMPATIBLE_MACHINE:portenta-x9 = ".*"
 
 # Raspberry Pi Section
-
 # Opta Gateway
 DTB_OVERLAYS:append:raspberrypi4-64 = " \
     file://raspberrypi4-64/overlays/ov_opta_gateway.dts \
 "
-
 # Raspberry Pi root devicetree
 SRC_URI:append:raspberrypi4-64 = " \
     file://raspberrypi4-64/bcm2711-rpi-cm4-merged.dts \
