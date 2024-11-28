@@ -9,11 +9,10 @@
 /dts-v1/;
 /plugin/;
 
-#include "imx93.dtsi"
+#include "imx93-pinfunc.h"
+#include <dt-bindings/gpio/gpio.h>
 
 / {
-	/* No compatible as it will have come from imx93.dtsi */
-
 	fragment@0 {
 		target = <&lcdif>;
 		__overlay__ {
