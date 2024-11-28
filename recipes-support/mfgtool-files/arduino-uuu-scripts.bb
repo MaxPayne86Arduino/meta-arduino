@@ -1,3 +1,7 @@
+DESCRIPTION = "Arduino uuu scripts, to be used with mfgtool-files or uuu tool"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+
 FILESEXTRAPATHS:prepend := "${THISDIR}/${mfgtool-files}:"
 
 SRC_URI:append:portenta-x9 = " \
