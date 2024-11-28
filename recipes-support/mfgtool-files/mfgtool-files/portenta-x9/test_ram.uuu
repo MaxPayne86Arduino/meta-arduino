@@ -1,0 +1,53 @@
+uuu_version 1.2.39
+
+# This command will be run when i.MX6/7 i.MX8MM, i.MX8MQ
+SDP: boot -f ../imx-boot-portenta-x9-sd.bin-flash_singleboot
+
+# This command will be run when ROM support stream mode
+# i.MX8QXP, i.MX8QM
+SDPS: boot -f ../imx-boot-portenta-x9-sd.bin-flash_singleboot
+
+# These commands will be run when use SPL and will be skipped if no spl
+# SDPU will be deprecated. please use SDPV instead of SDPU
+# {
+SDPU: delay 1000
+SDPU: write -f ../imx-boot-portenta-x9-sd.bin-flash_singleboot -offset 0x57c00
+SDPU: jump
+# }
+
+# These commands will be run when use SPL and will be skipped if no spl
+# if (SPL support SDPV)
+# {
+SDPV: delay 1000
+SDPV: write -f ../imx-boot-portenta-x9-sd.bin-flash_singleboot -skipspl
+SDPV: jump
+# }
+
+# Print board info structure, should include ram info
+FB: ucmd bdinfo
+
+# Show base ram address (offset) for ram commands
+FB: ucmd base
+
+# Display 256 bytes from the address where u-boot binary has
+# been loaded
+FB: ucmd md.b 0x00000000 0x100
+
+# Display a single 32-bit word at address 0x1000
+FB: ucmd md.b 0x1000 0x04
+
+# Perform continuous write/read ram tests on the first ram block
+# specified from previous bdinfo command, lmb_dump_all section
+# lmb_dump_all:
+# memory.cnt  = 0x2
+# memory[0]      [0x80000000-0x95ffffff], 0x16000000 bytes flags: 0
+# memory[1]      [0x98000000-0xffffffff], 0x68000000 bytes flags: 0
+# reserved.cnt  = 0x4
+# reserved[0]    [0x2021f000-0x2021ffff], 0x00001000 bytes flags: 4
+# reserved[1]    [0xa4000000-0xa411ffff], 0x00120000 bytes flags: 4
+# reserved[2]    [0xfcece000-0xffffffff], 0x03132000 bytes flags: 0
+# reserved[3]    [0xfded2440-0xffffffff], 0x0212dbc0 bytes flags: 0
+# mtest [start [end [pattern [iterations]]]]
+FB: acmd mtest 0x80000000 0x80040000 0xaa55aa55 0x100
+
+FB: done
