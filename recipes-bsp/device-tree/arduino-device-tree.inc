@@ -75,8 +75,15 @@ SRC_URI:append:portenta-x8 = " \
 "
 COMPATIBLE_MACHINE:portenta-x8 = ".*"
 
+# Portenta-X9 supporting Raspberry Pi Compute Module 4 IO Board
+DTB_OVERLAYS:append:portenta-x9 = " \
+    file://portenta-x9/overlays/vc4-kms-dsi-7inch-overlay.dts \
+"
+
+# Portenta-X9 root devicetree
 SRC_URI:append:portenta-x9 = " \
     file://portenta-x9/arduino_portenta-x9.dts \
+    ${DTB_OVERLAYS} \
 "
 COMPATIBLE_MACHINE:portenta-x9 = ".*"
 
