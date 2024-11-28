@@ -1,0 +1,127 @@
+/*
+ * Device Tree overlay for Waveshare 4.3" DSI LCD
+ * with Touchscreen controller, compatible with
+ * Arduino Nextenta CM4 based on
+ * NXP i.MX93, tested using
+ * Raspberry Pi Compute Module 4 IO Board carrier
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include "imx93.dtsi"
+
+/ {
+	/* No compatible as it will have come from imx93.dtsi */
+
+	fragment@0 {
+		target = <&lcdif>;
+		__overlay__ {
+			status = "okay";
+		}:
+	};
+
+	fragment@1 {
+		target = <&dsi>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			bridge@0 {
+				compatible = "toshiba,tc358762";
+				reg = <0>;
+				vddc-supply = <&attiny>;
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+
+					port@0 {
+						reg = <0>;
+
+						bridge_in: endpoint {
+							remote-endpoint = <&dsi_out>;
+						};
+					};
+
+					port@1 {
+						reg = <1>;
+
+						bridge_out: endpoint {
+							remote-endpoint = <&panel_in>;
+						};
+					};
+				};
+			};
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@1 {
+					reg = <1>;
+
+					dsi_out: endpoint {
+						remote-endpoint = <&bridge_in>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+		__overlay__ {
+			panel_disp: panel_disp@1 {
+				reg = <1>;
+				compatible = "raspberrypi,7inch-dsi", "simple-panel";
+				backlight = <&reg_display>;
+				power-supply = <&reg_display>;
+
+				port {
+					panel_in: endpoint {
+						remote-endpoint = <&bridge_out>;
+					};
+				};
+			};
+
+			reg_bridge: reg_bridge@1 {
+				reg = <1>;
+				compatible = "regulator-fixed";
+				regulator-name = "bridge_reg";
+				gpio = <&reg_display 0 0>;
+				vin-supply = <&reg_display>;
+				enable-active-high;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&lpi2c1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ft5406: ts@38 {
+				compatible = "edt,edt-ft5506";
+				reg = <0x38>;
+				vcc-supply = <&reg_display>;
+				reset-gpio = <&reg_display 1 1>;
+
+				touchscreen-size-x = <800>;
+				touchscreen-size-y = <480>;
+				touchscreen-inverted-x;
+				touchscreen-inverted-y;
+			};
+
+			reg_display: reg_display@45 {
+				compatible = "raspberrypi,7inch-touchscreen-panel-regulator";
+				reg = <0x45>;
+				gpio-controller;
+				#gpio-cells = <2>;
+			};
+		};
+	};
+};
