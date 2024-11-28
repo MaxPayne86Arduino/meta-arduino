@@ -84,8 +84,7 @@
 				};
 			};
 
-			reg_bridge: reg_bridge@1 {
-				reg = <1>;
+			reg_bridge: reg-bridge {
 				compatible = "regulator-fixed";
 				regulator-name = "bridge_reg";
 				gpio = <&reg_display 0 0>;
@@ -114,7 +113,7 @@
 				touchscreen-inverted-y;
 			};
 
-			reg_display: reg_display@45 {
+			reg_display: reg-display@45 {
 				compatible = "raspberrypi,7inch-touchscreen-panel-regulator";
 				reg = <0x45>;
 				gpio-controller;
