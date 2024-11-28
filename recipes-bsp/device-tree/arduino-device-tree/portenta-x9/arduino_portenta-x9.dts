@@ -454,6 +454,18 @@
 	status = "okay";
 };
 
+&epxp {
+	status = "okay";
+};
+
+&lcdif {
+	status = "disabled";
+};
+
+&dsi {
+	status = "disabled";
+};
+
 &iomuxc {
 	/* ETH1 */
 	pinctrl_eqos: eqosgrp {
@@ -730,9 +742,4 @@
 			MX93_PAD_GPIO_IO21__LPSPI4_SCK		0x3fe
 		>;
 	};
-
-};
-
-&epxp {
-	status = "okay";
 };
