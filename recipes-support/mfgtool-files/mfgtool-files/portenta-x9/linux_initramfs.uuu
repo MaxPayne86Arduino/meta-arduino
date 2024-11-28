@@ -23,13 +23,29 @@ SDPV: write -f ../imx-boot-portenta-x9-sd.bin-flash_singleboot -skipspl
 SDPV: jump
 # }
 
+# Load Kernel Image
 FB: ucmd setenv fastboot_buffer ${loadaddr}
 FB: download -f ../Image
+
+# Load Device Tree
 FB: ucmd setenv fastboot_buffer ${fdt_addr}
 FB: download -f ../arduino_portenta-x9.dtb
+FB: ucmd setenv fdt_size ${filesize}  # Save the filesize to a variable
+
+# Apply Device Tree Overlay
+#FB: ucmd setenv fdtovaddr 0x83600000
+#FB: ucmd setenv fastboot_buffer ${fdtovaddr}
+#FB: download -f ../vc4-kms-dsi-7inch-overlay.dtbo
+#FB: ucmd fdt addr ${fdt_addr}
+#FB: ucmd fdt resize ${fdt_size}
+#FB: ucmd printenv fdtovaddr
+#FB: ucmd fdt apply ${fdtovaddr}
+
+# Load Rootfs
 FB: ucmd setenv fastboot_buffer ${initrd_addr}
 FB: download -f ../fsl-image-mfgtool-initramfs-portenta-x9.cpio.zst.u-boot
 
+# Bootargs & Boot Command
 FB: ucmd setenv console ttyLP2,115200 earlycon
 FB: ucmd run mfgtool_args # This sets bootargs
 #FB: ucmd setenv bootargs console=${console},${baudrate} rdinit=/linuxrc clk_ignore_unused
