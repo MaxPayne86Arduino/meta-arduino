@@ -17,7 +17,7 @@
 		target = <&lcdif>;
 		__overlay__ {
 			status = "okay";
-		}:
+		};
 	};
 
 	fragment@1 {
