@@ -4,7 +4,13 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/mfgtool-files:"
 
-SRC_URI:append:portenta-x9 = " \
+inherit deploy
+
+do_configure[noexec] = "1"
+do_compile[noexec] = "1"
+do_install[noexec] = "1"
+
+SRC_URI = " \
     file://portenta-x9/bootloader.uuu \
     file://portenta-x9/full_image.uuu \
     file://portenta-x9/linux_initramfs.uuu \
@@ -16,7 +22,7 @@ SRC_URI:append:portenta-x9 = " \
     file://portenta-x9/test_ram.uuu \
 "
 
-do_deploy:portenta-x9() {
+do_deploy() {
     install -d ${DEPLOYDIR}/${PN}
     install -m 0644 ${WORKDIR}/portenta-x9/linux_initramfs.uuu ${DEPLOYDIR}/${PN}/linux_initramfs.uuu
     # @TODO: deploy other scripts
