@@ -27,3 +27,5 @@ do_deploy() {
     install -m 0644 ${WORKDIR}/portenta-x9/linux_initramfs.uuu ${DEPLOYDIR}/${PN}/linux_initramfs.uuu
     # @TODO: deploy other scripts
 }
+
+addtask deploy after do_install before do_build
