@@ -11,8 +11,6 @@ do_compile[noexec] = "1"
 do_install[noexec] = "1"
 
 SRC_URI = " \
-    file://portenta-x9/bootloader.uuu \
-    file://portenta-x9/full_image.uuu \
     file://portenta-x9/linux_initramfs.uuu \
     file://portenta-x9/probe_emmc.uuu \
     file://portenta-x9/probe_eth_phys.uuu \
