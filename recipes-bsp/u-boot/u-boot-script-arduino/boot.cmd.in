@@ -1,0 +1,44 @@
+# Set environment variables
+setenv bootenv uEnv.txt
+setenv fdt_file arduino_portenta-x9.dtb
+setenv fdt_addr 0x43000000
+setenv image Image.gz
+setenv img_addr 0x42000000
+setenv loadaddr 0x40480000
+setenv loadfdt echo fdt_file=${fdt_file}; load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/devicetree/${fdt_file}
+
+# Define overlays variables
+# Example: setenv overlays "overlay1 overlay2 overlay3"
+setenv overlays "vc4-kms-dsi-7inch-overlay"
+setenv devtype mmc
+setenv ovlload ext4load
+setenv ovltype mmc
+setenv ovlpart ${mmcpart}
+setenv ovldev ${mmcdev}
+setenv ovlpath /boot/devicetree
+setenv fdtovaddr 0x43600000
+setenv bootcmd_ovl 'fdt addr ${fdt_addr}; fdt resize 0x${filesize}; \
+                    for ov in ${overlays}; do \
+                      echo overlaying ${ov}...; \
+                      ${ovlload} ${ovltype} ${ovldev}:${ovlpart} ${fdtovaddr} ${ovlpath}/${ov}.dtbo && \
+                      fdt apply ${fdtovaddr}; \
+                    done'
+
+# Import custom env file
+run loadbootenv
+run importbootenv
+
+# Set boot arguments
+run mmcargs
+
+# Load the kernel image and device tree blob
+echo "Using kernel image ${image}"
+run loadimage
+echo "Using root devicetree ${fdt_file}"
+run loadfdt
+
+# Apply overlays
+run bootcmd_ovl
+
+# Boot the kernel
+booti ${loadaddr} - ${fdt_addr}

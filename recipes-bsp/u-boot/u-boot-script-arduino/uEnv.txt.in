@@ -1,0 +1,1 @@
+mmcargs=setenv bootargs console=${console} root=/dev/mmcblk${mmcblk}p${mmcpart} rootwait rw ${cma_size} cma_name=linux,cma
