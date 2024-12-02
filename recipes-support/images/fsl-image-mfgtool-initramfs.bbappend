@@ -78,6 +78,15 @@ create_arduino_home() {
 
 ROOTFS_POSTPROCESS_COMMAND += "create_arduino_home; "
 
+# Custom task to write git SHA to /etc/os-release
+write_git_sha() {
+    META_LAYER_DIR="${BSPDIR}/sources/meta-arduino"
+    GIT_SHA=$(cd ${META_LAYER_DIR} && git rev-parse HEAD)
+    echo "META_LAYER_GIT_SHA=${GIT_SHA}" >> ${IMAGE_ROOTFS}/etc/os-release
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "write_git_sha; "
+
 inherit systemd
 # @TODO: disabling following services since we're in a initramfs image
 SYSTEMD_DISABLE_SERVICES += "proc-fs-nfsd.mount"
