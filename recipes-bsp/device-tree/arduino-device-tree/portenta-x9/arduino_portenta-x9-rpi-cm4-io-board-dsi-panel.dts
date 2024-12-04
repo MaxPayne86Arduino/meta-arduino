@@ -220,7 +220,7 @@
 	pinctrl-1 = <&pinctrl_lpi2c1>;
 	status = "okay";
 
-	/* @TODO: add crypt @49 */
+	/* @TODO: add crypt @48 */
 
 	pmic@25 {
 		compatible = "nxp,pca9451a";
