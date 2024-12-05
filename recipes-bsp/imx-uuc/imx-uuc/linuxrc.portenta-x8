@@ -184,7 +184,7 @@ function launch_acm() {
 
 	# start agetty on ttyGS0
 	hostname portenta-x8
-	echo "Arduino Initramfs lmp-v91 \n \l" > /etc/issue
+	echo "Arduino Initramfs 6.6-nanbield \n \l" > /etc/issue
 	/sbin/agetty -o "-p -- \\u" --noclear 115200 ttyGS0 $TERM &
 
 	# start agetty on ttymxc2
