@@ -9,6 +9,9 @@ SRC_URI:append:portenta-x9 = " \
     file://EDT-0005-input-edt-ft5x06-Correct-prefix-length-in-snprintf.patch \
     file://EDT-0006-Input-edt-ft5x06-fix-regmap-leak-when-probe-fails.patch \
     file://PANEL-0001-panel-simple-from-rpi-6.6y.patch \
+    file://ATTINY-0001-regulator-rpi-panel-attiny-Don-t-read-the-LCD-power-.patch \
+    file://ATTINY-0002-regulator-rpi-panel-Power-off-display-on-shutdown.patch \
+    file://ATTINY-0003-regulator-rpi-panel-Remove-the-ID-read.patch \
 "
 
 # This is because methods in meta-imx-bsp/recipes-kernel/linux/linux-imx_6.6.bb
