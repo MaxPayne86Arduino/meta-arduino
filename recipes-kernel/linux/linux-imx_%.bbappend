@@ -12,6 +12,9 @@ SRC_URI:append:portenta-x9 = " \
     file://ATTINY-0001-regulator-rpi-panel-attiny-Don-t-read-the-LCD-power-.patch \
     file://ATTINY-0002-regulator-rpi-panel-Power-off-display-on-shutdown.patch \
     file://ATTINY-0003-regulator-rpi-panel-Remove-the-ID-read.patch \
+    file://TOSHIBA-0001-drm-bridge-tc358762-Ignore-EPROBE_DEFER-when-logging.patch \
+    file://TOSHIBA-0002-drm-bridge-tc358762-Program-the-DPI-mode-into-the-ch.patch \
+    file://TOSHIBA-0003-drm-bridge-tc358762-revert-move-ops-to-enable.patch \
 "
 
 # This is because methods in meta-imx-bsp/recipes-kernel/linux/linux-imx_6.6.bb
