@@ -135,9 +135,7 @@
 	reg_bridge: reg-bridge {
 		compatible = "regulator-fixed";
 		regulator-name = "bridge_reg";
-		gpio = <&reg_display 0 0>;
 		vin-supply = <&reg_display>;
-		enable-active-high;
 	};
 };
 
@@ -302,7 +300,6 @@
 		compatible = "edt,edt-ft5506";
 		reg = <0x38>;
 		vcc-supply = <&reg_display>;
-		reset-gpio = <&reg_display 1 1>;
 
 		touchscreen-size-x = <800>;
 		touchscreen-size-y = <480>;
@@ -313,8 +310,6 @@
 	reg_display: reg-display@45 {
 		compatible = "raspberrypi,7inch-touchscreen-panel-regulator";
 		reg = <0x45>;
-		gpio-controller;
-		#gpio-cells = <2>;
 	};
 };
 
