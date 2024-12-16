@@ -5000,15 +5000,21 @@ static int panel_dsi_dt_probe(struct device *dev,
 	struct property *prop;
 	int dsi_lanes, ret;
 
+	printk("DBG %s %d %s\n", __FILE__, __LINE__, __func__);
+
 	np = dev->of_node;
 
 	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
 	if (!desc)
 		return -ENOMEM;
 
+	printk("DBG %s %d %s\n", __FILE__, __LINE__, __func__);
+
 	timing = devm_kzalloc(dev, sizeof(*timing), GFP_KERNEL);
 	if (!timing)
 		return -ENOMEM;
+
+	printk("DBG %s %d %s\n", __FILE__, __LINE__, __func__);
 
 	ret = of_get_display_timing(np, "panel-timing", timing);
 	if (ret < 0) {
@@ -5019,6 +5025,8 @@ static int panel_dsi_dt_probe(struct device *dev,
 
 	desc->timings = timing;
 	desc->num_timings = 1;
+
+	printk("DBG %s %d %s\n", __FILE__, __LINE__, __func__);
 
 	of_property_read_u32(np, "width-mm", &desc->size.width);
 	of_property_read_u32(np, "height-mm", &desc->size.height);
@@ -5050,6 +5058,7 @@ static int panel_dsi_dt_probe(struct device *dev,
 		return -EINVAL;
 	}
 
+	printk("DBG %s %d %s\n", __FILE__, __LINE__, __func__);
 
 	of_property_for_each_string(np, "mode", prop, dsi_mode_flags) {
 		if (!strcmp(dsi_mode_flags, "MODE_VIDEO"))
@@ -5079,6 +5088,8 @@ static int panel_dsi_dt_probe(struct device *dev,
 		else if (!strcmp(dsi_mode_flags, "HS_PKT_END_ALIGNED"))
 			desc_dsi->flags |= MIPI_DSI_HS_PKT_END_ALIGNED;
 	}
+
+	printk("DBG %s %d %s\n", __FILE__, __LINE__, __func__);
 
 	desc->connector_type = DRM_MODE_CONNECTOR_DSI;
 	desc_dsi->desc = *desc;
