@@ -14,6 +14,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
 # Install extra out of tree kernel drivers
 CORE_IMAGE_EXTRA_INSTALL += " \
     dtbocfg \
+    panel-simple \
 "
 
 # Install extra packages (minimal)
