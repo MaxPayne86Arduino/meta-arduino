@@ -30,7 +30,8 @@ FB: download -f ../Image
 # Load Device Tree
 FB: ucmd setenv fdt_addr 0x84000000
 FB: ucmd setenv fastboot_buffer ${fdt_addr}
-FB: download -f ../arduino_portenta-x9.dtb
+#FB: download -f ../arduino_portenta-x9.dtb
+FB: download -f ../arduino_portenta-x9-rpi-cm4-io-board-dsi-panel.dtb
 FB: ucmd setenv fdt_size ${filesize}  # Save the filesize to a variable
 
 # Apply Device Tree Overlay
