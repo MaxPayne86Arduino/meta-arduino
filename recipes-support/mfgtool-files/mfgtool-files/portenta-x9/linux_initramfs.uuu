@@ -28,6 +28,7 @@ FB: ucmd setenv fastboot_buffer ${loadaddr}
 FB: download -f ../Image
 
 # Load Device Tree
+FB: ucmd setenv fdt_addr 0x84000000
 FB: ucmd setenv fastboot_buffer ${fdt_addr}
 FB: download -f ../arduino_portenta-x9.dtb
 FB: ucmd setenv fdt_size ${filesize}  # Save the filesize to a variable
@@ -42,6 +43,7 @@ FB: ucmd setenv fdt_size ${filesize}  # Save the filesize to a variable
 #FB: ucmd fdt apply ${fdtovaddr}
 
 # Load Rootfs
+FB: ucmd setenv initrd_addr 0x85000000
 FB: ucmd setenv fastboot_buffer ${initrd_addr}
 FB: download -f ../fsl-image-mfgtool-initramfs-portenta-x9.cpio.zst.u-boot
 
