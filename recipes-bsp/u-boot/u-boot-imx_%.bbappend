@@ -22,10 +22,11 @@ SRC_URI:append:portenta-x8 = " \
 SRC_URI:append:portenta-x9 = " \
     file://Makefile \
     file://portenta-x9_defconfig \
+    file://portenta-x9_inline_ecc_defconfig \
     file://portenta-x9.dts \
     file://portenta-x9-u-boot.dtsi \
     file://portenta-x9.c \
-    file://portenta-x9_lpddr4_timing.c \
+    file://portenta-x9_lpddr4x_timing.c \
     file://portenta-x9_spl.c \
     file://portenta-x9.h \
 "
@@ -58,21 +59,21 @@ do_override_files_portenta_x9 () {
     # Override Makefile
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
-    # @TODO: find which defconfig is effectively used in original bsp
-    cp ${WORKDIR}/portenta-x9_defconfig ${S}/configs/imx93_9x9_qsb_defconfig
-    cp ${WORKDIR}/portenta-x9_defconfig ${S}/configs/imx93_9x9_qsb_inline_ecc_defconfig
+    # @TODO: skip ecc defconfig if not necessary
+    cp ${WORKDIR}/portenta-x9_defconfig ${S}/configs/imx93_11x11_evk_defconfig
+    cp ${WORKDIR}/portenta-x9_inline_ecc_defconfig ${S}/configs/imx93_11x11_evk_inline_ecc_defconfig
 
-    cp ${WORKDIR}/portenta-x9.dts ${S}/arch/arm/dts/imx93-9x9-qsb.dts
+    cp ${WORKDIR}/portenta-x9.dts ${S}/arch/arm/dts/imx93-11x11-evk.dts
 
     # @TODO: u-boot auto-includes the *-u-boot.dtsi prepending MACHINE to the board devicetree
     # see scripts/Makefile.lib, so should never be included directly from board devicetree
-    cp ${WORKDIR}/portenta-x9-u-boot.dtsi ${S}/arch/arm/dts/imx93-9x9-qsb-u-boot.dtsi
+    cp ${WORKDIR}/portenta-x9-u-boot.dtsi ${S}/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
 
-    cp ${WORKDIR}/portenta-x9.c ${S}/board/freescale/imx93_qsb/imx93_qsb.c
-    cp ${WORKDIR}/portenta-x9_lpddr4_timing.c ${S}/board/freescale/imx93_qsb/lpddr4_timing.c
-    cp ${WORKDIR}/portenta-x9_spl.c ${S}/board/freescale/imx93_qsb/spl.c
+    cp ${WORKDIR}/portenta-x9.c ${S}/board/freescale/imx93_evk/imx93_evk.c.c
+    cp ${WORKDIR}/portenta-x9_lpddr4x_timing.c ${S}/board/freescale/imx93_evk/lpddr4x_timing.c
+    cp ${WORKDIR}/portenta-x9_spl.c ${S}/board/freescale/imx93_evk/spl.c
 
-    cp ${WORKDIR}/portenta-x9.h ${S}/include/configs/imx93_qsb.h
+    cp ${WORKDIR}/portenta-x9.h ${S}/include/configs/imx93_evk.h
 }
 
 python () {
