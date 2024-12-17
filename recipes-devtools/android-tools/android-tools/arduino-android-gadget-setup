@@ -1,12 +1,12 @@
 #!/bin/sh
 
-UDC_DIR=/sys/class/udc
-UDC_ENTRY=ci_hdrc.0
-
 start()
 {
     if test "$(ls -A "$UDC_DIR")"; then
         echo "Creating Arduino Usb Gadgets..."
+
+        echo "UDC_DIR: $UDC_DIR"
+        echo "UDC_ENTRY: $UDC_ENTRY"
 
         . /etc/default/usbgx
 
@@ -84,7 +84,7 @@ start()
 
         # bind!
         # ls /sys/class/udc to see available UDCs
-        # UDC=$(ls /sys/class/udc) && echo $UDC > /sys/kernel/config/usb_gadget/g1/UDC
+        # UDC=$(ls /sys/class/udc) && echo $UDC > /sys/kernel/config/usb_gadget/$UDC/UDC
     else
         exit 1
     fi
