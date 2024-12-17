@@ -64,7 +64,7 @@ start()
                     ln -s functions/ffs.adb/ configs/c.1
                     # create adb ffs device dir and mount it
                     mkdir -p /dev/usb-ffs/adb
-                    mount -o uid=1000,gid=1000 -t functionfs adb /dev/usb-ffs/adb
+                    mount -o uid=1001,gid=1001 -t functionfs adb /dev/usb-ffs/adb
                     ;;
                 ncm)
                     # create the ncm function with unique name
