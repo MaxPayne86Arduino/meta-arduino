@@ -37,7 +37,20 @@ DECLARE_GLOBAL_DATA_PTR;
 
 int spl_board_boot_device(enum boot_device boot_dev_spl)
 {
+#ifdef CONFIG_SPL_BOOTROM_SUPPORT
 	return BOOT_DEVICE_BOOTROM;
+#else
+	switch (boot_dev_spl) {
+	case SD1_BOOT:
+	case MMC1_BOOT:
+		return BOOT_DEVICE_MMC1;
+	case SD2_BOOT:
+	case MMC2_BOOT:
+		return BOOT_DEVICE_MMC2;
+	default:
+		return BOOT_DEVICE_NONE;
+	}
+#endif
 }
 
 void spl_board_init(void)
@@ -69,7 +82,7 @@ int power_init_board(void)
 {
 	struct udevice *dev;
 	int ret;
-	unsigned int val, buck_val;
+	unsigned int val = 0, buck_val;
 
 	ret = pmic_get("pmic@25", &dev);
 	if (ret != 0) {
@@ -177,3 +190,9 @@ void board_init_f(ulong dummy)
 
 	board_init_r(NULL, 0);
 }
+
+#ifdef CONFIG_ANDROID_SUPPORT
+int board_get_emmc_id(void) {
+	return 0;
+}
+#endif
