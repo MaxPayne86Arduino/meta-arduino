@@ -5,6 +5,7 @@
 
 #include <common.h>
 #include <env.h>
+#include <efi_loader.h>
 #include <init.h>
 #include <miiphy.h>
 #include <netdev.h>
@@ -35,6 +36,27 @@ static iomux_v3_cfg_t const eth_reset_pads[] = {
 	MX93_PAD_CCM_CLKO1__GPIO3_IO26 | MUX_PAD_CTRL(PAD_CTL_ODE| PAD_CTL_PDE),
 	MX93_PAD_CCM_CLKO2__GPIO3_IO27 | MUX_PAD_CTRL(PAD_CTL_ODE| PAD_CTL_PDE),
 };
+
+#if CONFIG_IS_ENABLED(EFI_HAVE_CAPSULE_SUPPORT)
+#define IMX_BOOT_IMAGE_GUID \
+	EFI_GUID(0xbc550d86, 0xda26, 0x4b70, 0xac, 0x05, \
+		 0x2a, 0x44, 0x8e, 0xda, 0x6f, 0x21)
+
+struct efi_fw_image fw_images[] = {
+	{
+		.image_type_id = IMX_BOOT_IMAGE_GUID,
+		.fw_name = u"IMX93-11X11-EVK-RAW",
+		.image_index = 1,
+	},
+};
+
+struct efi_capsule_update_info update_info = {
+	.dfu_string = "mmc 0=flash-bin raw 0 0x2000 mmcpart 1",
+	.images = fw_images,
+};
+
+u8 num_image_type_guids = ARRAY_SIZE(fw_images);
+#endif /* EFI_HAVE_CAPSULE_SUPPORT */
 
 int board_early_init_f(void)
 {
@@ -100,13 +122,16 @@ int pd_switch_snk_enable(struct tcpc_port *port)
 {
 	if (port == &port1) {
 		debug("Setup pd switch on port 1\n");
-		return setup_pd_switch(0, 0x71);
+		return setup_pd_switch(2, 0x71);
+	} else if (port == &port2) {
+		debug("Setup pd switch on port 2\n");
+		return setup_pd_switch(2, 0x73);
 	} else
 		return -EINVAL;
 }
 
 struct tcpc_port_config portpd_config = {
-	.i2c_bus = 0, /*i2c1*/
+	.i2c_bus = 2, /*i2c3*/
 	.addr = 0x52,
 	.port_type = TYPEC_PORT_UFP,
 	.max_snk_mv = 20000,
@@ -116,10 +141,22 @@ struct tcpc_port_config portpd_config = {
 };
 
 struct tcpc_port_config port1_config = {
-	.i2c_bus = 0, /*i2c1*/
+	.i2c_bus = 2, /*i2c3*/
 	.addr = 0x50,
 	.port_type = TYPEC_PORT_UFP,
 	.max_snk_mv = 5000,
+	.max_snk_ma = 3000,
+	.max_snk_mw = 40000,
+	.op_snk_mv = 9000,
+	.switch_setup_func = &pd_switch_snk_enable,
+	.disable_pd = true,
+};
+
+struct tcpc_port_config port2_config = {
+	.i2c_bus = 2, /*i2c3*/
+	.addr = 0x51,
+	.port_type = TYPEC_PORT_UFP,
+	.max_snk_mv = 9000,
 	.max_snk_ma = 3000,
 	.max_snk_mw = 40000,
 	.op_snk_mv = 9000,
@@ -135,6 +172,13 @@ static int setup_typec(void)
 	ret = tcpc_init(&portpd, portpd_config, NULL);
 	if (ret) {
 		printf("%s: tcpc portpd init failed, err=%d\n",
+		       __func__, ret);
+	}
+
+	debug("tcpc_init port 2\n");
+	ret = tcpc_init(&port2, port2_config, NULL);
+	if (ret) {
+		printf("%s: tcpc port2 init failed, err=%d\n",
 		       __func__, ret);
 	}
 
@@ -155,7 +199,10 @@ int board_usb_init(int index, enum usb_init_type init)
 
 	debug("board_usb_init %d, type %d\n", index, init);
 	
+	if (index == 0)
 	port_ptr = &port1;
+	else
+		port_ptr = &port2;
 
 	if (init == USB_INIT_HOST)
 		tcpc_setup_dfp_mode(port_ptr);
@@ -171,8 +218,12 @@ int board_usb_cleanup(int index, enum usb_init_type init)
 
 	debug("board_usb_cleanup %d, type %d\n", index, init);
 
-	if (init == USB_INIT_HOST)
+	if (init == USB_INIT_HOST) {
+		if (index == 0)
 			ret = tcpc_disable_src_vbus(&port1);
+		else
+			ret = tcpc_disable_src_vbus(&port2);
+	}
 
 	return ret;
 }
@@ -186,7 +237,10 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
 
 	debug("%s %d\n", __func__, dev_seq(dev));
 
-	port_ptr = &port1;
+	if (dev_seq(dev) == 0)
+		port_ptr = &port1;
+	else
+		port_ptr = &port2;
 
 	tcpc_setup_ufp_mode(port_ptr);
 
@@ -220,12 +274,16 @@ static int setup_eqos(void)
 	struct blk_ctrl_wakeupmix_regs *bctrl =
 		(struct blk_ctrl_wakeupmix_regs *)BLK_CTRL_WAKEUPMIX_BASE_ADDR;
 
-	/* set INTF as RGMII, enable RGMII TXC clock */
-	clrsetbits_le32(&bctrl->eqos_gpr,
-			BCTRL_GPR_ENET_QOS_INTF_MODE_MASK,
-			BCTRL_GPR_ENET_QOS_INTF_SEL_RGMII | BCTRL_GPR_ENET_QOS_CLK_GEN_EN);
+	if (!IS_ENABLED(CONFIG_TARGET_IMX93_14X14_EVK)) {
+		/* set INTF as RGMII, enable RGMII TXC clock */
+		clrsetbits_le32(&bctrl->eqos_gpr,
+				BCTRL_GPR_ENET_QOS_INTF_MODE_MASK,
+				BCTRL_GPR_ENET_QOS_INTF_SEL_RGMII | BCTRL_GPR_ENET_QOS_CLK_GEN_EN);
 
-	return set_clk_eqos(ENET_125MHZ);
+		return set_clk_eqos(ENET_125MHZ);
+	}
+
+	return 0;
 }
 
 static void board_gpio_init(void)
@@ -242,10 +300,10 @@ int board_init(void)
 	setup_typec();
 #endif
 
-	if (CONFIG_IS_ENABLED(FEC_MXC))
+	if (IS_ENABLED(CONFIG_FEC_MXC))
 		setup_fec();
 
-	if (CONFIG_IS_ENABLED(DWC_ETH_QOS) && !is_imx91p0())
+	if (IS_ENABLED(CONFIG_DWC_ETH_QOS))
 		setup_eqos();
 
 	board_gpio_init();
