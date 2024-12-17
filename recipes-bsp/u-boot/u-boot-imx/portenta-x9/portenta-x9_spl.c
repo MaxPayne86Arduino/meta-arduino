@@ -51,13 +51,13 @@ void spl_board_init(void)
 		printf("Fail to start RNG: %d\n", ret);
 }
 
-extern struct dram_timing_info dram_timing_1600mts;
+extern struct dram_timing_info dram_timing_1866mts;
 void spl_dram_init(void)
 {
 	struct dram_timing_info *ptiming = &dram_timing;
-#if IS_ENABLED(CONFIG_TARGET_IMX91P_9X9_QSB)
+#if IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4X)
 	if (is_voltage_mode(VOLT_LOW_DRIVE))
-		ptiming = &dram_timing_1600mts;
+		ptiming = &dram_timing_1866mts;
 #endif
 
 	printf("DDR: %uMTS\n", ptiming->fsp_msg[0].drate);
@@ -72,13 +72,11 @@ int power_init_board(void)
 	unsigned int val, buck_val;
 
 	ret = pmic_get("pmic@25", &dev);
-	if (ret == -ENODEV) {
-		puts("No pca9450@25\n");
-		return 0;
-	}
-	if (ret != 0)
+	if (ret != 0) {
+		puts("ERROR: Get PMIC PCA9451A failed!\n");
 		return ret;
-
+	}
+	puts("PMIC: PCA9451A\n");
 	/* BUCKxOUT_DVS0/1 control BUCK123 output */
 	pmic_reg_write(dev, PCA9450_BUCK123_DVS, 0x29);
 
@@ -110,14 +108,16 @@ int power_init_board(void)
 		pmic_reg_write(dev, PCA9450_BUCK3OUT_DVS0, buck_val + 0x4);
 	}
 
+	if (IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4)) {
+		/* Set VDDQ to 1.1V from buck2 */
+		pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x28);
+	}
+
 	/* set standby voltage to 0.65v */
 	if (val & PCA9450_REG_PWRCTRL_TOFF_DEB)
 		pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS1, 0x0);
 	else
 	pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS1, 0x4);
-
-	/* 1.1v for LPDDR4 */
-	pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x28);
 
 	/* I2C_LT_EN*/
 	pmic_reg_write(dev, 0xa, 0x3);
