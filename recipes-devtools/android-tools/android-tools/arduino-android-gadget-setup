@@ -1,8 +1,11 @@
 #!/bin/sh
 
+UDC_DIR=/sys/class/udc
+UDC_ENTRY=ci_hdrc.0
+
 start()
 {
-    if [[ $(cat /sys/class/usb_role/ci_hdrc.0-role-switch/role) == "device" ]]; then
+    if test "$(ls -A "$UDC_DIR")"; then
         echo "Creating Arduino Usb Gadgets..."
 
         . /etc/default/usbgx
@@ -17,8 +20,8 @@ start()
         cd /sys/kernel/config/usb_gadget
 
         # create gadget directory and enter it
-        mkdir g1
-        cd g1
+        mkdir $UDC_ENTRY
+        cd $UDC_ENTRY
 
         # USB ids
         echo 0x$VID > idVendor
