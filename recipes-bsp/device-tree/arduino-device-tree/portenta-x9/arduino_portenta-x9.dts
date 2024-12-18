@@ -122,6 +122,11 @@
 	};
 };
 
+&adc1 {
+	vref-supply = <&reg_vref_1v8>;
+	status = "okay";
+};
+
 &cm33 {
 	mbox-names = "tx", "rx", "rxdb";
 	mboxes = <&mu1 0 1>,
