@@ -41,6 +41,11 @@
 		off-on-delay-us = <12000>;
 		enable-active-high;
 	};
+
+	dsi_host: dsi-host {
+		compatible = "synopsys,dw-mipi-dsi";
+		status = "okay";
+	};
 };
 
 &lpi2c1 {
