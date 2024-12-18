@@ -304,6 +304,10 @@
 	status = "okay";
 };
 
+&wdog3 {
+	status = "okay";
+};
+
 &iomuxc {
 	pinctrl-names = "default";
 	status = "okay";
@@ -562,8 +566,4 @@
 			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x400013fe
 		>;
 	};
-};
-
-&wdog3 {
-	status = "okay";
 };
