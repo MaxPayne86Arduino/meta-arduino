@@ -1,6 +1,6 @@
 [Unit]
 Description=Android Debug Bridge & Usb Gadgets
-ConditionPathExists=/sys/class/usb_role/ci_hdrc.0-role-switch/role
+ConditionPathExists=/sys/class/udc/ci_hdrc.0
 After=network-pre.target dbus.service
 Before=android-system.service
 
