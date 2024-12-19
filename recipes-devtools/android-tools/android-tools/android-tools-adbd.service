@@ -8,12 +8,12 @@ Before=android-system.service
 Type=simple
 Restart=on-failure
 RestartSec=2
-Environment="UDC_DIR=/sys/class/udc"
-Environment="UDC_ENTRY=ci_hdrc.0"
+Environment=UDC_DIR=/sys/class/udc
+Environment=UDC_ENTRY=ci_hdrc.0
 LogLevelMax=crit
 ExecStartPre=/usr/bin/arduino-android-gadget-setup start
 ExecStart=/usr/bin/adbd
-ExecStartPost=/bin/sh -c 'sleep 2 && echo $UDC_ENTRY > /sys/kernel/config/usb_gadget/$UDC_ENTRY/UDC'
+ExecStartPost=/bin/sh -c 'sleep 2 && echo "ci_hdrc.0" > /sys/kernel/config/usb_gadget/ci_hdrc.0/UDC'
 WorkingDirectory=/home/arduino
 
 [Install]
