@@ -59,6 +59,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     android-tools \
     android-tools-adbd \
     fb-test \
+    fbida \
     v4l-utils \
 "
 
