@@ -58,6 +58,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     python3-periphery \
     android-tools \
     android-tools-adbd \
+    fb-test \
     v4l-utils \
 "
 
