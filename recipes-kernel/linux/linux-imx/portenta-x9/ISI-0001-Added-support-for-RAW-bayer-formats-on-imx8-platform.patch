@@ -1,0 +1,131 @@
+From 6a5630a6ffbe2212f46686bcbc60a33d568e67ce Mon Sep 17 00:00:00 2001
+From: OpenEmbedded <oe.patch@oe>
+Date: Tue, 14 Jan 2025 09:48:01 +0000
+Subject: [PATCH] Added support for RAW (bayer) formats on imx8 platform
+
+---
+ drivers/staging/media/imx/imx8-isi-fmt.c | 108 +++++++++++++++++++++++
+ 1 file changed, 108 insertions(+)
+
+diff --git a/drivers/staging/media/imx/imx8-isi-fmt.c b/drivers/staging/media/imx/imx8-isi-fmt.c
+index db11c809a3d3..bbfe6af98d7f 100644
+--- a/drivers/staging/media/imx/imx8-isi-fmt.c
++++ b/drivers/staging/media/imx/imx8-isi-fmt.c
+@@ -97,6 +97,114 @@ struct mxc_isi_fmt mxc_isi_out_formats[] = {
+ 		.colplanes	= 1,
+ 		.align		= 2,
+ 		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
++	}, {
++		.name = "RAW8 (SRGGB8)",
++		.fourcc = V4L2_PIX_FMT_SRGGB8,
++		.depth = { 8 },
++		.color = MXC_ISI_OUT_FMT_RAW8,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 1,
++		.mbus_code = MEDIA_BUS_FMT_SRGGB8_1X8,
++	}, {
++		.name = "RAW8 (SGRBG8)",
++		.fourcc = V4L2_PIX_FMT_SGRBG8,
++		.depth = { 8 },
++		.color = MXC_ISI_OUT_FMT_RAW8,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 1,
++		.mbus_code = MEDIA_BUS_FMT_SGRBG8_1X8,
++	}, {
++		.name = "RAW8 (SGBRG8)",
++		.fourcc = V4L2_PIX_FMT_SGBRG8,
++		.depth = { 8 },
++		.color = MXC_ISI_OUT_FMT_RAW8,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 1,
++		.mbus_code = MEDIA_BUS_FMT_SGBRG8_1X8,
++	}, {
++		.name = "RAW8 (SBGGR8)",
++		.fourcc = V4L2_PIX_FMT_SBGGR8,
++		.depth = { 8 },
++		.color = MXC_ISI_OUT_FMT_RAW8,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 1,
++		.mbus_code = MEDIA_BUS_FMT_SBGGR8_1X8,
++	}, {
++		.name = "RAW10 (SRGGB10)",
++		.fourcc = V4L2_PIX_FMT_SRGGB10,
++		.depth = { 10 },
++		.color = MXC_ISI_OUT_FMT_RAW10,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SRGGB10_1X10,
++	}, {
++		.name = "RAW10 (SGRBG10)",
++		.fourcc = V4L2_PIX_FMT_SGRBG10,
++		.depth = { 10 },
++		.color = MXC_ISI_OUT_FMT_RAW10,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SGRBG10_1X10,
++	}, {
++		.name = "RAW10 (SGBRG10)",
++		.fourcc = V4L2_PIX_FMT_SGBRG10,
++		.depth = { 10 },
++		.color = MXC_ISI_OUT_FMT_RAW10,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SGBRG10_1X10,
++	}, {
++		.name = "RAW10 (SBGGR10)",
++		.fourcc = V4L2_PIX_FMT_SBGGR10,
++		.depth = { 10 },
++		.color = MXC_ISI_OUT_FMT_RAW10,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SBGGR10_1X10,
++	}, {
++		.name = "RAW12 (SRGGB12)",
++		.fourcc = V4L2_PIX_FMT_SRGGB12,
++		.depth = { 12 },
++		.color = MXC_ISI_OUT_FMT_RAW12,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SRGGB12_1X12,
++	}, {
++		.name = "RAW12 (SGRBG12)",
++		.fourcc = V4L2_PIX_FMT_SGRBG12,
++		.depth = { 12 },
++		.color = MXC_ISI_OUT_FMT_RAW12,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SGRBG12_1X12,
++	}, {
++		.name = "RAW12 (SGBRG12)",
++		.fourcc = V4L2_PIX_FMT_SGBRG12,
++		.depth = { 12 },
++		.color = MXC_ISI_OUT_FMT_RAW12,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SGBRG12_1X12,
++	}, {
++		.name = "RAW12 (SBGGR12)",
++		.fourcc = V4L2_PIX_FMT_SBGGR12,
++		.depth = { 12 },
++		.color = MXC_ISI_OUT_FMT_RAW12,
++		.memplanes = 1,
++		.colplanes = 1,
++		.align = 2,
++		.mbus_code = MEDIA_BUS_FMT_SBGGR12_1X12,
+ 	}
+ };
+ 
+-- 
+2.25.1
+

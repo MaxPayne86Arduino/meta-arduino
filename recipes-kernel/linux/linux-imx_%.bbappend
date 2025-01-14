@@ -15,6 +15,7 @@ SRC_URI:append:portenta-x9 = " \
     file://TOSHIBA-0001-drm-bridge-tc358762-Ignore-EPROBE_DEFER-when-logging.patch \
     file://TOSHIBA-0002-drm-bridge-tc358762-Program-the-DPI-mode-into-the-ch.patch \
     file://TOSHIBA-0003-drm-bridge-tc358762-revert-move-ops-to-enable.patch \
+    file://ISI-0001-Added-support-for-RAW-bayer-formats-on-imx8-platform.patch \
 "
 
 # This is because methods in meta-imx-bsp/recipes-kernel/linux/linux-imx_6.6.bb
