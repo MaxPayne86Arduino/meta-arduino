@@ -28,6 +28,10 @@ static int qbc_adjust = 2;
 module_param(qbc_adjust, int, 0644);
 MODULE_PARM_DESC(qbc_adjust, "Quad Bayer broken line correction strength [0,2-5]");
 
+/* Sensor ancillary metadata formats - next is 0x7002 */
+#define MEDIA_BUS_FMT_SENSOR_DATA		0x7002
+#define V4L2_CID_NOTIFY_GAINS			(V4L2_CID_IMAGE_SOURCE_CLASS_BASE + 9)
+
 #define IMX708_REG_VALUE_08BIT		1
 #define IMX708_REG_VALUE_16BIT		2
 
