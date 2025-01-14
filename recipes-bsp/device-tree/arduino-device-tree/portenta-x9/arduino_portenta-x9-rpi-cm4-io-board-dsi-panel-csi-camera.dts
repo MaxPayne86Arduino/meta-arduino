@@ -108,25 +108,26 @@
 		regulator-max-microvolt = <1800000>;
 	};
 
-	reg_dvdd_1v2: regulator-dvdd {
+	cam1_reg: cam1reg {
 		compatible = "regulator-fixed";
-		regulator-name = "DVDD_1V2";
-		regulator-min-microvolt = <1200000>;
-		regulator-max-microvolt = <1200000>;
+		regulator-name = "camera_reg1";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		startup-delay-us = <70000>;
+		off-on-delay-us = <30000>;
 	};
 
-	reg_vddio_1v8: regulator-vddo {
+	cam_dummy_reg: camdummyreg {
 		compatible = "regulator-fixed";
-		regulator-name = "VDDIO_1V8";
-		regulator-min-microvolt = <1800000>;
+		regulator-name = "camera_reg_dummy";
+		regulator-min-microvolt = <1100000>;
 		regulator-max-microvolt = <1800000>;
 	};
 
-	reg_avdd_2v8: regulator-avdd {
-		compatible = "regulator-fixed";
-		regulator-name = "AVDD_2V8";
-		regulator-min-microvolt = <2800000>;
-		regulator-max-microvolt = <2800000>;
+	cam1_clk: cam1clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
 	};
 
 	leds {
@@ -346,22 +347,32 @@
 		reg = <0x45>;
 	};
 
-	// @TODO: we may want to swap for ov5640 here
-	ap1302: ap1302_mipi@3c {
+	imx708@1a {
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_camera>;
-		compatible = "onsemi,ap1302";
-		reg = <0x3c>;
-		reset-gpios   = <&gpio3 7 GPIO_ACTIVE_LOW>; // CAMERA_GPIO
-		// @TODO: isp_en-gpios  = <&gpio? ? GPIO_ACTIVE_HIGH>;
-		DVDD-supply   = <&reg_dvdd_1v2>;
-		VDDIO-supply  = <&reg_vddio_1v8>;
-		AVDD-supply   = <&reg_avdd_2v8>;
+		compatible = "sony,imx708";
+		reg = <0x1a>;
 		status = "okay";
 
+		clocks = <&cam1_clk>;
+		clock-names = "inclk";
+
+		vana1-supply = <&cam1_reg>;	/* 2.8v */
+		vana2-supply = <&cam_dummy_reg>;/* 1.8v */
+		vdig-supply = <&cam_dummy_reg>;	/* 1.1v */
+		vddl-supply = <&cam_dummy_reg>;	/* 1.8v */
+
+		csi_id = <0>;
+		reset-gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>; // CAMERA_GPIO
+
+		rotation = <180>;
+		orientation = <2>;
+
 		port {
-			ar1302_mipi_ep: endpoint {
+			imx708_ep: endpoint {
 				remote-endpoint = <&mipi_csi_ep>;
+				clock-noncontinuous; /* Clock can be stopped when no data is being transmitted */
+				link-frequencies = /bits/ 64 <450000000>; /* See cmos sensor driver or datasheet */
 			};
 		};
 	};
@@ -567,7 +578,7 @@
 
 	port {
 		mipi_csi_ep: endpoint {
-			remote-endpoint = <&ar1302_mipi_ep>;
+			remote-endpoint = <&imx708_ep>;
 			data-lanes = <2>;
 			cfg-clk-range = <28>;
 			hs-clk-range = <0x2b>;
