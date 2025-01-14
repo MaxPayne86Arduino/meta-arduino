@@ -15,6 +15,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
 CORE_IMAGE_EXTRA_INSTALL += " \
     dtbocfg \
     panel-simple \
+    imx708 \
 "
 
 # Install extra packages (minimal)
