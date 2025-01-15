@@ -108,19 +108,33 @@
 		regulator-max-microvolt = <1800000>;
 	};
 
-	cam_fixed_reg: camfixedreg {
+	cam_vana1_reg: camvana1reg {
 		compatible = "regulator-fixed";
-		regulator-name = "camera_reg_fixed";
+		regulator-name = "camera_reg_vana1";
 		regulator-min-microvolt = <2800000>;
 		regulator-max-microvolt = <2800000>;
 		startup-delay-us = <70000>;
 		off-on-delay-us = <30000>;
 	};
 
-	cam_variable_reg: camvariablereg {
-		compatible = "regulator-linear";
-		regulator-name = "camera_reg_variable";
+	cam_vana2_reg: camvana2reg {
+		compatible = "regulator-fixed";
+		regulator-name = "camera_reg_vana2";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+	};
+
+	cam_vdig_reg: camvdigreg {
+		compatible = "regulator-fixed";
+		regulator-name = "camera_reg_vdig";
 		regulator-min-microvolt = <1100000>;
+		regulator-max-microvolt = <1100000>;
+	};
+
+	cam_vddl_reg: camvddlreg {
+		compatible = "regulator-fixed";
+		regulator-name = "camera_reg_vddl";
+		regulator-min-microvolt = <1800000>;
 		regulator-max-microvolt = <1800000>;
 	};
 
@@ -360,10 +374,10 @@
 		clocks = <&cam_clk>;
 		clock-names = "inclk";
 
-		vana1-supply = <&cam_fixed_reg>; /* 2.8v */
-		vana2-supply = <&cam_variable_reg>; /* 1.8v */
-		vdig-supply = <&cam_variable_reg>; /* 1.1v */
-		vddl-supply = <&cam_variable_reg>; /* 1.8v */
+		vana1-supply = <&cam_vana1_reg>; /* 2.8v */
+		vana2-supply = <&cam_vana2_reg>; /* 1.8v */
+		vdig-supply = <&cam_vdig_reg>; /* 1.1v */
+		vddl-supply = <&cam_vddl_reg>; /* 1.8v */
 
 		csi_id = <0>;
 		reset-gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>; // CAMERA_GPIO
