@@ -62,6 +62,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     fb-test \
     fbida \
     v4l-utils \
+    strace \
 "
 
 # Change users and passwords
