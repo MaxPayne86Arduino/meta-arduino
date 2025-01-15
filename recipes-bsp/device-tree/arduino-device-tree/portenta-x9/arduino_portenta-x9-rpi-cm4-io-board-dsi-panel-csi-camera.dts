@@ -181,6 +181,7 @@
 		compatible = "regulator-fixed";
 		regulator-name = "bridge_reg";
 		vin-supply = <&reg_display>;
+		status = "disabled";
 	};
 };
 
