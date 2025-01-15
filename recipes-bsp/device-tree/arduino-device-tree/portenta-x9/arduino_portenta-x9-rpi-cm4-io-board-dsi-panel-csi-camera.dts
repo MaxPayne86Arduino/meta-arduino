@@ -154,6 +154,7 @@
 		compatible = "raspberrypi,7inch-dsi", "simple-panel";
 		backlight = <&reg_display>;
 		power-supply = <&reg_display>;
+		status = "disabled";
 
 		port {
 			panel_in: endpoint {
@@ -335,6 +336,7 @@
 		compatible = "edt,edt-ft5506";
 		reg = <0x38>;
 		vcc-supply = <&reg_display>;
+		status = "disabled";
 
 		touchscreen-size-x = <800>;
 		touchscreen-size-y = <480>;
@@ -345,6 +347,7 @@
 	reg_display: reg-display@45 {
 		compatible = "raspberrypi,7inch-touchscreen-panel-regulator";
 		reg = <0x45>;
+		status = "disabled";
 	};
 
 	imx708@1a {
@@ -592,14 +595,14 @@
 };
 
 &lcdif {
-	status = "okay";
+	status = "disabled";
 	assigned-clock-rates = <445333333>, <148444444>, <400000000>, <133333333>;
 };
 
 &dsi {
 	#address-cells = <1>;
 	#size-cells = <0>;
-	status = "okay";
+	status = "disabled";
 
 	bridge@0 {
 		compatible = "toshiba,tc358762";
