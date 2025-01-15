@@ -2077,6 +2077,9 @@ error_pm_runtime:
 error_power_off:
 	imx708_power_off(&client->dev);
 
+error_free_reset_gpio:
+	if (imx708->reset_gpio)
+		gpiod_put(imx708->reset_gpio);
 	return ret;
 }
 
@@ -2084,6 +2087,9 @@ static void imx708_remove(struct i2c_client *client)
 {
 	struct v4l2_subdev *sd = i2c_get_clientdata(client);
 	struct imx708 *imx708 = to_imx708(sd);
+
+	if (imx708->reset_gpio)
+		gpiod_put(imx708->reset_gpio);
 
 	v4l2_async_unregister_subdev(sd);
 	media_entity_cleanup(&sd->entity);
