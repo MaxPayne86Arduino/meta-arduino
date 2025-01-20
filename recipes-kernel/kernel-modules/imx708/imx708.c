@@ -826,9 +826,12 @@ static const char * const imx708_supply_name[] = {
 #define IMX708_XCLR_MIN_DELAY_US	8000
 #define IMX708_XCLR_DELAY_RANGE_US	1000
 
+#define IMX708_SENS_PAD_SOURCE 0
+#define IMX708_SENS_PADS_NUM 1
+
 struct imx708 {
 	struct v4l2_subdev sd;
-	struct media_pad pad[NUM_PADS];
+	struct media_pad pads[IMX708_SENS_PADS_NUM];
 
 	struct v4l2_mbus_framefmt fmt;
 
@@ -1756,6 +1759,13 @@ static int imx708_identify_module(struct imx708 *imx708)
 	return 0;
 }
 
+static int imx708_link_setup(struct media_entity *entity,
+				const struct media_pad *local,
+				const struct media_pad *remote, u32 flags)
+{
+	return 0;
+}
+
 static const struct v4l2_subdev_core_ops imx708_core_ops = {
 	.subscribe_event = v4l2_ctrl_subdev_subscribe_event,
 	.unsubscribe_event = v4l2_event_subdev_unsubscribe,
@@ -1781,6 +1791,10 @@ static const struct v4l2_subdev_ops imx708_subdev_ops = {
 
 static const struct v4l2_subdev_internal_ops imx708_internal_ops = {
 	.open = imx708_open,
+};
+
+static const struct media_entity_operations imx708_sd_media_ops = {
+    .link_setup = imx708_link_setup,
 };
 
 static const struct v4l2_ctrl_config imx708_notify_gains_ctrl = {
@@ -2047,10 +2061,9 @@ static int imx708_probe(struct i2c_client *client)
 	imx708->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
 
 	/* Initialize source pads */
-	imx708->pad[IMAGE_PAD].flags = MEDIA_PAD_FL_SOURCE;
-	imx708->pad[METADATA_PAD].flags = MEDIA_PAD_FL_SOURCE;
+	imx708->pads[IMX708_SENS_PAD_SOURCE].flags = MEDIA_PAD_FL_SOURCE;
 
-	ret = media_entity_pads_init(&imx708->sd.entity, NUM_PADS, imx708->pad);
+	ret = media_entity_pads_init(&imx708->sd.entity, IMX708_SENS_PADS_NUM, imx708->pads);
 	if (ret) {
 		dev_err(dev, "failed to init entity pads: %d\n", ret);
 		goto error_handler_free;
