@@ -1355,7 +1355,7 @@ static int imx708_get_pad_format(struct v4l2_subdev *sd,
 	mutex_lock(&imx708->mutex);
 
 	if (fmt->which == V4L2_SUBDEV_FORMAT_TRY) {
-		dev_dbg(&imx708->sd.dev, "get try format\n");
+		dev_dbg(imx708->sd.dev, "get try format\n");
 		struct v4l2_mbus_framefmt *try_fmt =
 			v4l2_subdev_get_try_format(&imx708->sd, sd_state,
 						   fmt->pad);
@@ -1364,7 +1364,7 @@ static int imx708_get_pad_format(struct v4l2_subdev *sd,
 				imx708_get_format_code(imx708) :
 				MEDIA_BUS_FMT_SENSOR_DATA;
 		fmt->format = *try_fmt;
-		dev_dbg(&imx708->sd.dev, "active format: %ux%u, 0x%04x\n",
+		dev_dbg(imx708->sd.dev, "active format: %ux%u, 0x%04x\n",
 			fmt->format.width, fmt->format.height,
 			fmt->format.code);
 	} else {
@@ -1372,12 +1372,12 @@ static int imx708_get_pad_format(struct v4l2_subdev *sd,
 			imx708_update_image_pad_format(imx708, imx708->mode,
 						       fmt);
 			fmt->format.code = imx708_get_format_code(imx708);
-			dev_dbg(&imx708->sd.dev, "active format: %ux%u, 0x%04x\n",
+			dev_dbg(imx708->sd.dev, "active format: %ux%u, 0x%04x\n",
 				fmt->format.width, fmt->format.height,
 				fmt->format.code);
 		} else {
 			imx708_update_metadata_pad_format(fmt);
-			dev_dbg(&imx708->sd.dev, "active format: %ux%u, 0x%04x\n",
+			dev_dbg(imx708->sd.dev, "active format: %ux%u, 0x%04x\n",
 				fmt->format.width, fmt->format.height,
 				fmt->format.code);
 		}
