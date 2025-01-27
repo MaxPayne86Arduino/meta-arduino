@@ -1766,9 +1766,15 @@ static int imx708_link_setup(struct media_entity *entity,
 	return 0;
 }
 
+static int imx708_s_power(struct v4l2_subdev *sd, int on)
+{
+	return 0;
+}
+
 static const struct v4l2_subdev_core_ops imx708_core_ops = {
 	.subscribe_event = v4l2_ctrl_subdev_subscribe_event,
 	.unsubscribe_event = v4l2_event_subdev_unsubscribe,
+	.s_power = imx708_s_power,
 };
 
 static const struct v4l2_subdev_video_ops imx708_video_ops = {
@@ -2059,6 +2065,7 @@ static int imx708_probe(struct i2c_client *client)
 	imx708->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
 			    V4L2_SUBDEV_FL_HAS_EVENTS;
 	imx708->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
+	imx708->sd.entity.ops = &imx708_sd_media_ops;
 
 	/* Initialize source pads */
 	imx708->pads[IMX708_SENS_PAD_SOURCE].flags = MEDIA_PAD_FL_SOURCE;
