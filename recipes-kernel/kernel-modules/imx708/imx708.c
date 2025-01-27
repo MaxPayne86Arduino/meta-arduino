@@ -1810,7 +1810,7 @@ static const struct v4l2_subdev_internal_ops imx708_internal_ops = {
 };
 
 static const struct media_entity_operations imx708_sd_media_ops = {
-    .link_setup = imx708_link_setup,
+	.link_setup = imx708_link_setup,
 };
 
 static const struct v4l2_ctrl_config imx708_notify_gains_ctrl = {
