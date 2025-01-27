@@ -391,6 +391,10 @@
 		port {
 			imx708_ep: endpoint {
 				remote-endpoint = <&mipi_csi_ep>;
+				clock-noncontinuous; /* Clock can be stopped when no data is being transmitted */
+				link-frequencies = /bits/ 64 <450000000>; /* See cmos sensor driver or datasheet */
+				data-lanes = <2>;
+				bus-type = <4>;
 			};
 		};
 	};
