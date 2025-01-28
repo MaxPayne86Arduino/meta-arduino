@@ -111,12 +111,16 @@
 	};
 
 	cam_vana1_reg: camvana1reg {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_camera>;
 		compatible = "regulator-fixed";
 		regulator-name = "camera_reg_vana1";
 		regulator-min-microvolt = <2800000>;
 		regulator-max-microvolt = <2800000>;
 		startup-delay-us = <70000>;
 		off-on-delay-us = <30000>;
+		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>; // CAMERA_GPIO
+		enable-active-high;
 	};
 
 	cam_vana2_reg: camvana2reg {
@@ -368,8 +372,6 @@
 	};
 
 	imx708@1a {
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_camera>;
 		compatible = "sony,imx708";
 		reg = <0x1a>;
 		status = "okay";
@@ -383,7 +385,6 @@
 		vddl-supply = <&cam_vddl_reg>; /* 1.8v */
 
 		csi_id = <0>;
-		reset-gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>; // CAMERA_GPIO
 
 		rotation = <180>;
 		orientation = <2>;
