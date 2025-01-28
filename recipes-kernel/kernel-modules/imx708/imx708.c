@@ -1666,6 +1666,7 @@ static int imx708_power_on(struct device *dev)
 	usleep_range(IMX708_XCLR_MIN_DELAY_US,
 		     IMX708_XCLR_MIN_DELAY_US + IMX708_XCLR_DELAY_RANGE_US);
 
+	dev_dbg(&client->dev, "%s reset_gpio=%d\n", __func__, 1);
 	return 0;
 
 reg_off:
@@ -1681,6 +1682,7 @@ static int imx708_power_off(struct device *dev)
 	struct imx708 *imx708 = to_imx708(sd);
 
 	gpiod_set_value_cansleep(imx708->reset_gpio, 0);
+	dev_dbg(&client->dev, "%s reset_gpio=%d\n", __func__, 0);
 	regulator_bulk_disable(ARRAY_SIZE(imx708_supply_name),
 			       imx708->supplies);
 	clk_disable_unprepare(imx708->inclk);
