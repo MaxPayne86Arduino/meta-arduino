@@ -28,3 +28,7 @@ do_install:append() {
     install -d ${D}${sysconfdir}/modprobe.d
     install -m 0644 ${WORKDIR}/imx8-media-dev.conf ${D}${sysconfdir}/modprobe.d/
 }
+
+FILES:${PN} += " \
+    ${sysconfdir} \
+"
