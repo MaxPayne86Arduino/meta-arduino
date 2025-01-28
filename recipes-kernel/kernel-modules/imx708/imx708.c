@@ -2047,9 +2047,6 @@ static int imx708_probe(struct i2c_client *client)
 	/* Request optional enable pin */
 	imx708->reset_gpio = devm_gpiod_get_optional(dev, "reset",
 						     GPIOD_OUT_LOW);
-	if (IS_ERR(imx708->reset_gpio)) {
-		return dev_err_probe(dev, PTR_ERR(imx708->reset_gpio), "cannot obtain reset-gpio\n");
-	}
 
 	/*
 	 * The sensor must be powered for imx708_identify_module()
