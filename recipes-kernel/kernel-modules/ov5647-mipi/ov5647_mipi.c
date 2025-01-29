@@ -299,7 +299,7 @@ static struct regulator *gpo_regulator;
 
 static int ov5647_probe(struct i2c_client *adapter,
 				const struct i2c_device_id *device_id);
-static void ov5647_remove(struct i2c_client *client);
+static int ov5647_remove(struct i2c_client *client);
 
 static s32 ov5647_read_reg(u16 reg, u8 *val);
 static s32 ov5647_write_reg(u16 reg, u8 val);
@@ -1341,7 +1341,7 @@ static int ov5647_s_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *a)
 }
 
 static int ov5647_set_fmt(struct v4l2_subdev *sd,
-			  struct v4l2_subdev_state *state,
+			  struct v4l2_subdev_pad_config *cfg,
 			  struct v4l2_subdev_format *format)
 {
 	struct v4l2_mbus_framefmt *mf = &format->format;
@@ -1365,7 +1365,7 @@ static int ov5647_set_fmt(struct v4l2_subdev *sd,
 }
 
 static int ov5647_get_fmt(struct v4l2_subdev *sd,
-			  struct v4l2_subdev_state *state,
+			  struct v4l2_subdev_pad_config *cfg,
 			  struct v4l2_subdev_format *format)
 {
 	struct v4l2_mbus_framefmt *mf = &format->format;
@@ -1384,7 +1384,7 @@ static int ov5647_get_fmt(struct v4l2_subdev *sd,
 }
 
 static int ov5647_enum_mbus_code(struct v4l2_subdev *sd,
-				 struct v4l2_subdev_state *state,
+				 struct v4l2_subdev_pad_config *cfg,
 				 struct v4l2_subdev_mbus_code_enum *code)
 {
 	if (code->pad || code->index >= ARRAY_SIZE(ov5647_colour_fmts))
@@ -1403,7 +1403,7 @@ static int ov5647_enum_mbus_code(struct v4l2_subdev *sd,
  * Return 0 if successful, otherwise -EINVAL.
  */
 static int ov5647_enum_framesizes(struct v4l2_subdev *sd,
-			       struct v4l2_subdev_state *state,
+			       struct v4l2_subdev_pad_config *cfg,
 			       struct v4l2_subdev_frame_size_enum *fse)
 {
 	if (fse->index > ov5647_mode_MAX)
@@ -1429,7 +1429,7 @@ static int ov5647_enum_framesizes(struct v4l2_subdev *sd,
  * Return 0 if successful, otherwise -EINVAL.
  */
 static int ov5647_enum_frameintervals(struct v4l2_subdev *sd,
-		struct v4l2_subdev_state *state,
+		struct v4l2_subdev_pad_config *cfg,
 		struct v4l2_subdev_frame_interval_enum *fie)
 {
 	int i, j, count;
@@ -1704,7 +1704,7 @@ static int ov5647_probe(struct i2c_client *client,
  * @param client            struct i2c_client *
  * @return  Error code indicating success or failure
  */
-static void ov5647_remove(struct i2c_client *client)
+static int ov5647_remove(struct i2c_client *client)
 {
 	struct v4l2_subdev *sd = i2c_get_clientdata(client);
 
@@ -1726,7 +1726,7 @@ static void ov5647_remove(struct i2c_client *client)
 	if (io_regulator)
 		regulator_disable(io_regulator);
 
-	return;
+	return 0;
 }
 
 module_i2c_driver(ov5647_i2c_driver);
