@@ -10,6 +10,14 @@ PV = "0.1"
 SRC_URI = " \
   file://Makefile \
   file://imx708.c \
+  file://imx708.conf \
 "
 
 S = "${WORKDIR}"
+
+do_install:append () {
+    install -d ${D}${sysconfdir}/modprobe.d
+    install -m 0644 ${WORKDIR}/imx708.conf ${D}${sysconfdir}/modprobe.d/
+}
+
+FILES:${PN} += "${sysconfdir}"

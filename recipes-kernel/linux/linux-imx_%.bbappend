@@ -23,12 +23,3 @@ SRC_URI:append:portenta-x9 = " \
 # keep overriding your kernel defconfig
 do_copy_defconfig[noexec] = "1"
 do_merge_delta_config[noexec] = "1"
-
-do_install:append() {
-    install -d ${D}${sysconfdir}/modprobe.d
-    install -m 0644 ${WORKDIR}/imx8-media-dev.conf ${D}${sysconfdir}/modprobe.d/
-}
-
-FILES:${PN} += " \
-    ${sysconfdir} \
-"
