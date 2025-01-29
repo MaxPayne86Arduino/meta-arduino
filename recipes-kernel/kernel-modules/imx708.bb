@@ -15,9 +15,9 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-do_install:append () {
+do_install:append:portenta-x9 () {
     install -d ${D}${sysconfdir}/modprobe.d
     install -m 0644 ${WORKDIR}/imx708.conf ${D}${sysconfdir}/modprobe.d/
 }
 
-FILES:${PN} += "${sysconfdir}"
+FILES:${PN}:portenta-x9 += "${sysconfdir}"
