@@ -1390,6 +1390,8 @@ static int ov5647_get_fmt(struct v4l2_subdev *sd,
 	mf->code	= fmt->code;
 	mf->colorspace	= fmt->colorspace;
 	mf->field	= V4L2_FIELD_NONE;
+	mf->width = sensor->pix.width;
+	mf->height = sensor->pix.height;
 
 	return 0;
 }
