@@ -131,6 +131,12 @@
 		regulator-max-microvolt = <1500000>;
 	};
 
+	cam_clk: camclk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -359,10 +365,10 @@
 		reg = <0x36>;
 		status = "okay";
 
-		clocks = <&clk IMX93_CLK_MIPI_PHY_CFG>;
+		clocks = <&cam_clk>;
 		clock-names = "csi_mclk";
 		mclk = <24000000>;
-		mclk_source = <1>;
+		mclk_source = <0>;
 
 		DOVDD-supply = <&ov5647_dovdd_1v8>;
 		DVDD-supply = <&ov5647_dvdd_1v5>;
