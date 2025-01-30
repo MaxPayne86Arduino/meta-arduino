@@ -11,6 +11,14 @@ PV = "0.1"
 SRC_URI = " \
   file://Makefile \
   file://ov5647_mipi.c \
+  file://ov5647-mipi.conf \
 "
 
 S = "${WORKDIR}"
+
+do_install:append:portenta-x9 () {
+    install -d ${D}${sysconfdir}/modprobe.d
+    install -m 0644 ${WORKDIR}/ov5647-mipi.conf ${D}${sysconfdir}/modprobe.d/
+}
+
+FILES:${PN}:portenta-x9 += "${sysconfdir}"

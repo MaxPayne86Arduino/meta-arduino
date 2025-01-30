@@ -82,7 +82,8 @@ DTB_OVERLAYS:append:portenta-x9 = " \
 SRC_URI:append:portenta-x9 = " \
     file://portenta-x9/arduino_portenta-x9.dts \
     file://portenta-x9/arduino_portenta-x9-rpi-cm4-io-board-dsi-panel.dts \
-    file://portenta-x9/arduino_portenta-x9-rpi-cm4-io-board-dsi-panel-csi-camera.dts \
+    file://portenta-x9/arduino_portenta-x9-rpi-cm4-io-board-dsi-panel-csi-camera-imx708.dts \
+    file://portenta-x9/arduino_portenta-x9-rpi-cm4-io-board-dsi-panel-csi-camera-ov5647.dts \
     ${DTB_OVERLAYS} \
 "
 COMPATIBLE_MACHINE:portenta-x9 = ".*"

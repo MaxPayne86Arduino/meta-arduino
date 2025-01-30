@@ -16,6 +16,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     dtbocfg \
     panel-simple \
     imx708 \
+    ov5647-mipi \
 "
 
 # Install extra packages (minimal)
