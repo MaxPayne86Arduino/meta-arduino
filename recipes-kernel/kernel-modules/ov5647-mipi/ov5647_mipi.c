@@ -1395,7 +1395,7 @@ static int ov5647_get_fmt(struct v4l2_subdev *sd,
 }
 
 static int ov5647_enum_mbus_code(struct v4l2_subdev *sd,
-				 struct v4l2_subdev_pad_config *cfg,
+				 struct v4l2_subdev_state *state,
 				 struct v4l2_subdev_mbus_code_enum *code)
 {
 	if (code->pad || code->index >= ARRAY_SIZE(ov5647_colour_fmts))
