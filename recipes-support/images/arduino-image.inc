@@ -19,6 +19,11 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ov5647-mipi \
 "
 
+# Install custom u-boot scripts (mandatory for eMMC / SD Card boot)
+CORE_IMAGE_EXTRA_INSTALL += " \
+    u-boot-script-arduino \
+"
+
 # Install extra packages (minimal)
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline-extended \
