@@ -10,8 +10,6 @@ LICENSE = "MIT"
 inherit core-image
 
 CORE_IMAGE_EXTRA_INSTALL += " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', \
-                         'firmwared', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', \
                          'weston weston-init', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', \
