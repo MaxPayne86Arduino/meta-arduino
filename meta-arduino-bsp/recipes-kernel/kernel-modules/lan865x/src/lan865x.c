@@ -78,6 +78,7 @@ struct lan865x_priv {
 	u8 rx_cut_thr_mode;
 	u8 cps;
 	u8 protected;
+	struct gpio_desc *reset_gpio;
 };
 
 static struct {
@@ -595,6 +596,12 @@ static int lan865x_get_dt_data(struct lan865x_priv *priv)
 		dev_err(&spi->dev, "bad value in oa-protected property");
 		return -EINVAL;
 	}
+	priv->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
+	if (IS_ERR(priv->reset_gpio)) {
+		ret = PTR_ERR(priv->reset_gpio);
+		dev_err(&spi->dev, "Failed to get reset GPIO: %d\n", ret);
+		return ret;
+	}
 
 	return 0;
 }
@@ -621,6 +628,14 @@ static int lan865x_probe(struct spi_device *spi)
 	ret = lan865x_get_dt_data(priv);
 	if (ret)
 		return ret;
+
+	// Toggle reset
+	if (priv->reset_gpio) {
+		gpiod_set_value(priv->reset_gpio, 1);
+		msleep(100); // Hold reset for 100ms
+		gpiod_set_value(priv->reset_gpio, 0);
+		msleep(100); // Wait for 100ms after releasing reset
+	}
 
 	spi->rt = true;
 	spi_setup(spi);
@@ -706,6 +721,12 @@ static void lan865x_remove(struct spi_device *spi)
 	unregister_netdev(priv->netdev);
 	oa_tc6_deinit(priv->tc6);
 	free_netdev(priv->netdev);
+
+	// Deassert reset GPIO and release it
+	if (priv->reset_gpio) {
+		gpiod_set_value(priv->reset_gpio, 0); // Deassert reset
+		devm_gpiod_put(&spi->dev, priv->reset_gpio);
+	}
 }
 
 #ifdef CONFIG_OF
