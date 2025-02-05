@@ -16,6 +16,10 @@
 	compatible = "brcm,bcm2835";
 
 	/* SPI */
+	/* Board 2to1 J3 */
+	/* J3.18 CS0 T1S LAN8651B1-E ARCH1 */
+	/* J3.20 CS1 J8.15 ARCH1 */
+	/* CS to Sd Card */
 
 	fragment@0 {
 		target = <&spi1>;
@@ -30,27 +34,67 @@
 			status = "okay";
 
 			/* To ARCH1 */
-			/* @TODO: bind devices on ARCH1 */
+			/* Debug Only */
 			spidev1_0: spidev@0 {
 				compatible = "spidev";
 				reg = <0>;      /* CE0 */
 				#address-cells = <1>;
 				#size-cells = <0>;
-				spi-max-frequency = <125000000>;
+				spi-max-frequency = <5000000>;
+				status = "disabled";
+			};
+
+			/* To ARCH1 */
+			/* T1S LAN8651B1-E */
+			/* IRQ GPIO27 */
+			/* RST gpioexp_2 P13 */
+			t1s1: lan865x@0 {
+				compatible = "microchip,lan865x";
+				reg = <0>; /* CE0 */
+				pinctrl-names = "default";
+				pinctrl-0 = <&t1s1_pins>;
+				interrupt-parent = <&gpio>;
+				interrupts = <27 0x2>; /* 0x2 - falling edge trigger, 0x8 - active low level-sensitive */
+				local-mac-address = [04 05 06 01 02 03];
+				spi-max-frequency = <15000000>;
+				/* PLCA settings */
+				plca-enable = /bits/ 8 <1>; /* 1 - PLCA enable, 0 - CSMA/CD enable */
+				plca-node-id = /bits/ 8 <0>; /* PLCA node id range: 0 to 254 */
+				plca-node-count = /bits/ 8 <8>; /* PLCA node count range: 1 to 255 */
+				plca-burst-count = /bits/ 8 <0x0>; /* PLCA burst count range: 0x0 to 0xFF */
+				plca-burst-timer = /bits/ 8 <0x80>; /* PLCA burst timer */
+				plca-to-timer = /bits/ 8 <0x20>; /* PLCA TO value */
+				tx-cut-through-mode = /bits/ 8 <0>; /* 1 - tx cut through mode enable, 0 - Store and forward mode enable */
+				rx-cut-through-mode = /bits/ 8 <0>; /* 1 - rx cut through mode enable, 0 - Store and forward mode enable */
+				oa-chunk-size = /bits/ 8 <64>;
+				oa-protected = /bits/ 8 <1>;
+				reset-gpios = <&gpioexp_2 11 0>; /* RST on gpioexp_2 P13, active low */
 				status = "okay";
 			};
 
 			/* To ARCH1 */
-			/* @TODO: bind devices on ARCH1 */
+			/* J8 */
 			spidev1_1: spidev@1 {
 				compatible = "spidev";
 				reg = <1>;      /* CE1 */
 				#address-cells = <1>;
 				#size-cells = <0>;
-				spi-max-frequency = <125000000>;
+				spi-max-frequency = <5000000>;
 				status = "okay";
 			};
 
+			/* On ARCH2 */
+			/* Debug Only */
+			spidev1_3: spidev@2 {
+				compatible = "spidev";
+				reg = <2>; /* CS */
+				#address-cells = <1>;
+				#size-cells = <0>;
+				spi-max-frequency = <5000000>;
+				status = "okay";
+			};
+
+			/* On ARCH2 */
 			/* Sd Card */
 			mmc_slot: mmcslot@2 {
 				compatible = "mmc-spi-slot";
@@ -59,7 +103,7 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 				spi-max-frequency = <5000000>;
-				status = "okay";
+				status = "disabled";
 			};
 		};
 	};
@@ -69,7 +113,7 @@
 	/* ID_SD / ID_SC
 	// See i2c0-overlay.dts
 	// You can just load dtoverlay=i2c0
-	@TODO: fix i2c node name, bind following devices
+	Available devices:
 	- EEPROM
 	- GPIOEXP1
 	- GPIOEXP2
@@ -89,14 +133,16 @@
 			pinctrl-0 = <&i2c0_pins>;
 			status = "okay";
 
+			/* On ARCH2 */
 			/* U5 RTC */
 			// INTA -> GLOBAL_EN
 			// INTB -> gpioexp_1 P00A
-			pcf8523: pcf8523@68 {
+			pcf8523: pcf8523@51 {
 				compatible = "nxp,pcf8523";
-				reg = <0x68>;
+				reg = <0x51>;
 			};
 
+			/* On ARCH2 */
 			/* U2_1 GPIO EXP */
 			// See pca953x-overlay.dts
 			gpioexp_1: gpio@21 {
@@ -112,6 +158,7 @@
 				//interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
 			};
 
+			/* On ARCH2 */
 			/* U2_2 GPIO EXP */
 			// // See pca953x-overlay.dts
 			gpioexp_2: gpio@20 {
@@ -127,6 +174,7 @@
 				//interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
 			};
 
+			/* On ARCH2 */
 			/*  U4 EEPROM 0x50 */
 			/* WP is held to GND */
 			eeprom@50 {
@@ -137,10 +185,26 @@
 		};
 	};
 
+	/* I2C GPIO2 / GPIO3
+	// See i2c1-overlay.dts
+	// You can just load dtoverlay=i2c1
+	Available devices:
+	- J1 (PADS) >> ARCH2
+	- J7 QWIIC >> ARCH1
+	*/
+	fragment@3 {
+		target = <&i2c1>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&i2c1_pins>;
+			status = "okay";
+		};
+	};
+
 	/* USB */
 	// See dwc2-overlay.dts
 	// You can just load dtoverlay=dwc2
-	fragment@3 {
+	fragment@4 {
 		target = <&usb>;
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -154,8 +218,19 @@
 		};
 	};
 
+	/* UART3 */
+	fragment@5 {
+		target = <&uart3>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&uart3_pins>;
+			pinctrl-1 = <&uart3_ctsrts_gpio6>;
+			status = "okay";
+		}
+	}
+
 	/* PINMUX */
-	fragment@4 {
+	fragment@6 {
 		target = <&gpio>;
 		__overlay__ {
 			pinctrl_gpioexp_1: gpioexp_1grp {
@@ -166,6 +241,12 @@
 			pinctrl_gpioexp_2: gpioexp_2grp {
 				brcm,pins = <25>;
 				brcm,function = <BCM2835_FSEL_GPIO_OUT>;
+			};
+
+			t1s1_pins: t1s1pins {
+				brcm,pins = <27>;
+				brcm,function = <0>; /* IN */
+				brcm,pull = <0>; /* NONE */
 			};
 
 			spi1_pins: spi1pins {
