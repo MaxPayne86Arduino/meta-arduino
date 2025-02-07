@@ -1,9 +1,9 @@
 # Import custom env file
+setenv bootenv uEnv.txt
 run loadbootenv
 run importbootenv
 
 # Set environment variables
-setenv bootenv uEnv.txt
 setenv fdt_addr 0x43000000
 setenv image Image.gz
 setenv img_addr 0x42000000
