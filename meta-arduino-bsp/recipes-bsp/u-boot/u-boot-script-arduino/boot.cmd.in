@@ -1,4 +1,5 @@
 # Import custom env file
+setenv mmcdev ${emmc_dev}
 setenv bootenv uEnv.txt
 setenv bootdir /boot
 setenv loadbootenv load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${bootenv}
@@ -46,6 +47,8 @@ run bootcmd_ovl
 
 # Bootargs
 setenv console ttyLP2,115200 earlycon
+setenv mmcblk ${mmcdev}
+setenv mmcroot /dev/mmcblk${mmcblk}p${mmcpart}
 #setenv bootargs console=${console},${baudrate} root=${mmcroot} rdinit=/linuxrc clk_ignore_unused # Init: linuxrc
 setenv bootargs console=${console},${baudrate} root=${mmcroot} rdinit=/sbin/init clk_ignore_unused # Init: systemd
 
