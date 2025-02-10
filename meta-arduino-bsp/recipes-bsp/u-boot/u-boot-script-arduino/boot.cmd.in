@@ -2,8 +2,8 @@
 setenv mmcdev ${emmc_dev}
 setenv bootenv uEnv.txt
 setenv bootdir /boot
-setenv loadbootenv load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${bootenv}
-setenv importbootenv echo Importing environment from mmc ...; env import -t -r $loadaddr $filesize
+setenv loadbootenv 'load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${bootenv}'
+setenv importbootenv 'echo Importing environment from mmc ...; env import -t -r $loadaddr $filesize'
 run loadbootenv
 run importbootenv
 
@@ -11,7 +11,7 @@ run importbootenv
 setenv fdt_addr 0x83000000
 setenv image ${bootdir}/Image
 setenv loadaddr 0x80400000
-setenv loadfdt echo fdt_file=${fdt_file}; load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/devicetree/${fdt_file}
+setenv loadfdt 'echo fdt_file=${fdt_file}; load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/devicetree/${fdt_file}'
 
 setenv devtype mmc
 setenv ovlload ext4load
@@ -33,9 +33,6 @@ setenv bootcmd_ovl 'fdt addr ${fdt_addr}; \
                       fdt apply ${fdtovaddr}; \
                     done'
 
-# Set boot arguments
-run mmcargs
-
 # Load the kernel image and device tree blob
 echo "Using kernel image ${image}"
 run loadimage
@@ -45,12 +42,11 @@ run loadfdt
 # Apply overlays
 run bootcmd_ovl
 
-# Bootargs
-setenv console ttyLP2,115200 earlycon
+# Set boot arguments (bootargs)
+setenv console 'ttyLP2,115200 earlycon,${baudrate}'
 setenv mmcblk ${mmcdev}
 setenv mmcroot /dev/mmcblk${mmcblk}p${mmcpart}
-#setenv bootargs console=${console},${baudrate} root=${mmcroot} rdinit=/linuxrc clk_ignore_unused # Init: linuxrc
-setenv bootargs console=${console},${baudrate} root=${mmcroot} rdinit=/sbin/init clk_ignore_unused # Init: systemd
+run mmcargs
 
 # Boot the kernel
 booti ${loadaddr} - ${fdt_addr}
