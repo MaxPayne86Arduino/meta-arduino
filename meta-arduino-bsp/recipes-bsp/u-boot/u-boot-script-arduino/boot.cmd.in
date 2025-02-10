@@ -1,13 +1,15 @@
 # Import custom env file
 setenv bootenv uEnv.txt
+setenv bootdir boot
+setenv loadbootenv load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${bootenv}
+setenv importbootenv echo Importing environment from mmc ...; env import -t -r $loadaddr $filesize
 run loadbootenv
 run importbootenv
 
 # Set environment variables
-setenv fdt_addr 0x43000000
-setenv image Image.gz
-setenv img_addr 0x42000000
-setenv loadaddr 0x40480000
+setenv fdt_addr 0x83000000
+setenv image Image
+setenv loadaddr 0x80400000
 setenv loadfdt echo fdt_file=${fdt_file}; load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/devicetree/${fdt_file}
 
 setenv devtype mmc
