@@ -44,5 +44,11 @@ run loadfdt
 # Apply overlays
 run bootcmd_ovl
 
+# Bootargs
+setenv console ttyLP2,115200 earlycon
+run mfgtool_args
+#setenv bootargs console=${console},${baudrate} rdinit=/linuxrc clk_ignore_unused # Init: linuxrc
+setenv bootargs console=${console},${baudrate} rdinit=/sbin/init clk_ignore_unused # Init: systemd
+
 # Boot the kernel
 booti ${loadaddr} - ${fdt_addr}
