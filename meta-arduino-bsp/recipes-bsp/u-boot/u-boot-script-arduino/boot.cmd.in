@@ -18,7 +18,7 @@ setenv ovltype mmc
 setenv ovlpart ${mmcpart}
 setenv ovldev ${mmcdev}
 setenv ovlpath ${bootdir}/devicetree
-setenv fdtovaddr 0x43600000
+setenv fdtovaddr 0x83600000
 setenv remove_nodes 'for node in ${ovlrm}; do \
                         echo Removing node ${node}; \
                         fdt rm ${node}; \
