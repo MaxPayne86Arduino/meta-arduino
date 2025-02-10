@@ -1,6 +1,6 @@
 # Import custom env file
 setenv bootenv uEnv.txt
-setenv bootdir boot
+setenv bootdir /boot
 setenv loadbootenv load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${bootenv}
 setenv importbootenv echo Importing environment from mmc ...; env import -t -r $loadaddr $filesize
 run loadbootenv
