@@ -40,7 +40,7 @@ echo "Using root devicetree ${fdt_file}"
 run loadfdt
 
 # Apply overlays
-run bootcmd_ovl
+#run bootcmd_ovl
 
 # Set boot arguments (bootargs)
 setenv console 'ttyLP2,115200 earlycon,${baudrate}'
