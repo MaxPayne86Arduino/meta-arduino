@@ -8,7 +8,7 @@ run loadbootenv
 run importbootenv
 
 # Set environment variables
-setenv fdt_addr 0x83000000
+setenv fdt_addr 0x84000000
 setenv image Image
 setenv loadaddr 0x80400000
 setenv loadimage 'load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${image}'
