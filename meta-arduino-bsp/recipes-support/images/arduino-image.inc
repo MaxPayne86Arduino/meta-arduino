@@ -45,7 +45,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ethtool \
     usbutils \
     dtbocfg \
-    cpufrequtils \
+    lmbench \
 "
 # NOTES:
 # - We install only memtool from imx-test
