@@ -8,6 +8,7 @@ run loadbootenv
 run importbootenv
 
 # Set environment variables
+# Note: loadaddr - fdt_addr = 60 MB
 setenv fdt_addr 0x84000000
 setenv image Image
 setenv loadaddr 0x80400000
