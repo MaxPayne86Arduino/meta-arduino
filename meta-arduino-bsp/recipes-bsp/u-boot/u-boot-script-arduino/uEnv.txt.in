@@ -15,4 +15,4 @@ overlays=''
 # Init: systemd
 rdinit=/sbin/init
 
-mmcargs=setenv bootargs console=${console} root=${mmcroot} rdinit=${rdinit} clk_ignore_unused rootwait rw ${cma_size} cma_name=linux,cma
+mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot} rdinit=${rdinit} clk_ignore_unused rootwait rw
