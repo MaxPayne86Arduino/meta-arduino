@@ -64,6 +64,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     python3-core \
     python3-smbus2 \
     python3-periphery \
+    python3-serial \
     android-tools \
     android-tools-adbd \
     fb-test \
