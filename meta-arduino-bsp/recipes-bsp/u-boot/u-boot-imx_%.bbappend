@@ -69,7 +69,7 @@ do_override_files_portenta_x9 () {
     # see scripts/Makefile.lib, so should never be included directly from board devicetree
     cp ${WORKDIR}/portenta-x9-u-boot.dtsi ${S}/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
 
-    cp ${WORKDIR}/portenta-x9.c ${S}/board/freescale/imx93_evk/imx93_evk.c.c
+    cp ${WORKDIR}/portenta-x9.c ${S}/board/freescale/imx93_evk/imx93_evk.c
     cp ${WORKDIR}/portenta-x9_lpddr4x_timing.c ${S}/board/freescale/imx93_evk/lpddr4x_timing.c
     cp ${WORKDIR}/portenta-x9_spl.c ${S}/board/freescale/imx93_evk/spl.c
 
