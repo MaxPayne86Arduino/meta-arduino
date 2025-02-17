@@ -81,6 +81,39 @@
 		};
 	};
 
+	thermal-zones {
+		cpu-thermal {
+			polling-delay-passive = <250>;
+			polling-delay = <2000>;
+
+			thermal-sensors = <&tmu 0>;
+
+			trips {
+				cpu_alert: cpu-alert {
+					temperature = <80000>;
+					hysteresis = <2000>;
+					type = "passive";
+				};
+
+				/* Note: Industrial -40 to +105°C */
+				cpu_crit: cpu-crit {
+					temperature = <100000>;
+					hysteresis = <2000>;
+					type = "critical";
+				};
+			};
+
+			cooling-maps {
+				map0 {
+					trip = <&cpu_alert>;
+					cooling-device =
+						<&A55_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+						<&A55_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+				};
+			};
+		};
+	};
+
 	ethosu {
 		compatible = "arm,ethosu";
 		fsl,cm33-proc = <&cm33>;
@@ -130,13 +163,6 @@
 			linux,default-trigger = "boot";
 		};
 	};
-};
-
-/* Note: Industrial -40 to +105°C */
-&cpu-crit {
-	temperature = <100000>;
-	hysteresis = <2000>;
-	type = "critical";
 };
 
 &adc1 {
