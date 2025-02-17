@@ -9,6 +9,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     firmware-nxp-wifi-nxpiw612-sdio \
     firmware-nxp-wifi \
     kernel-module-btnxpuart \
+    lmbench \
 "
 
 # Install extra out of tree kernel drivers
@@ -45,7 +46,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ethtool \
     usbutils \
     dtbocfg \
-    lmbench \
 "
 # NOTES:
 # - We install only memtool from imx-test
