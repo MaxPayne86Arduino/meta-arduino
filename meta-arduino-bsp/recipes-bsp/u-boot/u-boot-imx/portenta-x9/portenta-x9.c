@@ -198,9 +198,9 @@ int board_usb_init(int index, enum usb_init_type init)
 	struct tcpc_port *port_ptr;
 
 	debug("board_usb_init %d, type %d\n", index, init);
-	
+
 	if (index == 0)
-	port_ptr = &port1;
+		port_ptr = &port1;
 	else
 		port_ptr = &port2;
 
