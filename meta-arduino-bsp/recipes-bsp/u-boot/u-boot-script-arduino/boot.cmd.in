@@ -30,7 +30,7 @@ setenv bootcmd_ovl 'fdt addr ${fdt_addr}; \
                     run remove_nodes; \
                     fdt resize 0x${filesize}; \
                     for ov in ${overlays}; do \
-                      echo overlaying ${ov}...; \
+                      echo Overlaying ${ov}...; \
                       ${ovlload} ${ovltype} ${ovldev}:${ovlpart} ${fdtovaddr} ${ovlpath}/${ov}.dtbo && \
                       fdt apply ${fdtovaddr}; \
                     done'
