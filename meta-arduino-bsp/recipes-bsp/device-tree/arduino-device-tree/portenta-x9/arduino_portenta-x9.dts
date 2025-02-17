@@ -131,6 +131,13 @@
 	};
 };
 
+/* Note: Industrial -40 to +105°C */
+&cpu-crit {
+	temperature = <100000>;
+	hysteresis = <2000>;
+	type = "critical";
+};
+
 &adc1 {
 	vref-supply = <&reg_vref_1v8>;
 	status = "okay";
