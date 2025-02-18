@@ -164,7 +164,8 @@
 		};
 	};
 
-	spi_gpio {
+	/* @TODO: this conflicts with lpspi4 node */
+	spi_gpio: spi-gpio {
 		compatible = "spi-gpio";
 		#address-cells = <0x1>;
 		pinctrl-names = "default";
@@ -181,7 +182,7 @@
 		mmc_slot_0: mmcslot@0 {
 			compatible = "mmc-spi-slot";
 			voltage-ranges = <3200 3400>;
-			reg = <0>;      /* CS */
+			reg = <0>; /* CS */
 			spi-max-frequency = <1000000>;
 			status = "disabled";
 		};
@@ -203,7 +204,7 @@
 	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
 			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
 	fsl,startup-delay-ms = <500>;
-	status = "disabled";
+	status = "okay";
 };
 
 /* Hooked to ENET1 */
@@ -409,16 +410,6 @@
 	};
 };
 
-/* expansion uart */
-&lpuart8 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	clock-frequency = <400000>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart8>, <&pinctrl_expansion_gpio>;
-	status = "okay";
-};
-
 &lpi2c4 {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -490,16 +481,45 @@
 	status = "okay";
 };
 
+/* Expansion UART */
+&lpuart8 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart8>, <&pinctrl_expansion_gpio>;
+	status = "okay";
+};
+
+&lpuart1 { /* Bluetooth IW612 */
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart1>;
+	/* @TODO: missing pinctrl-assert-gpios (IND_RST_BT) */
+	status = "okay";
+
+	/* @TODO: btnxpuart is modprobed by hand */
+	bluetooth {
+		compatible = "nxp,88w8987-bt";
+	};
+};
+
+/* IW612 SPI 802.15.4 */
+&lpspi1 {
+	fsl,spi-num-chipselects = <1>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpspi1>;
+	status = "okay";
+
+	spidev0: spi@0 {
+		reg = <0>;
+		compatible = "lwn,bk4";
+		spi-max-frequency = <1000000>;
+	};
+};
+
 &lpspi4 {
 	fsl,spi-num-chipselects = <3>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpspi4>;
 	cs-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>, <&gpio2 17 GPIO_ACTIVE_LOW>, <&gpio2 16 GPIO_ACTIVE_LOW>;
 	status = "okay";
-	/*
-	/delete-property/ dmas;
-	/delete-property/ dma-names;
-	*/
 
 	/* To ARCH1 */
 	eth4: lan865x@0{
@@ -537,39 +557,14 @@
 	};
 
 	/* Sd Card */
+	/* @TODO: see spi_gpio */
 	mmc_slot: mmcslot@2 {
 		compatible = "mmc-spi-slot";
 		voltage-ranges = <3200 3400>;
 		reg = <2>;      /* CS */
 		spi-max-frequency = <10000000>;
 		mode = <0>;
-		status = "okay";
-	};
-};
-
-&lpuart1 { /* Bluetooth IW612 */
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart1>;
-	/* @TODO: missing pinctrl-assert-gpios (IND_RST_BT) */
-	status = "okay";
-
-	/* @TODO: btnxpuart is modprobed by hand */
-	bluetooth {
-		compatible = "nxp,88w8987-bt";
-	};
-};
-
-/* IW612 SPI 802.15.4 */
-&lpspi1 {
-	fsl,spi-num-chipselects = <1>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_lpspi1>;
-	status = "okay";
-
-	spidev0: spi@0 {
-		reg = <0>;
-		compatible = "lwn,bk4";
-		spi-max-frequency = <1000000>;
+		status = "disabled";
 	};
 };
 
@@ -583,7 +578,7 @@
 
 /* USB1 Device Port */
 &usbotg1 {
-	dr_mode = "otg";
+	dr_mode = "peripheral";
 	hnp-disable;
 	srp-disable;
 	adp-disable;
@@ -946,20 +941,12 @@
 
 	pinctrl_lpspi4: lpspi4grp {
 		fsl,pins = <
-/*		
 			MX93_PAD_GPIO_IO16__LPSPI4_PCS2		0x3fe
 			MX93_PAD_GPIO_IO17__LPSPI4_PCS1		0x3fe
 			MX93_PAD_GPIO_IO18__LPSPI4_PCS0		0x3fe
 			MX93_PAD_GPIO_IO19__LPSPI4_SIN		0x3fe
 			MX93_PAD_GPIO_IO20__LPSPI4_SOUT		0x3fe
 			MX93_PAD_GPIO_IO21__LPSPI4_SCK		0x3fe
-*/			
-         MX93_PAD_GPIO_IO16__GPIO2_IO16		0x2
-			MX93_PAD_GPIO_IO17__GPIO2_IO17		0x2
-			MX93_PAD_GPIO_IO18__GPIO2_IO18		0x2
-			MX93_PAD_GPIO_IO19__LPSPI4_SIN		0x6
-			MX93_PAD_GPIO_IO20__LPSPI4_SOUT		0x6
-			MX93_PAD_GPIO_IO21__LPSPI4_SCK		0x92
 		>;
 	};
 
