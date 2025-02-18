@@ -14,5 +14,5 @@ do_install:append() {
 }
 
 FILES:${PN}-nxp-common:append = " \
-    ${D}${nonarch_base_libdir}/firmware/nxp \
+    ${nonarch_base_libdir}/firmware/nxp \
 "
