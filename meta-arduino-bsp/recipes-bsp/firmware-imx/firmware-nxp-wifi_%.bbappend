@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
-    file://WlanCalData_ext_NXP_dANT.conf \
+    file://2EL_WlanCalData_ext_NXP_dANT.conf \
 "
 
 do_install:append() {
