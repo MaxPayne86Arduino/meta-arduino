@@ -22,10 +22,12 @@ setenv ovlpart ${mmcpart}
 setenv ovldev ${mmcdev}
 setenv ovlpath ${bootdir}/devicetree
 setenv fdtovaddr 0x83600000
+setenv ovlrm ${rmlist}
 setenv remove_nodes 'for node in ${ovlrm}; do \
                         echo Removing node ${node}; \
                         fdt rm ${node}; \
                       done'
+setenv overlays ${ovlist}
 setenv bootcmd_ovl 'fdt addr ${fdt_addr}; \
                     run remove_nodes; \
                     fdt resize 0x${filesize}; \

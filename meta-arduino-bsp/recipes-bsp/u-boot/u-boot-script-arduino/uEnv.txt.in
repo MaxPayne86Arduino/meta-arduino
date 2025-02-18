@@ -2,12 +2,12 @@
 fdt_file=arduino_portenta-x9.dtb
 
 # Define devicetree nodes to be removed (optional)
-# Example: ovlrm='/soc@0/bus@32c00000/usb@32e40000/port/endpoint'
-ovlrm=''
+# Example: rmlist='/soc@0/bus@32c00000/usb@32e40000/port/endpoint'
+rmlist=''
 
 # Define devicetree overlay list (optional)
-# Example: overlays='overlay1 overlay2 overlay3'
-overlays=''
+# Example: ovlist='overlay1 overlay2 overlay3'
+ovlist=''
 
 # Init: linuxrc
 #rdinit=/linuxrc
