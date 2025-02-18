@@ -13,6 +13,6 @@ do_install:append() {
     install -D -m 0644 ${WORKDIR}/2EL_WlanCalData_ext_NXP_dANT.conf ${D}${nonarch_base_libdir}/firmware/nxp/WlanCalData_ext_NXP_dANT.conf
 }
 
-FILES:${PN}-nxp-common:append = " \
+FILES:${PN}:append = " \
     ${nonarch_base_libdir}/firmware/nxp \
 "
