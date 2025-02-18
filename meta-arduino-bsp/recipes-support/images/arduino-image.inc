@@ -17,7 +17,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     dtbocfg \
 "
 
-Install extra out of tree kernel drivers (carrier boards)
+# Install extra out of tree kernel drivers (carrier boards)
 CORE_IMAGE_EXTRA_INSTALL += " \
     panel-simple \
     imx708 \
