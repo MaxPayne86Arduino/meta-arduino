@@ -22,7 +22,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     panel-simple \
     imx708 \
     ov5647-mipi \
-    lan865x \
 "
 
 # Install custom u-boot scripts (mandatory for eMMC / SD Card boot)
@@ -60,7 +59,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-base \
     systemd \
     networkmanager-nmcli \
-    mdio-tools \
     iperf3 \
     openocd \
     htop \
