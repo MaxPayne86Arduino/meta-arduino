@@ -23,12 +23,20 @@ SDPV: write -f ../imx-boot-portenta-x9-sd.bin-flash_singleboot -skipspl
 SDPV: jump
 # }
 
-# Commands are probably bugged, see
-# https://community.nxp.com/t5/i-MX-Processors/mii-commands-do-not-work-in-u-boot/m-p/158398
-# We should be able to set eth1 device in the following way, but we can't
-# FB: ucmd mii device ethernet@428a0000
+# List all phys
 FB: ucmd mdio list
-FB: ucmd mii device
+# Select first phy (fec: ethernet@42890000)
+FB: ucmd mii device FEC0
+# Probe first phy, output should be as per below
+# PHY 0x00: OUI = 0x0732, Model = 0x07, Rev = 0x08,  10baseT, HDX
+# PHY 0x02: OUI = 0x0732, Model = 0x07, Rev = 0x08,  10baseT, HDX
+FB: ucmd mii info 0
+FB: ucmd mii info 2
+# Select second phy (eqos: ethernet@428a0000)
+FB: ucmd mii device ethernet@428a0000
+# Probe second phy, output should be as per below
+# PHY 0x00: OUI = 0x0732, Model = 0x07, Rev = 0x08,  10baseT, HDX
+# PHY 0x01: OUI = 0x0732, Model = 0x07, Rev = 0x08,  10baseT, HDX
 FB: ucmd mii info
 
 FB: done
