@@ -516,7 +516,7 @@
 	fsl,spi-num-chipselects = <3>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpspi4>;
-	cs-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>, <&gpio2 17 GPIO_ACTIVE_LOW>, <&gpio2 16 GPIO_ACTIVE_LOW>;
+	/*cs-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>, <&gpio2 17 GPIO_ACTIVE_LOW>, <&gpio2 16 GPIO_ACTIVE_LOW>;*/
 	status = "okay";
 
 	/* To ARCH1 */
