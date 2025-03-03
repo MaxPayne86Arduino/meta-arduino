@@ -520,7 +520,10 @@
 	status = "okay";
 
 	/* To ARCH1 */
-	eth4: lan865x@0{
+	/* T1S LAN8651B1-E */
+	/* IRQ GPIO27 */
+	/* RST gpioexp_2 P13 */
+	t1s1: lan865x@0{
 		compatible = "microchip,lan865x";
 		reg = <0>;
 		pinctrl-names = "default";
@@ -540,6 +543,7 @@
 		rx-cut-through-mode = /bits/ 8 <0>; /* 1 - rx cut through mode enable, 0 - Store and forward mode enable */
 		oa-chunk-size = /bits/ 8 <64>;
 		oa-protected = /bits/ 8 <0>;
+		reset-gpios = <&gpioexp_2 11 0>; /* RST on gpioexp_2 P13, active low */
 		status = "okay";
 	};
 
