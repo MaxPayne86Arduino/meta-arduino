@@ -631,9 +631,9 @@ static int lan865x_probe(struct spi_device *spi)
 
 	// Toggle reset
 	if (priv->reset_gpio) {
-		gpiod_set_value(priv->reset_gpio, 1);
+		gpiod_set_value_cansleep(priv->reset_gpio, 1);
 		msleep(100); // Hold reset for 100ms
-		gpiod_set_value(priv->reset_gpio, 0);
+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
 		msleep(100); // Wait for 100ms after releasing reset
 	}
 
@@ -724,7 +724,7 @@ static void lan865x_remove(struct spi_device *spi)
 
 	// Deassert reset GPIO and release it
 	if (priv->reset_gpio) {
-		gpiod_set_value(priv->reset_gpio, 0); // Deassert reset
+		gpiod_set_value_cansleep(priv->reset_gpio, 0); // Deassert reset
 		devm_gpiod_put(&spi->dev, priv->reset_gpio);
 	}
 }
