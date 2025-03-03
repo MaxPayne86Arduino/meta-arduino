@@ -583,16 +583,35 @@
 /* Note: unmanaged USB mux U8 on ARCH2 */
 /* - when USBC J14 is plugged >> device */
 /* - otherwise >> host (hub) */
-/* @TODO: switch to otg mode and put a connector */
 &usbotg1 {
-	dr_mode = "peripheral";
+	dr_mode = "otg";
 	hnp-disable;
 	srp-disable;
 	adp-disable;
+	usb-role-switch;
 	disable-over-current;
 	samsung,picophy-pre-emp-curr-control = <3>;
 	samsung,picophy-dc-vol-level-adjust = <7>;
 	status = "okay";
+
+	usb1_connector: usb1-connector {
+		label = "USB-C";
+		compatible = "usb-b-connector";
+		self-powered;
+		type = "micro";
+
+		port {
+			usb_dr_connector: endpoint {
+				remote-endpoint = <&usb1_drd_sw>;
+			};
+		};
+	};
+
+	port {
+		usb1_drd_sw: endpoint {
+			remote-endpoint = <&usb_dr_connector>;
+		};
+	};
 };
 
 /* USB2 HOST Port */
