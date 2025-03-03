@@ -525,7 +525,7 @@
 	/* RST gpioexp_2 P13 */
 	t1s1: lan865x@0{
 		compatible = "microchip,lan865x";
-		reg = <0>;
+		reg = <0>; /* CE0 */
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_lan865x>;
 		interrupt-parent = <&gpio3>;
@@ -952,7 +952,7 @@
 		>;
 	};
 
-	pinctrl_lan865x: lan865xagrp {
+	pinctrl_lan865x: lan865xgrp {
 		fsl,pins = <
 			MX93_PAD_SD2_DATA3__GPIO3_IO06		0x31e
 		>;
