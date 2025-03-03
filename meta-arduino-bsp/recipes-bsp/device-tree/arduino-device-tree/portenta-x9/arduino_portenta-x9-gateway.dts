@@ -578,7 +578,12 @@
 	status = "okay";
 };
 
-/* USB1 Device Port */
+/* USB1 OTG Port */
+/* To ARCH1 & ARCH2 */
+/* Note: unmanaged USB mux U8 on ARCH2 */
+/* - when USBC J14 is plugged >> device */
+/* - otherwise >> host (hub) */
+/* @TODO: switch to otg mode and put a connector */
 &usbotg1 {
 	dr_mode = "peripheral";
 	hnp-disable;
@@ -599,7 +604,7 @@
 	disable-over-current;
 	samsung,picophy-pre-emp-curr-control = <3>;
 	samsung,picophy-dc-vol-level-adjust = <7>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usdhc1 { /* eMMC */
