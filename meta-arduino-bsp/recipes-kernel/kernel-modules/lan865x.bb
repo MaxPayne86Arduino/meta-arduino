@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171d
 
 inherit module
 
-PV = "v0.2"
+PV = "v0.4"
 
 SRC_URI = " \
   file://Makefile \
