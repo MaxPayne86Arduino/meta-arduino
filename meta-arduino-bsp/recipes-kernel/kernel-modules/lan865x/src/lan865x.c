@@ -319,9 +319,9 @@ static int lan865x_probe(struct spi_device *spi)
 
 	// Toggle reset
 	if (priv->reset_gpio) {
-		gpiod_set_value_cansleep(priv->reset_gpio, 0);
-		msleep(10); // Hold reset for 10ms
 		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+		msleep(10); // Hold reset for 10ms
+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
 		msleep(10); // Wait for 10ms after releasing reset
 	}
 
