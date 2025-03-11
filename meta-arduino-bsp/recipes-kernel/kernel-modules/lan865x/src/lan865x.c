@@ -40,6 +40,7 @@ struct lan865x_priv {
 	struct net_device *netdev;
 	struct spi_device *spi;
 	struct oa_tc6 *tc6;
+	struct gpio_desc *reset_gpio;
 };
 
 static int lan865x_set_hw_macaddr_low_bytes(struct oa_tc6 *tc6, const u8 *mac)
@@ -307,6 +308,23 @@ static int lan865x_probe(struct spi_device *spi)
 	priv->netdev = netdev;
 	priv->spi = spi;
 	spi_set_drvdata(spi, priv);
+
+	// Obtain reset gpio from spi dev
+	priv->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
+	if (IS_ERR(priv->reset_gpio)) {
+		ret = PTR_ERR(priv->reset_gpio);
+		dev_err(&spi->dev, "Failed to get reset GPIO: %d\n", ret);
+		return ret;
+	}
+
+	// Toggle reset
+	if (priv->reset_gpio) {
+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+		msleep(10); // Hold reset for 10ms
+		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+		msleep(10); // Wait for 10ms after releasing reset
+	}
+
 	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
 
 	priv->tc6 = oa_tc6_init(spi, netdev);
@@ -377,6 +395,12 @@ static void lan865x_remove(struct spi_device *spi)
 	unregister_netdev(priv->netdev);
 	oa_tc6_exit(priv->tc6);
 	free_netdev(priv->netdev);
+
+	// Deassert reset GPIO and release it
+	if (priv->reset_gpio) {
+		gpiod_set_value_cansleep(priv->reset_gpio, 1); // Deassert reset
+		devm_gpiod_put(&spi->dev, priv->reset_gpio);
+	}
 }
 
 static const struct spi_device_id spidev_spi_ids[] = {                           
