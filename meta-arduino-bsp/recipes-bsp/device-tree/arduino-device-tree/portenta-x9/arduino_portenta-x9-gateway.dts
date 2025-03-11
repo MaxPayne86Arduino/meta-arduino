@@ -527,26 +527,14 @@
 	/* IRQ GPIO27 */
 	/* RST gpioexp_2 P13 */
 	t1s1: lan865x@0{
-		compatible = "microchip,lan865x";
+		compatible = "microchip,lan8651", "microchip,lan8650";
 		reg = <0>; /* CE0 */
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_lan865x>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>; /* @TODO: choose IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_LEVEL_LOW */
 		local-mac-address = [04 05 06 01 02 03];
-		spi-max-frequency = <1000000>;
-		/* PLCA settings */
-		plca-enable = /bits/ 8 <1>; /* 1 - PLCA enable, 0 - CSMA/CD enable */
-		plca-node-id = /bits/ 8 <0>; /* PLCA node id range: 0 to 254 */
-		plca-node-count = /bits/ 8 <8>; /* PLCA node count range: 1 to 255 */
-		plca-burst-count = /bits/ 8 <0x0>; /* PLCA burst count range: 0x0 to 0xFF */
-		plca-burst-timer = /bits/ 8 <0x80>; /* PLCA burst timer */
-		plca-to-timer = /bits/ 8 <0x20>; /* PLCA TO value */
-		tx-cut-through-mode = /bits/ 8 <0>; /* 1 - tx cut through mode enable, 0 - Store and forward mode enable */
-		rx-cut-through-mode = /bits/ 8 <0>; /* 1 - rx cut through mode enable, 0 - Store and forward mode enable */
-		oa-chunk-size = /bits/ 8 <64>;
-		oa-protected = /bits/ 8 <1>;
-		reset-gpios = <&gpioexp_2 11 GPIO_ACTIVE_LOW>; /* RST on gpioexp_2 P13, active low */
+		spi-max-frequency = <15000000>;
 		status = "okay";
 	};
 
