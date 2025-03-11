@@ -531,7 +531,7 @@
 		interrupt-parent = <&gpio3>;
 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>; /* @TODO: choose IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_LEVEL_LOW */
 		local-mac-address = [14 15 16 11 12 13];
-		spi-max-frequency = <10000000>;
+		spi-max-frequency = <1000000>;
 		/* PLCA settings */
 		plca-enable = /bits/ 8 <1>; /* 1 - PLCA enable, 0 - CSMA/CD enable */
 		plca-node-id = /bits/ 8 <0>; /* PLCA node id range: 0 to 254 */
