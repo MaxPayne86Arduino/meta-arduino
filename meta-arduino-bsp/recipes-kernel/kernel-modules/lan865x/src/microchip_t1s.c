@@ -3,8 +3,8 @@
  * Driver for Microchip 10BASE-T1S PHYs
  *
  * Support: Microchip Phys:
- *  lan8670/1/2 Rev.B1, Rev.C0, Rev.C1
- *  lan8650/1 Rev.B Internal PHYs
+ *  lan8670/1/2 Rev.B1
+ *  lan8650/1 Rev.B0/B1 Internal PHYs
  */
 
 #include <linux/kernel.h>
@@ -12,8 +12,8 @@
 #include <linux/phy.h>
 
 #define PHY_ID_LAN867X_REVB1 0x0007C162
-#define PHY_ID_LAN867X_REVC0 0x0007C163
 #define PHY_ID_LAN867X_REVC1 0x0007C164
+#define PHY_ID_LAN867X_REVC2 0x0007C165
 #define PHY_ID_LAN865X_REVB 0x0007C1B3
 
 #define LAN867X_REG_STS2 0x0019
@@ -24,7 +24,7 @@
 #define LAN867X_IF_TYPE			GENMASK(8, 7)
 #define LAN867X_RMII_IF_TYPE		0x1
 #define LAN867X_REG_RMII_FIXUP		0x0093
-#define LAN867X_RMII_FIXUP_Value	0x06E9
+#define LAN867X_RMII_FIXUP_VALUE	0x06E9
 
 #define LAN865X_REG_CFGPARAM_ADDR 0x00D8
 #define LAN865X_REG_CFGPARAM_DATA 0x00D9
@@ -34,7 +34,8 @@
 #define LAN865X_CFGPARAM_READ_ENABLE BIT(1)
 
 #define LAN86XX_DISABLE_COL_DET 0x0000
-#define LAN86XX_ENABLE_COL_DET 0x0083
+#define LAN86XX_ENABLE_COL_DET 0x8000
+#define LAN86XX_COL_DET_MASK 0x8000
 #define LAN86XX_REG_COL_DET_CTRL0 0x0087
 
 /* The arrays below are pulled from the following table from AN1699
@@ -71,46 +72,31 @@ static const u16 lan867x_revb1_fixup_masks[12] = {
 	0x0600, 0x7F00, 0x2000, 0xFFFF,
 };
 
-/* LAN865x Rev.B configuration parameters from AN1760 */
-static const u32 lan865x_revb_fixup_registers[28] = {
-	0x0091, 0x0081, 0x0043, 0x0044,
-	0x0045, 0x0053, 0x0054, 0x0055,
-	0x0040, 0x0050, 0x00D0, 0x00E9,
-	0x00F5, 0x00F4, 0x00F8, 0x00F9,
-	0x00B0, 0x00B1, 0x00B2, 0x00B3,
-	0x00B4, 0x00B5, 0x00B6, 0x00B7,
-	0x00B8, 0x00B9, 0x00BA, 0x00BB,
+/* LAN865x Rev.B0/B1 configuration parameters from AN1760 */
+static const u32 lan865x_revb_fixup_registers[29] = {
+	0x00D0, 0x00E0, 0x00E9, 0x00F5,
+	0x00F4, 0x00F8, 0x00F9, 0x0081,
+	0x0091, 0x00B0, 0x00B1, 0x00B2,
+	0x00B3, 0x00B4, 0x00B5, 0x00B6,
+	0x00B7, 0x00B8, 0x00B9, 0x00BA,
+	0x00BB, 0x0043, 0x0044, 0x0045,
+	0x0053, 0x0054, 0x0055, 0x0040,
+	0x0050,
 };
 
-static const u16 lan865x_revb_fixup_values[28] = {
-	0x9660, 0x0080, 0x00FF, 0xFFFF,
-	0x0000, 0x00FF, 0xFFFF, 0x0000,
-	0x0002, 0x0002, 0x5F21, 0x9E50,
-	0x1CF8, 0xC020, 0x9B00, 0x4E53,
-	0x0103, 0x0910, 0x1D26, 0x002A,
-	0x0103, 0x070D, 0x1720, 0x0027,
-	0x0509, 0x0E13, 0x1C25, 0x002B,
+static const u16 lan865x_revb_fixup_values[29] = {
+	0x3F31, 0xC000, 0x9E50, 0x1CF8,
+	0xC020, 0x9B00, 0x4E53, 0x0080,
+	0x9660, 0x0103, 0x0910, 0x1D26,
+	0x002A, 0x0103, 0x070D, 0x1720,
+	0x0027, 0x0509, 0x0E13, 0x1C25,
+	0x002B, 0x00FF, 0xFFFF, 0x0000,
+	0x00FF, 0xFFFF, 0x0000, 0x0002,
+	0x0002,
 };
 
 static const u16 lan865x_revb_fixup_cfg_regs[5] = {
 	0x0084, 0x008A, 0x00AD, 0x00AE, 0x00AF
-};
-
-/* LAN867x Rev.C1 configuration parameters from AN1699 */
-static const u32 lan867x_revc_fixup_registers[9] = {
-	0x00D0, 0x00E0, 0x00E9, 0x00F5,
-	0x00F4, 0x00F8, 0x00F9, 0x0081,
-	0x0091,
-};
-
-static const u16 lan867x_revc_fixup_values[9] = {
-	0x3F31, 0xC000, 0x9E50, 0x1CF8,
-	0xC020, 0x9B00, 0x4E53, 0x0080,
-	0x9660,
-};
-
-static const u16 lan867x_revc_fixup_cfg_regs[2] = {
-	0x0084, 0x008A,
 };
 
 /* Pulled from AN1760 describing 'indirect read'
@@ -121,7 +107,7 @@ static const u16 lan867x_revc_fixup_cfg_regs[2] = {
  *
  * 0x4 refers to memory map selector 4, which maps to MDIO_MMD_VEND2
  */
-static int lan865x_revb0_indirect_read(struct phy_device *phydev, u16 addr)
+static int lan865x_indirect_read(struct phy_device *phydev, u16 addr)
 {
 	int ret;
 
@@ -146,19 +132,10 @@ static int lan865x_generate_cfg_offsets(struct phy_device *phydev, s8 offsets[2]
 	const u16 fixup_regs[2] = {0x0004, 0x0008};
 	int ret;
 
-	ret = lan865x_revb0_indirect_read(phydev, 0x0005);
-	if (ret < 0)
-		return ret;
-	if (!(ret & 0x40)) {
-		phydev_err(phydev, "Chip error. Please contact Microchip support for replacement\n");
-		return -ENODEV;
-	}
-
 	for (int i = 0; i < ARRAY_SIZE(fixup_regs); i++) {
-		ret = lan865x_revb0_indirect_read(phydev, fixup_regs[i]);
+		ret = lan865x_indirect_read(phydev, fixup_regs[i]);
 		if (ret < 0)
 			return ret;
-		ret = ret & 0x1F;
 		if (ret & BIT(4))
 			offsets[i] = ret | 0xE0;
 		else
@@ -213,86 +190,18 @@ static int lan865x_setup_cfgparam(struct phy_device *phydev)
 	if (ret)
 		return ret;
 
-	cfg_results[0] = (cfg_params[0] & 0x000F) |
-			  FIELD_PREP(GENMASK(15, 10), 9 + offsets[0]) |
-			  FIELD_PREP(GENMASK(15, 4), 14 + offsets[0]);
-	cfg_results[1] = (cfg_params[1] & 0x03FF) |
-			  FIELD_PREP(GENMASK(15, 10), 40 + offsets[1]);
-	cfg_results[2] = (cfg_params[2] & 0xC0C0) |
-			  FIELD_PREP(GENMASK(15, 8), 5 + offsets[0]) |
-			  (9 + offsets[0]);
-	cfg_results[3] = (cfg_params[3] & 0xC0C0) |
-			  FIELD_PREP(GENMASK(15, 8), 9 + offsets[0]) |
-			  (14 + offsets[0]);
-	cfg_results[4] = (cfg_params[4] & 0xC0C0) |
-			  FIELD_PREP(GENMASK(15, 8), 17 + offsets[0]) |
-			  (22 + offsets[0]);
+	cfg_results[0] = FIELD_PREP(GENMASK(15, 10), (9 + offsets[0]) & 0x3F) |
+			 FIELD_PREP(GENMASK(15, 4), (14 + offsets[0]) & 0x3F) |
+			 0x03;
+	cfg_results[1] = FIELD_PREP(GENMASK(15, 10), (40 + offsets[1]) & 0x3F);
+	cfg_results[2] = FIELD_PREP(GENMASK(15, 8), (5 + offsets[0]) & 0x3F) |
+			 ((9 + offsets[0]) & 0x3F);
+	cfg_results[3] = FIELD_PREP(GENMASK(15, 8), (9 + offsets[0]) & 0x3F) |
+			 ((14 + offsets[0]) & 0x3F);
+	cfg_results[4] = FIELD_PREP(GENMASK(15, 8), (17 + offsets[0]) & 0x3F) |
+			 ((22 + offsets[0]) & 0x3F);
 
 	return lan865x_write_cfg_params(phydev, cfg_results);
-}
-
-static int lan867x_revc_generate_cfg_offsets(struct phy_device *phydev, s8 offsets[2])
-{
-	const u16 fixup_regs[2] = {0x0004, 0x0008};
-	int ret;
-
-	ret = lan865x_revb0_indirect_read(phydev, 0x0005);
-	if (ret < 0)
-		return ret;
-	if (!(ret & 0x40)) {
-		phydev_err(phydev, "Chip error. Please contact Microchip support for replacement\n");
-		return -ENODEV;
-	}
-
-	for (int i = 0; i < ARRAY_SIZE(fixup_regs); i++) {
-		ret = lan865x_revb0_indirect_read(phydev, fixup_regs[i]);
-		if (ret < 0)
-			return ret;
-		ret = ret & 0x1F;
-		if (ret & BIT(4))
-			offsets[i] = ret | 0xE0;
-		else
-			offsets[i] = ret;
-		if ((i == 0) && (offsets[i] < -5))
-		{
-			phydev_err(phydev, "Chip error. Please contact Microchip support for replacement\n");
-			return -ENODEV;
-		}
-	}
-
-	return 0;
-}
-
-static int lan867x_revc_write_cfg_params(struct phy_device *phydev, u16 cfg_params[])
-{
-	int ret;
-
-	for (int i = 0; i < ARRAY_SIZE(lan867x_revc_fixup_cfg_regs); i++) {
-		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
-				    lan867x_revc_fixup_cfg_regs[i],
-				    cfg_params[i]);
-		if (ret)
-			return ret;
-	}
-
-	return 0;
-}
-
-static int lan867x_revc_setup_cfgparam(struct phy_device *phydev)
-{
-	u16 cfg_params[ARRAY_SIZE(lan867x_revc_fixup_cfg_regs)];
-	s8 offsets[2];
-	int ret;
-
-	ret = lan867x_revc_generate_cfg_offsets(phydev, offsets);
-	if (ret)
-		return ret;
-
-	cfg_params[0] = FIELD_PREP(GENMASK(15, 10), 9 + offsets[0]) |
-			FIELD_PREP(GENMASK(15, 4), 14 + offsets[0]) | 0x0003;
-	cfg_params[1] = FIELD_PREP(GENMASK(15, 10), 40 + offsets[1]);
-
-	return lan867x_revc_write_cfg_params(phydev, cfg_params);
 }
 
 static int lan865x_revb_config_init(struct phy_device *phydev)
@@ -315,65 +224,13 @@ static int lan865x_revb_config_init(struct phy_device *phydev)
 	return lan865x_setup_cfgparam(phydev);
 }
 
-static int lan867x_revb1_config_init(struct phy_device *phydev)
-{
-	/* HW quirk: Microchip states in the application note (AN1699) for the phy
-	 * that a set of read-modify-write (rmw) operations has to be performed
-	 * on a set of seemingly magic registers.
-	 * The result of these operations is just described as 'optimal performance'
-	 * Microchip gives no explanation as to what these mmd regs do,
-	 * in fact they are marked as reserved in the datasheet.
-	 * It is unclear if phy_modify_mmd would be safe to use or if a write
-	 * really has to happen to each register.
-	 * In order to exactly conform to what is stated in the AN phy_write_mmd is
-	 * used, which might then write the same value back as read + modified.
-	 */
-
-	int err;
-
-	/* Read STS2 register and check for the Reset Complete status to do the
-	 * init configuration. If the Reset Complete is not set, wait for 5us
-	 * and then read STS2 register again and check for Reset Complete status.
-	 * Still if it is failed then declare PHY reset error or else proceed
-	 * for the PHY initial register configuration.
-	 */
-	err = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN867X_REG_STS2);
-	if (err < 0)
-		return err;
-
-	if (!(err & LAN867x_RESET_COMPLETE_STS)) {
-		udelay(5);
-		err = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN867X_REG_STS2);
-		if (err < 0)
-			return err;
-		if (!(err & LAN867x_RESET_COMPLETE_STS)) {
-			phydev_err(phydev, "PHY reset failed\n");
-			return -ENODEV;
-		}
-	}
-
-	/* Read-Modified Write Pseudocode (from AN1699)
-	 * current_val = read_register(mmd, addr) // Read current register value
-	 * new_val = current_val AND (NOT mask) // Clear bit fields to be written
-	 * new_val = new_val OR value // Set bits
-	 * write_register(mmd, addr, new_val) // Write back updated register value
-	 */
-	for (int i = 0; i < ARRAY_SIZE(lan867x_revb1_fixup_registers); i++) {
-		err = phy_modify_mmd(phydev, MDIO_MMD_VEND2,
-				     lan867x_revb1_fixup_registers[i],
-				     lan867x_revb1_fixup_masks[i],
-				     lan867x_revb1_fixup_values[i]);
-		if (err)
-			return err;
-	}
-
-	return err;
-}
-
-static int lan867x_revc_config_init(struct phy_device *phydev)
+static int lan867x_reset_complete_status(struct phy_device *phydev)
 {
 	int ret;
 
+	/* The chip completes a reset in 3us, we might get here earlier than
+	 * that, as an added margin we'll conditionally sleep 5us.
+	 */
 	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN867X_REG_STS2);
 	if (ret < 0)
 		return ret;
@@ -389,30 +246,89 @@ static int lan867x_revc_config_init(struct phy_device *phydev)
 		}
 	}
 
-	for (int i = 0; i < ARRAY_SIZE(lan867x_revc_fixup_registers); i++) {
+	return 0;
+}
+
+static int lan867x_revc_config_init(struct phy_device *phydev)
+{
+	int ret;
+
+	ret = lan867x_reset_complete_status(phydev);
+	if (ret)
+		return ret;
+
+	/* 26 initial settings are identical between LAN8650/1 rev.B0/B1 (AN1760)
+	 * and LAN8670/1/2 rev.C1/C2 (AN1699). So first 21 register settings in
+	 * the lan865x_revb_fixup_registers and all the 5 register settings from
+	 * lan865x_revb_fixup_cfg_regs are used here instead of duplicating the
+	 * initial settings of LAN8670/1/2 rev.C1/C2.
+	 */
+	for (int i = 0; i < 21; i++) {
 		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
-				    lan867x_revc_fixup_registers[i],
-				    lan867x_revc_fixup_values[i]);
+				    lan865x_revb_fixup_registers[i],
+				    lan865x_revb_fixup_values[i]);
 		if (ret)
 			return ret;
 	}
 
-	/* As per LAN867x Rev.C1 AN1699 configuration note, if the PHY interface
-	 * type is RMII then the below configuration to be done. This is also
-	 * applicable for LAN867x Rev.C0.
+	ret = lan865x_setup_cfgparam(phydev);
+	if (ret)
+		return ret;
+
+	/* As per LAN867x rev.C1/C2 AN1699 configuration note, if the PHY
+	 * interface type is RMII then the below configuration to be done.
 	 */
 	ret = phy_read(phydev, LAN867X_REG_STRAP0);
 	if (ret < 0)
 		return ret;
-	if (FIELD_GET(LAN867X_IF_TYPE, ret) == LAN867X_RMII_IF_TYPE) {
-		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
-				    LAN867X_REG_RMII_FIXUP,
-				    LAN867X_RMII_FIXUP_Value);
-		if (ret)
-			return ret;
+	if (FIELD_GET(LAN867X_IF_TYPE, ret) == LAN867X_RMII_IF_TYPE)
+		return phy_write_mmd(phydev, MDIO_MMD_VEND2,
+				     LAN867X_REG_RMII_FIXUP,
+				     LAN867X_RMII_FIXUP_VALUE);
+	return 0;
+}
+
+static int lan867x_revb1_config_init(struct phy_device *phydev)
+{
+	int err;
+
+	err = lan867x_reset_complete_status(phydev);
+	if (err)
+		return err;
+
+	/* Reference to AN1699
+	 * https://ww1.microchip.com/downloads/aemDocuments/documents/AIS/ProductDocuments/SupportingCollateral/AN-LAN8670-1-2-config-60001699.pdf
+	 * AN1699 says Read, Modify, Write, but the Write is not required if the
+	 * register already has the required value. So it is safe to use
+	 * phy_modify_mmd here.
+	 */
+	for (int i = 0; i < ARRAY_SIZE(lan867x_revb1_fixup_registers); i++) {
+		err = phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+				     lan867x_revb1_fixup_registers[i],
+				     lan867x_revb1_fixup_masks[i],
+				     lan867x_revb1_fixup_values[i]);
+		if (err)
+			return err;
 	}
 
-	return lan867x_revc_setup_cfgparam(phydev);
+	return 0;
+}
+
+static int lan86xx_c45_plca_set_cfg(struct phy_device *phydev,
+				    const struct phy_plca_cfg *plca_cfg)
+{
+	int ret;
+
+	ret = genphy_c45_plca_set_cfg(phydev, plca_cfg);
+	if(ret)
+		return ret;
+
+	if (plca_cfg->enabled)
+		return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
+				      LAN86XX_COL_DET_MASK, LAN86XX_DISABLE_COL_DET);
+
+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
+			      LAN86XX_COL_DET_MASK, LAN86XX_ENABLE_COL_DET);
 }
 
 static int lan86xx_read_status(struct phy_device *phydev)
@@ -434,26 +350,42 @@ static struct phy_driver microchip_t1s_driver[] = {
 	{
 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVB1),
 		.name               = "LAN867X Rev.B1",
+		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
 		.config_init        = lan867x_revb1_config_init,
 		.read_status        = lan86xx_read_status,
-	},
-	{
-		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC0),
-		.name               = "LAN867X Rev.C0",
-		.config_init        = lan867x_revc_config_init,
-		.read_status        = lan86xx_read_status,
+		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
+		.set_plca_cfg	    = lan86xx_c45_plca_set_cfg,
+		.get_plca_status    = genphy_c45_plca_get_status,
 	},
 	{
 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC1),
 		.name               = "LAN867X Rev.C1",
+		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
 		.config_init        = lan867x_revc_config_init,
 		.read_status        = lan86xx_read_status,
+		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
+		.set_plca_cfg	    = lan86xx_c45_plca_set_cfg,
+		.get_plca_status    = genphy_c45_plca_get_status,
+	},
+	{
+		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC2),
+		.name               = "LAN867X Rev.C2",
+		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
+		.config_init        = lan867x_revc_config_init,
+		.read_status        = lan86xx_read_status,
+		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
+		.set_plca_cfg	    = lan86xx_c45_plca_set_cfg,
+		.get_plca_status    = genphy_c45_plca_get_status,
 	},
 	{
 		PHY_ID_MATCH_EXACT(PHY_ID_LAN865X_REVB),
-		.name               = "LAN865X Rev.B Internal Phy",
+		.name               = "LAN865X Rev.B0/B1 Internal Phy",
+		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
 		.config_init        = lan865x_revb_config_init,
 		.read_status        = lan86xx_read_status,
+		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
+		.set_plca_cfg	    = lan86xx_c45_plca_set_cfg,
+		.get_plca_status    = genphy_c45_plca_get_status,
 	},
 };
 
@@ -461,8 +393,8 @@ module_phy_driver(microchip_t1s_driver);
 
 static struct mdio_device_id __maybe_unused tbl[] = {
 	{ PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVB1) },
-	{ PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC0) },
 	{ PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC1) },
+	{ PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC2) },
 	{ PHY_ID_MATCH_EXACT(PHY_ID_LAN865X_REVB) },
 	{ }
 };
@@ -470,5 +402,5 @@ static struct mdio_device_id __maybe_unused tbl[] = {
 MODULE_DEVICE_TABLE(mdio, tbl);
 
 MODULE_DESCRIPTION("Microchip 10BASE-T1S PHYs driver");
-MODULE_AUTHOR("Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>");
+MODULE_AUTHOR("Ramón Nordin Rodriguez");
 MODULE_LICENSE("GPL");
