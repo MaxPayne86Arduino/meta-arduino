@@ -531,7 +531,7 @@
 		pinctrl-0 = <&pinctrl_lan865x>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>; /* @TODO: choose IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_LEVEL_LOW */
-		local-mac-address = [14 15 16 11 12 13];
+		local-mac-address = [04 05 06 01 02 03];
 		spi-max-frequency = <1000000>;
 		/* PLCA settings */
 		plca-enable = /bits/ 8 <1>; /* 1 - PLCA enable, 0 - CSMA/CD enable */
@@ -543,7 +543,7 @@
 		tx-cut-through-mode = /bits/ 8 <0>; /* 1 - tx cut through mode enable, 0 - Store and forward mode enable */
 		rx-cut-through-mode = /bits/ 8 <0>; /* 1 - rx cut through mode enable, 0 - Store and forward mode enable */
 		oa-chunk-size = /bits/ 8 <64>;
-		oa-protected = /bits/ 8 <0>;
+		oa-protected = /bits/ 8 <1>;
 		reset-gpios = <&gpioexp_2 11 GPIO_ACTIVE_LOW>; /* RST on gpioexp_2 P13, active low */
 		status = "okay";
 	};
