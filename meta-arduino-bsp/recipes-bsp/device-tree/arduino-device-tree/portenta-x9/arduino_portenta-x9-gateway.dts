@@ -535,6 +535,7 @@
 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>; /* @TODO: choose IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_LEVEL_LOW */
 		local-mac-address = [04 05 06 01 02 03];
 		spi-max-frequency = <1000000>;
+		reset-gpios = <&gpioexp_2 11 GPIO_ACTIVE_LOW>; /* RST on gpioexp_2 P13, active low */
 		status = "okay";
 	};
 
