@@ -169,7 +169,7 @@
 		compatible = "spi-gpio";
 		#address-cells = <0x1>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_spi_gpio>;
+		pinctrl-0 = <&pinctrl_lpspi4_gpio>;
 		ranges;
 
 		mosi-gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
@@ -965,6 +965,7 @@
 		>;
 	};
 
+	/* Standard, full HW support */
 	pinctrl_lpspi4: lpspi4grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO16__LPSPI4_PCS2		0x3fe
@@ -976,13 +977,20 @@
 		>;
 	};
 
-	pinctrl_lan865x: lan865xgrp {
+	/* Mixed, CS are gpio toggled */
+	pinctrl_lpspi4_cs_gpio: lpspi4csgpiogrp {
 		fsl,pins = <
-			MX93_PAD_SD2_DATA3__GPIO3_IO06		0x31e
-		>;
-	};
+			MX93_PAD_GPIO_IO16__GPIO2_IO16		0x31e
+			MX93_PAD_GPIO_IO17__GPIO2_IO17		0x31e
+			MX93_PAD_GPIO_IO18__GPIO2_IO18		0x31e
+			MX93_PAD_GPIO_IO19__LPSPI4_SIN		0x3fe
+			MX93_PAD_GPIO_IO20__LPSPI4_SOUT		0x3fe
+			MX93_PAD_GPIO_IO21__LPSPI4_SCK		0x3fe
+ 		>;
+ 	};
 
-	pinctrl_spi_gpio: spigpiogrp {
+	/* Experimental: bitbanged SPI */
+	pinctrl_lpspi4_gpio: lpspi4gpiogrp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO16__GPIO2_IO16		0x31e
 			MX93_PAD_GPIO_IO17__GPIO2_IO17		0x31e
@@ -992,4 +1000,10 @@
 			MX93_PAD_GPIO_IO21__GPIO2_IO21		0x31e
  		>;
  	};
+
+	pinctrl_lan865x: lan865xgrp {
+		fsl,pins = <
+			MX93_PAD_SD2_DATA3__GPIO3_IO06		0x31e
+		>;
+	};
 };
