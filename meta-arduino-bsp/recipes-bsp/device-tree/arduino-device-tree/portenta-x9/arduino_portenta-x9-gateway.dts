@@ -529,7 +529,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_lan865x>;
 		interrupt-parent = <&gpio3>;
-		interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
+		interrupts = <6 IRQ_TYPE_EDGE_FALLING>; /* @TODO: choose IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_LEVEL_LOW */
 		local-mac-address = [14 15 16 11 12 13];
 		spi-max-frequency = <10000000>;
 		/* PLCA settings */
