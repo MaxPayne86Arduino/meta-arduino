@@ -534,7 +534,7 @@
 		interrupt-parent = <&gpio3>;
 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>; /* @TODO: choose IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_LEVEL_LOW */
 		local-mac-address = [04 05 06 01 02 03];
-		spi-max-frequency = <15000000>;
+		spi-max-frequency = <1000000>;
 		status = "okay";
 	};
 
