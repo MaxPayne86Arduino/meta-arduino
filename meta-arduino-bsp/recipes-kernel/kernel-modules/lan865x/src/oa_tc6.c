@@ -641,7 +641,7 @@ static int oa_tc6_sw_reset(struct oa_tc6 *tc6)
 	}
 
 	timeleft = wait_for_completion_interruptible_timeout(&tc6->rst_complete,
-							     msecs_to_jiffies(10));
+							     msecs_to_jiffies(1));
 	if (timeleft <= 0) {
 		dev_err(&tc6->spi->dev, "MAC-PHY reset failed\n");
 		return -ENODEV;
@@ -765,10 +765,10 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
 	sched_set_fifo(tc6->tc6_task);
 
 	/* Register MAC-PHY interrupt service routine */
-	ret = devm_request_threaded_irq(&spi->dev, spi->irq, NULL, macphy_irq, IRQF_TRIGGER_FALLING | IRQF_ONESHOT, "macphy int",
+	ret = devm_request_irq(&spi->dev, spi->irq, macphy_irq, 0, "macphy int",
 			       tc6);
 	if ((ret != -ENOTCONN) && ret < 0) {
-		dev_err(&spi->dev, "Error attaching macphy irq %d %x\n", ret, spi->irq);
+		dev_err(&spi->dev, "Error attaching macphy irq %d\n", ret);
 		goto err_macphy_irq;
 	}
 
