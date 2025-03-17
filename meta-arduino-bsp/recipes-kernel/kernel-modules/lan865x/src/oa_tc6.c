@@ -172,6 +172,13 @@ static int oa_tc6_spi_transfer(struct oa_tc6 *tc6,
 	}
 	xfer.len = length;
 
+	// Debugging log: Print the contents of the tx buffer
+	dev_dbg(&tc6->spi->dev, "SPI transfer tx_buf: ");
+	for (int i = 0; i < length; i++) {
+		dev_dbg(&tc6->spi->dev, "0x%02X ", ((u8 *)xfer.tx_buf)[i]);
+	}
+	dev_dbg(&tc6->spi->dev, "\n");
+
 	spi_message_init(&msg);
 	spi_message_add_tail(&xfer, &msg);
 
@@ -377,6 +384,13 @@ int oa_tc6_write_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
 	}
 
 	mutex_lock(&tc6->spi_ctrl_lock);
+
+	dev_dbg(&tc6->spi->dev, "Writing %d registers starting at 0x%04X: ", length, address);
+	for (int i = 0; i < length; i++) {
+		dev_dbg(&tc6->spi->dev, "0x%08X ", value[i]);
+	}
+	dev_dbg(&tc6->spi->dev, "\n");
+
 	ret = oa_tc6_perform_ctrl(tc6, address, value, length,
 				  OA_TC6_CTRL_REG_WRITE);
 	mutex_unlock(&tc6->spi_ctrl_lock);
