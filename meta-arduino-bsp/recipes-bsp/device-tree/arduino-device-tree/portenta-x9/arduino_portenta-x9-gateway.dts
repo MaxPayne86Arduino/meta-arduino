@@ -502,7 +502,9 @@
 &lpspi1 {
 	fsl,spi-num-chipselects = <1>;
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_lpspi1>;
+	/*pinctrl-0 = <&pinctrl_lpspi1>;*/
+	pinctrl-0 = <&pinctrl_lpspi1_cs_gpio>;
+	cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
 	status = "okay";
 
 	spidev0: spi@0 {
@@ -957,9 +959,20 @@
 		>;
 	};
 
+	/* Standard, full HW support */
 	pinctrl_lpspi1: lpspi1grp {
 		fsl,pins = <
 			MX93_PAD_SAI1_TXFS__LPSPI1_PCS0		0x3fe
+			MX93_PAD_SAI1_TXD0__LPSPI1_SCK		0x3fe
+			MX93_PAD_SAI1_TXC__LPSPI1_SIN		0x3fe
+			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT		0x3fe
+		>;
+	};
+
+	/* Mixed, CS are gpio toggled */
+	pinctrl_lpspi1_cs_gpio: lpspi1csgpiogrp {
+		fsl,pins = <
+			MX93_PAD_SAI1_TXFS__GPIO1_IO11		0x31e
 			MX93_PAD_SAI1_TXD0__LPSPI1_SCK		0x3fe
 			MX93_PAD_SAI1_TXC__LPSPI1_SIN		0x3fe
 			MX93_PAD_SAI1_RXD0__LPSPI1_SOUT		0x3fe
