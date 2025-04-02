@@ -50,7 +50,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     u-boot-fw-utils \
     ethtool \
     usbutils \
-    dtbocfg \
 "
 # NOTES:
 # - We install only memtool from imx-test
