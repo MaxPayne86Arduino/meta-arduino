@@ -24,8 +24,9 @@ This layer provides specific customizations targeting the Linux Micro Platform (
    ```
 2. Clone this repository into the `sources` directory created by the manifest:
    ```bash
-   cd sources
+   cd ../sources
    git clone https://github.com/Arduino/meta-arduino.git
+   cd meta-arduino && git checkout nanbield
    ```
 3. Set up the Docker environment:
    ```bash
@@ -39,8 +40,8 @@ This layer provides specific customizations targeting the Linux Micro Platform (
    ```
 5. Add the layers to your `bblayers.conf` file:
    ```bash
-   BBLAYERS += "path/to/meta-arduino"
-   BBLAYERS += "path/to/meta-arduino-bsp"
+   cd ../../bld-xwayland
+   echo 'BBLAYERS += "${BSPDIR}/sources/meta-arduino/meta-arduino-bsp"' >> conf/bblayers.conf
    ```
 6. Customize your `local.conf` file to optimize the build environment:
    ```bash
