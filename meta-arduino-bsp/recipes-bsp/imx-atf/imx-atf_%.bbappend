@@ -7,3 +7,7 @@ ATF_BOOT_UART_BASE:portenta-x9 ?= "0x42570000"
 SRC_URI:append:portenta-x9 = " \
     file://console-lpuart3.patch \
 "
+
+SRC_URI:append:astrial-imx8mp = " \
+    file://console-uart1.patch \
+"
