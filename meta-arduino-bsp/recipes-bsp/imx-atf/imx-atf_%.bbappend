@@ -8,6 +8,10 @@ SRC_URI:append:portenta-x9 = " \
     file://console-lpuart3.patch \
 "
 
+# FIXME: We should return INVALID here but currently only i.MX8M has support to override the UART
+# base address in source code.
+ATF_BOOT_UART_BASE:imx8mp-astrial ?= "0x30860000"
+
 SRC_URI:append:astrial-imx8mp = " \
     file://console-uart1.patch \
 "
