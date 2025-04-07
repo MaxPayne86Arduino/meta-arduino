@@ -53,6 +53,8 @@ This layer provides specific customizations targeting the Linux Micro Platform (
 
 - Portenta X8
 - Portenta X9
+- Raspberry Pi CM4
+- System Electronics Astrial
 
 ## Building the Image
 
