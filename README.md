@@ -15,6 +15,54 @@ This layer provides specific customizations targeting the Linux Micro Platform (
 - Custom configurations for LMP.
 - Recipes for integrating Arduino-specific features with LMP.
 
+## Getting Started [LmP Builds]
+
+1. Initialize and sync the Yocto manifest:
+   ```bash
+   repo init -u https://source.foundries.io/factories/arduino/lmp-manifest.git -m arduino.xml -b devel
+   repo sync -j1 --fail-fast
+   ```
+2. Build the Docker image for the Yocto environment:
+   ```bash
+   cd .repo/manifests
+   docker build -t yocto-lmp-v93 .
+   cd ../..
+   ```
+3. Set up the Docker environment:
+   ```bash
+   docker run -it -u $UID -v $PWD:/workdir -w /workdir --name yocto-lmp yocto-lmp-v93 bash
+   ```
+
+### Build mfgtools
+
+1. Configure the build environment for `mfgtool-files`:
+   ```bash
+   DISTRO=lmp-mfgtool MACHINE=portenta-x9 . setup-environment
+   echo "ACCEPT_FSL_EULA = \"1\"" >> conf/local.conf
+   echo "MFGTOOL_FLASH_IMAGE = \"lmp-devel-arduino-image\"" >> conf/local.conf
+   ```
+2. Build the `mfgtool-files`:
+   ```bash
+   bitbake mfgtool-files
+   ```
+
+### Build the Image
+
+1. Configure the build environment for the image:
+   ```bash
+   DISTRO=lmp-base-xwayland MACHINE=portenta-x9 . setup-environment
+   echo "ACCEPT_FSL_EULA = \"1\"" >> conf/local.conf
+   ```
+2. Build the image:
+   ```bash
+   bitbake lmp-devel-arduino-image
+   ```
+
+### Supported Images
+
+- `lmp-devel-arduino-image`
+- `lmp-factory-image`
+
 ## Getting Started [NXP Builds]
 
 1. Initialize and sync the Yocto manifest:
