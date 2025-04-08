@@ -89,12 +89,23 @@ SRC_URI:append:portenta-x9 = " \
 "
 COMPATIBLE_MACHINE:portenta-x9 = ".*"
 
-# Raspberry Pi Section
-# Opta Gateway
+# System Electronics Astrial supporting ???
+DTB_OVERLAYS:append:imx8mp-astrial = " \
+"
+
+# System Electronics Astrial root devicetree
+SRC_URI:append:imx8mp-astrial = " \
+    file://astrial-imx8mp/imx8mp-astrial-merged.dts \
+    file://astrial-imx8mp/imx8mp-astrial-gateway-merged.dts \
+    ${DTB_OVERLAYS} \
+"
+COMPATIBLE_MACHINE:imx8mp-astrial = ".*"
+
+# Raspberry Pi CM4 supporting Opta Gateway
 DTB_OVERLAYS:append:raspberrypi4-64 = " \
     file://raspberrypi4-64/overlays/ov_opta_gateway.dts \
 "
-# Raspberry Pi root devicetree
+# Raspberry Pi CM4 root devicetree
 SRC_URI:append:raspberrypi4-64 = " \
     file://raspberrypi4-64/bcm2711-rpi-cm4-merged.dts \
     file://raspberrypi4-64/bcm2711-rpi-cm4-optagateway.dts \
