@@ -19,19 +19,7 @@ SRC_URI:append:portenta-x8 = " \
     file://common/spl_mmc.c \
 "
 
-SRC_URI:append:portenta-x9 = " \
-    file://Makefile \
-    file://portenta-x9_defconfig \
-    file://portenta-x9_inline_ecc_defconfig \
-    file://portenta-x9.dts \
-    file://portenta-x9-u-boot.dtsi \
-    file://portenta-x9.c \
-    file://portenta-x9_lpddr4x_timing.c \
-    file://portenta-x9_spl.c \
-    file://portenta-x9.h \
-"
-
-do_override_files_portenta_x8 () {
+do_create_machine_portenta_x8 () {
     # Overrides
     cp ${WORKDIR}/common/Kconfig ${S}/arch/arm/mach-imx/imx8m/Kconfig
     cp ${WORKDIR}/common/fat.c ${S}/env/fat.c
@@ -55,11 +43,23 @@ do_override_files_portenta_x8 () {
     cp ${WORKDIR}/board/mmc.c ${S}/board/arduino/portenta-x8/mmc.c
 }
 
+SRC_URI:append:portenta-x9 = " \
+    file://Makefile \
+    file://portenta-x9_defconfig \
+    file://portenta-x9_inline_ecc_defconfig \
+    file://portenta-x9.dts \
+    file://portenta-x9-u-boot.dtsi \
+    file://portenta-x9.c \
+    file://portenta-x9_lpddr4x_timing.c \
+    file://portenta-x9_spl.c \
+    file://portenta-x9.h \
+"
+
 do_override_files_portenta_x9 () {
     # Override Makefile
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
-    # @TODO: skip ecc defconfig if not necessary
+    # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use
     cp ${WORKDIR}/portenta-x9_defconfig ${S}/configs/imx93_11x11_evk_defconfig
     cp ${WORKDIR}/portenta-x9_inline_ecc_defconfig ${S}/configs/imx93_11x11_evk_inline_ecc_defconfig
 
@@ -76,9 +76,48 @@ do_override_files_portenta_x9 () {
     cp ${WORKDIR}/portenta-x9.h ${S}/include/configs/imx93_evk.h
 }
 
+SRC_URI:append:imx8mp-astrial = " \
+    file://Makefile \
+    file://imx8mp_astrial_defconfig \
+    file://imx8mp_astrial_inline_ecc_defconfig \
+    file://imx8mp_astrial_ndm_defconfig \
+    file://imx8mp-astrial.dts \
+    file://imx8mp-astrial-u-boot.dtsi \
+    file://imx8mp_astrial.c \
+    file://imx8mp-astrial_lpddr4_timing.c \
+    file://imx8mp-astrial_lpddr4_timing_ndm.c \
+    file://imx8mp-astrial_spl.c \
+    file://imx8mp_astrial.h \
+"
+
+do_override_files_imx8mp_astrial () {
+    # Override Makefile
+    cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
+
+    # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use
+    cp ${WORKDIR}/imx8mp-astrial_defconfig ${S}/configs/imx8mp_evk_defconfig
+    cp ${WORKDIR}/imx8mp_astrial_ndm_defconfig ${S}/configs/imx8mp_evk_ndm_defconfig
+    cp ${WORKDIR}/imx8mp-astrial_inline_ecc_defconfig ${S}/configs/imx8mp_evk_inline_ecc_defconfig
+
+    cp ${WORKDIR}/imx8mp-astrial.dts ${S}/arch/arm/dts/imx8mp-evk.dts
+
+    # @TODO: u-boot auto-includes the *-u-boot.dtsi prepending MACHINE to the board devicetree
+    # see scripts/Makefile.lib, so should never be included directly from board devicetree
+    cp ${WORKDIR}/imx8mp-astrial-u-boot.dtsi ${S}/arch/arm/dts/imx8mp-evk-u-boot.dtsi
+
+    cp ${WORKDIR}/imx8mp_astrial.c ${S}/board/freescale/imx8mp_evk/imx8mp_evk.c
+    cp ${WORKDIR}/imx8mp-astrial_lpddr4_timing.c ${S}/board/freescale/imx8mp_evk/lpddr4_timing.c
+    cp ${WORKDIR}/imx8mp-astrial_lpddr4_timing_ndm.c ${S}/board/freescale/imx8mp_evk/lpddr4_timing_ndm.c
+    cp ${WORKDIR}/imx8mp-astrial_spl.c ${S}/board/freescale/imx8mp_evk/spl.c
+
+    cp ${WORKDIR}/imx8mp_astrial.h ${S}/include/configs/imx8mp_evk.h
+}
+
 python () {
     if d.getVar('MACHINE') == 'portenta-x8':
-        bb.build.addtask('do_override_files_portenta_x8', 'do_configure', 'do_patch', d)
+        bb.build.addtask('do_create_machine_portenta_x8', 'do_configure', 'do_patch', d)
     elif d.getVar('MACHINE') == 'portenta-x9':
         bb.build.addtask('do_override_files_portenta_x9', 'do_configure', 'do_patch', d)
+    elif d.getVar('MACHINE') == 'imx8mp-astrial':
+        bb.build.addtask('do_override_files_imx8mp_astrial', 'do_configure', 'do_patch', d)
 }
