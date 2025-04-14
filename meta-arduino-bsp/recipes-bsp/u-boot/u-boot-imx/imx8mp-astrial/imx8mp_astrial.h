@@ -143,6 +143,12 @@
 				"echo WARN: Cannot load the DT; " \
 			"fi; " \
 		"fi;\0" \
+	"swapper=echo Test storage device ...; " \
+		"if test -e mmc 1:1 ${fdtfile}; then " \
+			"echo Swap to microSD; " \
+			"setenv mmcdev 1; " \
+			"setenv mmcroot '/dev/mmcblk1p2 rootwait rw'; " \
+		"fi;\0" \
 	"bsp_bootcmd=echo Running BSP bootcmd ...; " \
 		"mmc dev ${mmcdev}; if mmc rescan; then " \
 		   "if run loadbootscript; then " \
