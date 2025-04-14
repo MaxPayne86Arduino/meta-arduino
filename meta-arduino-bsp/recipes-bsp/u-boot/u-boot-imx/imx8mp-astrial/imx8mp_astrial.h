@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0+ */
 /*
  * Copyright 2019 NXP
+ * Copyright 2024 KOAN <https://koansoftware.com>
  */
 
 #ifndef __IMX8MP_EVK_H
@@ -72,8 +73,8 @@
 	"fdt_addr=0x43000000\0"			\
 	"fdt_high=0xffffffffffffffff\0" \
 	"mtdparts=" MFG_NAND_PARTITION "\0" \
-	"console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200\0" \
-	"bootargs=console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200 ubi.mtd=nandrootfs "  \
+	"console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200\0" \
+	"bootargs=console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200 ubi.mtd=nandrootfs "  \
 		"root=ubi0:nandrootfs rootfstype=ubifs "		     \
 		MFG_NAND_PARTITION \
 		"\0" \
@@ -93,7 +94,7 @@
 	"bsp_script=boot.scr\0" \
 	"image=Image\0" \
 	"splashimage=0x50000000\0" \
-	"console=ttymxc1,115200\0" \
+	"console=ttymxc0,115200\0" \
 	"fdt_addr_r=0x43000000\0"			\
 	"fdt_addr=0x43000000\0"			\
 	"boot_fdt=try\0" \
@@ -161,18 +162,18 @@
 #define CFG_SYS_INIT_RAM_SIZE	0x80000
 
 
-/* Totally 6GB DDR */
+/* Totally 8GB DDR */
 #define CFG_SYS_SDRAM_BASE		0x40000000
 #define PHYS_SDRAM			0x40000000
-#define PHYS_SDRAM_SIZE			0xC0000000	/* 3 GB */
-#define PHYS_SDRAM_2			0x100000000
+#define PHYS_SDRAM_SIZE			0x100000000	/* 4 GB */
+#define PHYS_SDRAM_2			0x140000000
 #ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
-#define PHYS_SDRAM_2_SIZE		0x40000000	/* 1 GB */
+#define PHYS_SDRAM_2_SIZE		0x100000000	/* 4 GB */
 #else
-#define PHYS_SDRAM_2_SIZE		0xC0000000	/* 3 GB */
+#define PHYS_SDRAM_2_SIZE		0x100000000	/* 4 GB */
 #endif
 
-#define CFG_MXC_UART_BASE		UART2_BASE_ADDR
+#define CFG_MXC_UART_BASE		UART1_BASE_ADDR
 
 #define CFG_SYS_NAND_BASE           0x20000000
 
