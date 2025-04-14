@@ -95,8 +95,8 @@ DTB_OVERLAYS:append:imx8mp-astrial = " \
 
 # System Electronics Astrial root devicetree
 SRC_URI:append:imx8mp-astrial = " \
-    file://astrial-imx8mp/imx8mp-astrial-merged.dts \
-    file://astrial-imx8mp/imx8mp-astrial-gateway-merged.dts \
+    file://imx8mp-astrial/imx8mp-astrial-merged.dts \
+    file://imx8mp-astrial/imx8mp-astrial-gateway-merged.dts \
     ${DTB_OVERLAYS} \
 "
 COMPATIBLE_MACHINE:imx8mp-astrial = ".*"
