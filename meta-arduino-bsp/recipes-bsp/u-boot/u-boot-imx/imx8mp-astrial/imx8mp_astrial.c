@@ -512,7 +512,7 @@ static iomux_v3_cfg_t eth_rst_mux[] = {
 static void eth_rst(int delay_ms)
 {
 	static int init = 0;
-	
+
 	if(init == 0)
 	{
 		imx_iomux_v3_setup_multiple_pads(eth_rst_mux, ARRAY_SIZE(eth_rst_mux));
@@ -520,13 +520,13 @@ static void eth_rst(int delay_ms)
 		gpio_direction_output(ETH_RST, 1);
 		init = 1;
 	}
-	else 
+	else
 	{
 		gpio_set_value(ETH_RST, 1);
 	}
 	mdelay(delay_ms);
 	gpio_set_value(ETH_RST, 0);
-	
+
 	printf("eth reset (%d[ms])\n", delay_ms);
 }
 
@@ -559,7 +559,7 @@ int board_mmc_get_env_dev(int devno)
 #ifdef CONFIG_DISPLAY_BOARDINFO
 int checkboard(void)
 {
-	puts("Board: System Electronics iMX8MP ASTRIAL (version " __SYSTEM_ELECTRONICS_BOARD_VERSION__ ")\n"); 
+	puts("Board: System Electronics iMX8MP ASTRIAL (version " __SYSTEM_ELECTRONICS_BOARD_VERSION__ ")\n");
 	return 0;
 }
 #endif
