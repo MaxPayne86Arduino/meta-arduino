@@ -94,7 +94,8 @@ do_override_files_imx8mp_astrial () {
     # Override Makefile
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
-    # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use
+    # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use.
+    # The modes ECC and NDM are NAND-specific
     cp ${WORKDIR}/imx8mp_astrial_defconfig ${S}/configs/imx8mp_evk_defconfig
     cp ${WORKDIR}/imx8mp_astrial_ndm_defconfig ${S}/configs/imx8mp_evk_ndm_defconfig
     cp ${WORKDIR}/imx8mp_astrial_inline_ecc_defconfig ${S}/configs/imx8mp_evk_inline_ecc_defconfig
