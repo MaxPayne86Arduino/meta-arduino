@@ -52,4 +52,4 @@ PROVIDES += "u-boot-default-script"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-COMPATIBLE_MACHINE = "(portenta-x8 | portenta-x9 | imx8mp-astrial)"
+COMPATIBLE_MACHINE = "(portenta-x8|portenta-x9|imx8mp-astrial)"
