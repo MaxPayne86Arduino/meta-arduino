@@ -1,0 +1,56 @@
+# Import custom env file
+setenv mmcdev ${emmc_dev}
+setenv bootenv uEnv.txt
+setenv bootdir /boot
+setenv loadbootenv 'load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${bootenv}'
+setenv importbootenv 'echo Importing environment from mmc ...; env import -t -r $loadaddr $filesize'
+run loadbootenv
+run importbootenv
+
+# Set environment variables
+# Note: loadaddr - fdt_addr = 60 MB
+setenv fdt_addr 0x84000000
+setenv image Image
+setenv loadaddr 0x80400000
+setenv loadimage 'load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bootdir}/${image}'
+setenv loadfdt 'echo fdt_file=${fdt_file}; load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/devicetree/${fdt_file}'
+
+setenv devtype mmc
+setenv ovlload ext4load
+setenv ovltype mmc
+setenv ovlpart ${mmcpart}
+setenv ovldev ${mmcdev}
+setenv ovlpath ${bootdir}/devicetree
+setenv fdtovaddr 0x83600000
+setenv ovlrm ${rmlist}
+setenv remove_nodes 'for node in ${ovlrm}; do \
+                        echo Removing node ${node}; \
+                        fdt rm ${node}; \
+                      done'
+setenv overlays ${ovlist}
+setenv bootcmd_ovl 'fdt addr ${fdt_addr}; \
+                    run remove_nodes; \
+                    fdt resize 0x${filesize}; \
+                    for ov in ${overlays}; do \
+                      echo Overlaying ${ov}...; \
+                      ${ovlload} ${ovltype} ${ovldev}:${ovlpart} ${fdtovaddr} ${ovlpath}/${ov}.dtbo && \
+                      fdt apply ${fdtovaddr}; \
+                    done'
+
+# Load the kernel image and device tree blob
+echo "Using kernel image ${image}"
+run loadimage
+echo "Using root devicetree ${fdt_file}"
+run loadfdt
+
+# Apply overlays
+#run bootcmd_ovl
+
+# Set boot arguments (bootargs)
+setenv console 'ttyLP2,115200 earlycon'
+setenv mmcblk ${mmcdev}
+setenv mmcroot /dev/mmcblk${mmcblk}p${mmcpart}
+run mmcargs
+
+# Boot the kernel
+booti ${loadaddr} - ${fdt_addr}

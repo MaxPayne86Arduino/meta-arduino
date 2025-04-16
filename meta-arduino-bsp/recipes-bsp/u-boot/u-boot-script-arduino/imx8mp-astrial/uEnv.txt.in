@@ -1,0 +1,18 @@
+# Define root devicetree file available in /boot/devicetree
+fdt_file=arduino_portenta-x9.dtb
+
+# Define devicetree nodes to be removed (optional)
+# Example: rmlist='/soc@0/bus@32c00000/usb@32e40000/port/endpoint'
+rmlist=''
+
+# Define devicetree overlay list (optional)
+# Example: ovlist='overlay1 overlay2 overlay3'
+ovlist=''
+
+# Init: linuxrc
+#rdinit=/linuxrc
+
+# Init: systemd
+rdinit=/sbin/init
+
+mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot} rdinit=${rdinit} clk_ignore_unused rootwait rw
