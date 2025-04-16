@@ -9,8 +9,8 @@ UENV_FILE = "uEnv.txt.in"
 BOOTCMD_FILE = "boot.cmd.in"
 
 SRC_URI += " \
-    file://${UENV_FILE} \
-    file://${BOOTCMD_FILE} \
+    file://${MACHINE}/${UENV_FILE} \
+    file://${MACHINE}/${BOOTCMD_FILE} \
 "
 
 KERNEL_BOOTCMD ??= "bootz"
