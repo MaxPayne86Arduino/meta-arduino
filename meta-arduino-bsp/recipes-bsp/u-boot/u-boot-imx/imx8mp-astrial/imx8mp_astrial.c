@@ -486,32 +486,6 @@ int board_init(void)
 	return 0;
 }
 
-#define ETH_RST    IMX_GPIO_NR(1, 12)
-static iomux_v3_cfg_t eth_rst_mux[] = {
-	MX8MP_PAD_GPIO1_IO12__GPIO1_IO12 | MUX_PAD_CTRL(NO_PAD_CTRL),
-};
-
-static void eth_rst(int delay_ms)
-{
-	static int init = 0;
-
-	if(init == 0)
-	{
-		imx_iomux_v3_setup_multiple_pads(eth_rst_mux, ARRAY_SIZE(eth_rst_mux));
-		gpio_request(ETH_RST, "eth_rst");
-		gpio_direction_output(ETH_RST, 1);
-		init = 1;
-	}
-	else
-	{
-		gpio_set_value(ETH_RST, 1);
-	}
-	mdelay(delay_ms);
-	gpio_set_value(ETH_RST, 0);
-
-	printf("eth reset (%d[ms])\n", delay_ms);
-}
-
 int board_late_init(void)
 {
 #ifdef CONFIG_ENV_IS_IN_MMC
@@ -521,8 +495,6 @@ int board_late_init(void)
 	env_set("board_name", "ASTRIAL");
 	env_set("board_rev", "iMX8MP");
 #endif
-
-	eth_rst(50);
 
 	return 0;
 }
