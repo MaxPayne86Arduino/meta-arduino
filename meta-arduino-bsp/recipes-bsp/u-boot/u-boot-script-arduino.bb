@@ -22,7 +22,7 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_mkimage() {
-    mkimage -A arm -T script -C none -n "Arduino boot script" -d ${WORKDIR}/${BOOTCMD_FILE} ${B}/boot.scr
+    mkimage -A arm -T script -C none -n "Arduino boot script" -d ${WORKDIR}/${MACHINE}/${BOOTCMD_FILE} ${B}/boot.scr
 }
 
 addtask mkimage after do_compile before do_install
@@ -30,7 +30,7 @@ addtask mkimage after do_compile before do_install
 do_install() {
     install -d ${D}/boot
     install -m 0644 ${B}/boot.scr ${D}/boot/boot.scr
-    install -m 0644 ${WORKDIR}/${UENV_FILE} ${D}/boot/uEnv.txt
+    install -m 0644 ${WORKDIR}/${MACHINE}/${UENV_FILE} ${D}/boot/uEnv.txt
 }
 
 do_deploy() {
