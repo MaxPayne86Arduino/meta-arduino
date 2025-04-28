@@ -552,24 +552,25 @@
 	status = "okay";
 };
 
-&uart1 { /* BT */
+&uart1 {
+	/* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
 	assigned-clocks = <&clk IMX8MP_CLK_UART1>;
 	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
 	uart-has-rtscts;
 	status = "okay";
-
-	bluetooth {
-		compatible = "nxp,88w8997-bt";
-	};
 };
 
-
 &uart2 {
-	/* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
+	status = "okay";
+};
+
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart3>;
 	status = "okay";
 };
 
