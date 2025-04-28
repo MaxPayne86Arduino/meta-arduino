@@ -562,15 +562,10 @@
 	status = "okay";
 };
 
+
 &uart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
-	status = "okay";
-};
-
-&uart3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart3>;
 	status = "okay";
 };
 
@@ -599,9 +594,24 @@
 	snps,dis-u2-entry-quirk;
 	status = "okay";
 
+	usb1_connector: usb1-connector {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_usb0>;
+		compatible = "gpio-usb-b-connector", "usb-b-connector";
+		type = "micro";
+		label = "Type-B";
+		id-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
+
+		port {
+			usb_dr_connector: endpoint {
+				remote-endpoint = <&usb1_drd_sw>;
+			};
+		};
+	};
+
 	port {
-		usb3_drd_sw: endpoint {
-			remote-endpoint = <&typec_dr_sw>;
+		usb1_drd_sw: endpoint {
+			remote-endpoint = <&usb_dr_connector>;
 		};
 	};
 };
@@ -617,7 +627,7 @@
 };
 
 &usb_dwc3_1 {
-	vbus-supply = <&reg_usb_vbus>;
+	/*vbus-supply = <&reg_usb_vbus>;*/
 	dr_mode = "host";
 	status = "okay";
 };
@@ -631,20 +641,32 @@
 	status = "okay";
 };
 
-&usdhc2 {
+&usdhc1 { /* Sd Card 1 */
+	assigned-clocks = <&clk IMX8MP_CLK_USDHC1>;
+	assigned-clock-rates = <25000000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc1>;
+	bus-width = <4>;
+	broken-cd;
+	no-1-8-v;
+	status = "disabled";
+};
+
+&usdhc2 { /* Sd Card 2 */
 	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
 	assigned-clock-rates = <400000000>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+	pinctrl-0 = <&pinctrl_usdhc2>;
+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
 	vmmc-supply = <&reg_usdhc2_vmmc>;
 	bus-width = <4>;
+	broken-cd;
+	no-1-8-v;
 	status = "okay";
 };
 
-&usdhc3 {
+&usdhc3 { /* eMMC */
 	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
 	assigned-clock-rates = <400000000>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
