@@ -1,5 +1,5 @@
 # Define root devicetree file available in /boot/devicetree
-fdt_file=arduino_portenta-x9.dtb
+fdt_file=imx8mp-astrial-merged.dtb
 
 # Define devicetree nodes to be removed (optional)
 # Example: rmlist='/soc@0/bus@32c00000/usb@32e40000/port/endpoint'
