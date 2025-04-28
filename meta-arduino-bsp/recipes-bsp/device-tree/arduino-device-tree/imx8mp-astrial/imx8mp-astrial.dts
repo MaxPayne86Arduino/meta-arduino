@@ -10,29 +10,17 @@
 #include "imx8mp.dtsi"
 
 / {
-	model = "NXP i.MX8MPlus EVK board";
-	compatible = "fsl,imx8mp-evk", "fsl,imx8mp";
+	model = "System Electronics i.MX 8M Plus Astrial board";
+	compatible = "fsl,imx8mp-astrial", "fsl,imx8mp-evk", "fsl,imx8mp";
 
 	chosen {
-		stdout-path = &uart2;
-	};
-
-	gpio-leds {
-		compatible = "gpio-leds";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_gpio_led>;
-
-		status {
-			label = "yellow:status";
-			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
-			default-state = "on";
-		};
+		stdout-path = &uart1;
 	};
 
 	memory@40000000 {
 		device_type = "memory";
-		reg = <0x0 0x40000000 0 0xc0000000>,
-		      <0x1 0x00000000 0 0xc0000000>;
+		reg = <0x0 0x40000000 1 0x00000000>,
+		      <0x1 0x40000000 1 0x00000000>;
 	};
 
 	pcie0_refclk: pcie0-refclk {
