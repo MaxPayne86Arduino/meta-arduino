@@ -426,7 +426,7 @@
 	status = "okay";
 };
 
-&usdhc2 {
+&usdhc2 { /* Sd Card */
 	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
 	assigned-clock-rates = <400000000>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
@@ -440,7 +440,7 @@
 	status = "okay";
 };
 
-&usdhc3 {
+&usdhc3 { /* eMMC */
 	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
 	assigned-clock-rates = <400000000>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
