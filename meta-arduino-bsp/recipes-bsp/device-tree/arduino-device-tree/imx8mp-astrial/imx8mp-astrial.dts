@@ -596,10 +596,11 @@
 	status = "okay";
 };
 
+/* @TODO: overlaps with PCIE pins if you follow RPi CM4IO schematics */
 &usb_dwc3_1 {
 	/*vbus-supply = <&reg_usb_vbus>;*/
 	dr_mode = "host";
-	status = "okay";
+	status = "disabled";
 };
 
 &uart3 {
