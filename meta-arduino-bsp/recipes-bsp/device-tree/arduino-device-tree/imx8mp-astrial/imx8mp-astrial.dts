@@ -368,7 +368,8 @@
 		assigned-clock-parents = <&clk IMX8MP_CLK_24M>;
 		assigned-clock-rates = <24000000>;
 		csi_id = <1>;
-		/* Camera_GPIO points to GPIO1_5... for both cameras? */
+		/* Camera_GPIO (CAM_GPIO) >> GPIO1_5 */
+		/* serves both cameras according to RPi CM4IO */
 		/* reset-gpios => for standard imx219 driver */
 		/* rst-gpios => for nxp imx219 driver */
 		/* reset-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; */
@@ -430,8 +431,8 @@
 		assigned-clock-parents = <&clk IMX8MP_CLK_24M>;
 		assigned-clock-rates = <24000000>;
 		csi_id = <0>;
-		/* Camera_GPIO points to GPIO1_5... for both cameras? */
-		/* reset-gpios => for standard imx219 driver */
+		/* Camera_GPIO (CAM_GPIO) >> GPIO1_5 */
+		/* serves both cameras according to RPi CM4IO */
 		/* rst-gpios => for nxp imx219 driver */
 		/* reset-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; */
 		/* rst-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; */
