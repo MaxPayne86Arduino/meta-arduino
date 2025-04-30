@@ -296,29 +296,16 @@ static int setup_typec(void)
 #define HSIO_GPR_REG_0_USB_CLOCK_MODULE_EN          (0x1U << HSIO_GPR_REG_0_USB_CLOCK_MODULE_EN_SHIFT)
 
 
-static struct dwc3_device dwc3_device_data[] = {
-	{
+static struct dwc3_device dwc3_device_data = {
 #ifdef CONFIG_SPL_BUILD
-		.maximum_speed = USB_SPEED_HIGH,
+	.maximum_speed = USB_SPEED_HIGH,
 #else
-		.maximum_speed = USB_SPEED_SUPER,
+	.maximum_speed = USB_SPEED_SUPER,
 #endif
-		.base = USB1_BASE_ADDR,
-		.dr_mode = USB_DR_MODE_PERIPHERAL,
-		.index = 0,
-		.power_down_scale = 2,
-	},
-	{
-#ifdef CONFIG_SPL_BUILD
-		.maximum_speed = USB_SPEED_HIGH,
-#else
-		.maximum_speed = USB_SPEED_SUPER,
-#endif
-		.base = USB2_BASE_ADDR,
-		.dr_mode = USB_DR_MODE_PERIPHERAL,
-		.index = 1,
-		.power_down_scale = 2,
-	}
+	.base = USB1_BASE_ADDR,
+	.dr_mode = USB_DR_MODE_PERIPHERAL,
+	.index = 0,
+	.power_down_scale = 2,
 };
 
 int usb_gadget_handle_interrupts(int index)
@@ -371,16 +358,16 @@ int board_usb_init(int index, enum usb_init_type init)
 {
 	int ret = 0;
 
-	if ((index == 0 || index == 1) && init == USB_INIT_DEVICE) {
+	if (index == 0 && init == USB_INIT_DEVICE) {
 		imx8m_usb_power(index, true);
 #ifdef CONFIG_USB_TCPC
 		ret = tcpc_setup_ufp_mode(&port1);
 		if (ret)
 			return ret;
 #endif
-		dwc3_nxp_usb_phy_init(&dwc3_device_data[index]);
-		return dwc3_uboot_init(&dwc3_device_data[index]);
-	} else if ((index == 0 || index == 1) && init == USB_INIT_HOST) {
+		dwc3_nxp_usb_phy_init(&dwc3_device_data);
+		return dwc3_uboot_init(&dwc3_device_data);
+	} else if (index == 0 && init == USB_INIT_HOST) {
 #ifdef CONFIG_USB_TCPC
 		ret = tcpc_setup_dfp_mode(&port1);
 #endif
@@ -393,10 +380,10 @@ int board_usb_init(int index, enum usb_init_type init)
 int board_usb_cleanup(int index, enum usb_init_type init)
 {
 	int ret = 0;
-	if ((index == 0 || index == 1) && init == USB_INIT_DEVICE) {
+	if (index == 0 && init == USB_INIT_DEVICE) {
 		dwc3_uboot_exit(index);
 		imx8m_usb_power(index, false);
-	} else if ((index == 0 || index == 1) && init == USB_INIT_HOST) {
+	} else if (index == 0 && init == USB_INIT_HOST) {
 #ifdef CONFIG_USB_TCPC
 		ret = tcpc_disable_src_vbus(&port1);
 #endif
