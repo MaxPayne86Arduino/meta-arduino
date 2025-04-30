@@ -91,6 +91,7 @@ SRC_URI:append:imx8mp-astrial = " \
 "
 
 do_override_files_imx8mp_astrial () {
+    bbwarn Overriding files for imx8mp-evk
     # Override Makefile
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
