@@ -11,7 +11,7 @@
 #include "imx8mp.dtsi"
 
 / {
-	model = "System Electronics i.MX8MPlus Astrial board";
+	model = "System Electronics i.MX 8M Plus Astrial board";
 	compatible = "fsl,imx8mp-astrial", "fsl,imx8mp";
 
 	chosen {
