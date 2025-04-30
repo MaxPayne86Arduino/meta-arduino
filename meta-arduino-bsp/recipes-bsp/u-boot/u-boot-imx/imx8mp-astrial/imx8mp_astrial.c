@@ -486,17 +486,6 @@ int board_late_init(void)
 	return 0;
 }
 
-#ifdef CONFIG_ENV_IS_IN_MMC
-int board_mmc_get_env_dev(int devno)
-{
-#ifdef CONFIG_SYS_MMC_ENV_DEV
-	return CONFIG_SYS_MMC_ENV_DEV;
-#else
-	return devno;
-#endif
-}
-#endif
-
 #ifdef CONFIG_DISPLAY_BOARDINFO
 int checkboard(void)
 {
