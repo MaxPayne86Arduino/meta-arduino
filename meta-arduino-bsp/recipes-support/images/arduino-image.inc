@@ -13,7 +13,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
 "
 CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " arduino-device-tree"
 CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " \
-    kernel-module-hailo-pcie-driver \
+    hailo-pcie-driver \
     lmbench \
 "
 
