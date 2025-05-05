@@ -11,6 +11,11 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     kernel-module-btnxpuart \
     lmbench \
 "
+CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " arduino-device-tree"
+CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " \
+    kernel-module-hailo-pcie-driver \
+    lmbench \
+"
 
 # Install extra out of tree kernel drivers (som)
 CORE_IMAGE_EXTRA_INSTALL += " \
