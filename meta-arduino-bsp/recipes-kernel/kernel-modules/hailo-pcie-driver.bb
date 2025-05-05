@@ -9,10 +9,10 @@ SRC_URI = " \
     git://github.com/hailo-ai/hailort-drivers.git;branch=master;protocol=https \
     file://0001-OE-fix-Makefile.patch;patchdir=../../ \
 "
-SRCREV = "43e8a9a575654c773edf95789f93cde40c708a6a"
+SRCREV = "64897376cd67954ff497e194d6ca76d67f404b26"
 
 S = "${WORKDIR}/git/linux/pcie"
 
-PV = "v4.17.1"
+PV = "v4.21.0"
 
 RPROVIDES_${PN} += "kernel-module-hailo-pcie-driver"
