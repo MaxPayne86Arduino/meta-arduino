@@ -415,16 +415,16 @@
 &usb3_phy1 {
 	fsl,phy-tx-preemp-amp-tune = <3>;
 	fsl,phy-tx-vref-tune = <0xb>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usb3_1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &usb_dwc3_1 {
-	dr_mode = "peripheral";
-	status = "okay";
+	dr_mode = "host";
+	status = "disabled";
 };
 
 &usdhc2 { /* Sd Card */
