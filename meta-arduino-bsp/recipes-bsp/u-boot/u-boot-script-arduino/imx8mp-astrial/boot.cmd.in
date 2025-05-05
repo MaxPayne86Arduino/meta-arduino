@@ -47,7 +47,7 @@ run loadfdt
 #run bootcmd_ovl
 
 # Set boot arguments (bootargs)
-setenv console 'ttyLP2,115200 earlycon'
+setenv console 'ttymxc0,115200 earlycon'
 setenv mmcblk ${mmcdev}
 setenv mmcroot /dev/mmcblk${mmcblk}p${mmcpart}
 run mmcargs
