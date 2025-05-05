@@ -325,7 +325,7 @@
 };
 
 &pcie_phy {
-	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
 	clocks = <&pcie0_refclk>;
 	clock-names = "ref";
 	status = "disabled";
