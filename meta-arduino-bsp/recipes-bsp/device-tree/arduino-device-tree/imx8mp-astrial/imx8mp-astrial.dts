@@ -590,11 +590,11 @@
 &usb3_phy1 {
 	fsl,phy-tx-preemp-amp-tune = <3>;
 	fsl,phy-tx-vref-tune = <0xb>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usb3_1 {
-	status = "okay";
+	status = "disabled";
 };
 
 /* @TODO: overlaps with PCIE pins if you follow RPi CM4IO schematics */
