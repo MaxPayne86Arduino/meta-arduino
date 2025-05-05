@@ -1,10 +1,10 @@
 diff --git a/linux/pcie/Makefile b/linux/pcie/Makefile
-index 705d15d..56e0e61 100755
+index c654b1f..5ba535e 100755
 --- a/linux/pcie/Makefile
 +++ b/linux/pcie/Makefile
-@@ -65,99 +65,20 @@ PWD  := $(shell pwd)
- PUBLIC_INC_DIR = $(BUILD_DIR)/include
- PUBLIC_INC_FILE = $(PUBLIC_INC_DIR)/hailo_pcie_ioctl.h
+@@ -62,98 +62,20 @@ DEPMOD ?= depmod
+ 
+ PWD  := $(shell pwd)
  
 -default: help
 -
@@ -20,7 +20,6 @@ index 705d15d..56e0e61 100755
 -	$(Q)echo "*                                                                             "
 -	$(Q)echo "* target:                                                                     " 
 -	$(Q)echo "*   all          Generate the ko file in $(BUILD_DIR)/[release|debug]/$(ARCH) "
--	$(Q)echo "*                copy the public include files in $(PUBLIC_INC_DIR)           "
 -	$(Q)echo "*                                                                             "
 -	$(Q)echo "*   clean        Delete the generated files                                   "
 -	$(Q)echo "*                Delete $(BUILD_DIR) directory                                "
@@ -34,18 +33,18 @@ index 705d15d..56e0e61 100755
 -	$(Q)echo "*   help:        Display this help                                            "
 -	$(Q)echo "******************************************************************************"
 -
--all: $(PUBLIC_INC_FILE) $(TARGET_DIR)
+-print-versions:
+-	$(Q)kernelver="$(make -s -C $(KERNEL_DIR) kernelversion || echo \"unknown\")"
+-	$(Q)echo "******************************************************************************"
+-	$(Q)echo "Kernel version: $(kernelver)"
+-	$(Q)echo "******************************************************************************"
+-
+-all: $(TARGET_DIR) print-versions
 -	$(Q)$(MAKE)  -C $(KERNEL_DIR) M=$(PWD) $(GDB_FLAG) $(USER_FLAGS) modules
 -	$(Q)cp $(DRIVER_NAME) $(TARGET_DIR)
 -
 -$(TARGET_DIR):
 -	$(Q)mkdir -p $@
--
--$(PUBLIC_INC_DIR):
--	$(Q)mkdir -p $@
--
--$(PUBLIC_INC_FILE): $(PUBLIC_INC_DIR)
--	$(Q)cp -f $(PWD)/include/* $(PUBLIC_INC_DIR)/
 +all:
 +	$(MAKE) -C $(KERNEL_SRC) M=$(PWD) modules
  
