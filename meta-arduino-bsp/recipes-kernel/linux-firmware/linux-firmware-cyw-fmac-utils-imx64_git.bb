@@ -29,4 +29,4 @@ FILES:${PN} += "${sbindir}"
 RDEPENDS:${PN} += " libnl-nf"
 
 COMPATIBLE_MACHINE ?= "^$"
-COMPATIBLE_MACHINE:portenta-mx8mm = ".*"
+COMPATIBLE_MACHINE:portenta-x8 = ".*"
