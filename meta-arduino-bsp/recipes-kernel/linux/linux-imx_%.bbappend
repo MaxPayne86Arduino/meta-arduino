@@ -1,6 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append = " \
+    file://generic/PCIE-0001-PCIE_PHY_CMN_REG063.patch \
     file://generic/EDT-0001-Input-edt-ft5x06-Poll-the-device-if-no-interrupt-is-.patch \
     file://generic/EDT-0002-Input-edt-ft54x6-Clean-up-timer-and-workqueue-on-rem.patch \
     file://generic/EDT-0003-input-touchscreen-edt-ft5x06-Suppress-bogus-data-on-.patch \
@@ -19,6 +20,7 @@ SRC_URI:append = " \
 
 SRC_URI:append:portenta-x8 = " \
     file://defconfig \
+    file://DVFS-0001-Add_400MHz_200MHz_100MHz.patch \
 "
 
 SRC_URI:append:portenta-x9 = " \
