@@ -1,8 +1,18 @@
+From c3253354e3eaa04f88a371b30bb6c0751a1f92eb Mon Sep 17 00:00:00 2001
+From: maidnl <d.aimo@arduino.cc>
+Date: Tue, 6 May 2025 14:51:53 +0200
+Subject: [PATCH] added 400MHz 200MHz 100MHz
+
+---
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 48 +++++++++++++++++++++++
+ drivers/clk/imx/clk-pll14xx.c             |  3 ++
+ 2 files changed, 51 insertions(+)
+
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index c63b5c467be2..97c119dabb0c 100755
+index 6f7a6eee68ef..cffea9baba19 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -155,6 +155,54 @@ a53_opp_table: opp-table {
+@@ -156,6 +156,54 @@ a53_opp_table: opp-table {
  		compatible = "operating-points-v2";
  		opp-shared;
  
@@ -58,16 +68,19 @@ index c63b5c467be2..97c119dabb0c 100755
  			opp-hz = /bits/ 64 <1200000000>;
  			opp-microvolt = <850000>;
 diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index 2ec7154c7a95..0b39f04510ff 100644
+index 6c17786ecb9f..c4b4ba35376d 100644
 --- a/drivers/clk/imx/clk-pll14xx.c
 +++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -55,6 +55,9 @@ static const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
- 	PLL_1416X_RATE(750000000U,  250, 2, 2),
+@@ -56,6 +56,9 @@ static const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
  	PLL_1416X_RATE(700000000U,  350, 3, 2),
+ 	PLL_1416X_RATE(640000000U,  320, 3, 2),
  	PLL_1416X_RATE(600000000U,  300, 3, 2),
 +	PLL_1416X_RATE(400000000U,  200, 3, 2),
 +	PLL_1416X_RATE(200000000U,  200, 3, 3),
 +	PLL_1416X_RATE(100000000U,  200, 3, 4),
+ 	PLL_1416X_RATE(320000000U,  160, 3, 2),
  };
  
- static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
+-- 
+2.43.0
+
