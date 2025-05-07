@@ -1781,15 +1781,28 @@ static int bq24190_get_config(struct bq24190_dev_info *bdi)
 	return 0;
 }
 
-static int bq24190_probe(struct i2c_client *client,
-		const struct i2c_device_id *id)
+static const struct i2c_device_id bq24190_i2c_ids[] = {
+	{ "bq24190" },
+	{ "bq24192" },
+	{ "bq24192i" },
+	{ "bq24196" },
+	{ "bq24195" },
+	{ },
+};
+MODULE_DEVICE_TABLE(i2c, bq24190_i2c_ids);
+
+static int bq24190_probe(struct i2c_client *client)
 {
 	struct i2c_adapter *adapter = client->adapter;
 	struct device *dev = &client->dev;
 	struct power_supply_config charger_cfg = {}, battery_cfg = {};
 	struct bq24190_dev_info *bdi;
 	int ret;
+   const struct i2c_device_id *id = i2c_match_id(bq24190_i2c_ids, client);
 
+	if (!id)
+		return -ENODEV;
+	
 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA)) {
 		dev_err(dev, "No support for SMBUS_BYTE_DATA\n");
 		return -ENODEV;
@@ -2028,15 +2041,6 @@ static const struct dev_pm_ops bq24190_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(bq24190_pm_suspend, bq24190_pm_resume)
 };
 
-static const struct i2c_device_id bq24190_i2c_ids[] = {
-	{ "bq24190" },
-	{ "bq24192" },
-	{ "bq24192i" },
-	{ "bq24196" },
-	{ "bq24195" },
-	{ },
-};
-MODULE_DEVICE_TABLE(i2c, bq24190_i2c_ids);
 
 static const struct of_device_id bq24190_of_match[] = {
 	{ .compatible = "ti,bq24190", },
