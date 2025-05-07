@@ -1,8 +1,8 @@
 # Setup image features
 IMAGE_FEATURES:append = " ssh-server-dropbear"
 
-# Following packages are already included in
-# MACHINE_EXTRA_RRECOMMENDS
+# @TODO: following packages should be exclusively configured with
+# MACHINE_EXTRA_RRECOMMENDS in <machine-name>.conf
 CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " arduino-device-tree"
 CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     kernel-module-nxp-wlan \
@@ -11,6 +11,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
     kernel-module-btnxpuart \
     lmbench \
 "
+
 CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " arduino-device-tree"
 CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " \
     hailo-pcie-driver \
@@ -29,6 +30,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ov5647-mipi \
     lan865x \
 "
+# End of MACHINE_EXTRA_RRECOMMENDS section
 
 # Install custom u-boot scripts (mandatory for eMMC / SD Card boot)
 CORE_IMAGE_EXTRA_INSTALL += " \
