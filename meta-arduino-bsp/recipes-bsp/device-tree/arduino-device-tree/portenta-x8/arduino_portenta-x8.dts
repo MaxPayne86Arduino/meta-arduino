@@ -6,8 +6,8 @@
 /dts-v1/;
 
 #include <dt-bindings/usb/pd.h>
-#include "anx7625_base.dtsi"
 #include "imx8mm.dtsi"
+#include "anx7625_base.dtsi"
 
 / {
 	model = "Arduino i.MX8MM Portenta X8 board";
