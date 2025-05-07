@@ -3082,11 +3082,25 @@ static const struct dmi_system_id chromebook_T9_suspend_dmi[] = {
 	{ }
 };
 
-static int mxt_probe(struct i2c_client *client, const struct i2c_device_id *id)
+static const struct i2c_device_id mxt_id[] = {
+	{ "qt602240_ts", 0 },
+	{ "atmel_mxt_ts", 0 },
+	{ "atmel_mxt_tp", 0 },
+	{ "maxtouch", 0 },
+	{ "mXT224", 0 },
+	{ }
+};
+MODULE_DEVICE_TABLE(i2c, mxt_id);
+
+static int mxt_probe(struct i2c_client *client)
 {
 	struct mxt_data *data;
 	int error;
 
+	const struct i2c_device_id *id = i2c_match_id(mxt_id, client);
+
+	if (!id)
+		return -ENODEV;
 	/*
 	 * Ignore devices that do not have device properties attached to
 	 * them, as we need help determining whether we are dealing with
@@ -3251,15 +3265,6 @@ static const struct acpi_device_id mxt_acpi_id[] = {
 MODULE_DEVICE_TABLE(acpi, mxt_acpi_id);
 #endif
 
-static const struct i2c_device_id mxt_id[] = {
-	{ "qt602240_ts", 0 },
-	{ "atmel_mxt_ts", 0 },
-	{ "atmel_mxt_tp", 0 },
-	{ "maxtouch", 0 },
-	{ "mXT224", 0 },
-	{ }
-};
-MODULE_DEVICE_TABLE(i2c, mxt_id);
 
 static struct i2c_driver mxt_driver = {
 	.driver = {
