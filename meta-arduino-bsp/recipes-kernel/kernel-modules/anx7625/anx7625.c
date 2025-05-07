@@ -2591,16 +2591,26 @@ static int anx7625_apply_pending_early_init_config(struct anx7625_data *ctx)
 }
 #endif
 
-static int anx7625_i2c_probe(struct i2c_client *client,
-			     const struct i2c_device_id *id)
+static const struct i2c_device_id anx7625_id[] = {
+	{"anx7625", 0},
+	{}
+};
+
+MODULE_DEVICE_TABLE(i2c, anx7625_id);
+
+static int anx7625_i2c_probe(struct i2c_client *client)
 {
 	struct anx7625_data *platform;
 	struct anx7625_platform_data *pdata;
-	int ret = 0;
 	struct device *dev = &client->dev;
 	struct regulator *regulator;
+	const struct i2c_device_id *id = i2c_match_id(anx7625_id, client);
+	int ret = 0;
 
 	DRM_DEV_DEBUG_DRIVER(dev, "anx probing ...\n");
+
+	if (!id)
+		return -ENODEV;
 
 	regulator = devm_regulator_get(dev, "vdda");
 	if (IS_ERR(regulator)) {
@@ -2769,13 +2779,6 @@ static void anx7625_i2c_remove(struct i2c_client *client)
 	kfree(platform);
 }
 
-static const struct i2c_device_id anx7625_id[] = {
-	{"anx7625", 0},
-	{}
-};
-
-MODULE_DEVICE_TABLE(i2c, anx7625_id);
-
 #ifdef CONFIG_OF
 static const struct of_device_id anx_match_table[] = {
 	{.compatible = "analogix,anx7625",},
@@ -2792,7 +2795,6 @@ static struct i2c_driver anx7625_driver = {
 	},
 	.probe = anx7625_i2c_probe,
 	.remove = anx7625_i2c_remove,
-
 	.id_table = anx7625_id,
 };
 
