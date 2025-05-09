@@ -260,8 +260,8 @@ int power_init_board(void)
 	ret = power_bd71837_init(I2C_PMIC);
 	if (ret)
 		printf("power init failed");
-
-	p = pmic_get("BD71837");
+	
+	p = pmic_get(BD718XX_REGULATOR_DRIVER);
 	pmic_probe(p);
 
 
