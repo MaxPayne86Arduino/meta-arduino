@@ -21,14 +21,213 @@
 #include "../common/tcpc.h"
 #include <usb.h>
 
+#include <imx_sip.h>
+#include <linux/arm-smccc.h>
+#include <power/pmic.h>
+#include <power/bd71837.h>
+#include <mmc.h>
+#include <linux/delay.h>
+
+#include "anx7625.h"
+
+/**
+ * Board model and carrier selection
+ */
+struct portenta_model {
+	const char *board_name;
+	const char *board_rev;
+	bool has_onboard_wifi;
+	bool has_rtmcu;
+	const char *rtmcu_name;
+	bool is_on_carrier;
+	const char *carrier_name;
+	bool has_hat;
+	const char *hat_name;
+};
+
+static const struct portenta_model carrier_unknown = {
+	"portenta-x8",
+	"iMX8MM",
+	true,
+	true,
+	"STM32H7",
+	false,
+	"unknown",
+	false,
+	"unknown",
+};
+
+static const struct portenta_model carrier_breakout = {
+	"portenta-x8",
+	"iMX8MM",
+	true,
+	true,
+	"STM32H7",
+	true,
+	"breakout",
+	false,
+	"unknown",
+};
+
+static const struct portenta_model carrier_max = {
+	"portenta-x8",
+	"iMX8MM",
+	true,
+	true,
+	"STM32H7",
+	true,
+	"max",
+	false,
+	"unknown",
+};
+
+static const struct portenta_model carrier_rasptenta = {
+	"portenta-x8",
+	"iMX8MM",
+	true,
+	true,
+	"STM32H7",
+	true,
+	"rasptenta",
+	false,
+	"unknown",
+};
+
+static struct portenta_model *model;
+
+static void set_breakout_carrier_model()
+{
+	model = &carrier_breakout;
+}
+
+static void set_max_carrier_model()
+{
+	model = &carrier_max;
+}
+
+static void set_rasptenta_carrier_model()
+{
+	model = &carrier_rasptenta;
+}
+
+/**
+ * Carrier and Hat boards EEPROMs
+ */
+#define EEPROM_CARRIER_I2C_BUS 1
+#define EEPROM_CARRIER_I2C_ADR 0x50
+#define EEPROM_HAT_I2C_BUS 2
+#define EEPROM_HAT_I2C_ADR 0x50
+
+uint8_t probe_eeprom(uint8_t i2c_bus, uint8_t addr)
+{
+	struct udevice *bus;
+	struct udevice *dev;
+	int ret;
+
+	printf("eeprom probe\n");
+	ret = uclass_get_device_by_seq(UCLASS_I2C, i2c_bus, &bus);
+	if (ret) {
+		printf("%s: No bus %d\n", __func__, i2c_bus);
+		return 0;
+	}
+
+	ret = dm_i2c_probe(bus, addr, 0, &dev);
+	if (ret) {
+		printf("%s: Can't find device id=0x%x, on bus %d\n",
+			   __func__, addr, i2c_bus);
+		return 0;
+	}
+
+	return 1;
+}
+
+/**
+ * External USB Hub configuration
+ */
+#define EXT_USB_HUB
+#define EXT_USB_HUB_I2C_BUS  2
+#define EXT_USB_HUB_I2C_ADR  0x2C
+
+/**
+ * USB2514B/M2 configuration data
+ */
+static unsigned char ext_usb_hub_cfg_1[] = {
+	0x11,	//data size
+	0x24,	//VID LSB
+	0x04,	//VID_MSB
+	0x14,	//PID LSB
+	0x25,	//PID MSB
+	0x00,	//DID LSB
+	0x00,	//DID MSB
+	0x8D,	//CFG1
+	0x10,	//CFG2
+	0x00,	//CFG3
+	0x00,	//NRD
+	0x00,	//PDS
+	0x00,	//PDB
+	0x01,	//MAXPS
+	0x32,	//MAXPB
+	0x01,	//HCMS
+	0x32,	//HCMB
+	0x32	//PWRT
+};
+
+static unsigned char ext_usb_hub_cfg_2[] = {
+	0x01,
+	0x01
+};
+
+static unsigned char ext_usb_hub_presence = 0;
+
+/**
+ * 4 port External USB HUB initialization
+ */
+void ext_usb_hub_init(void)
+{
+	struct udevice *bus;
+	struct udevice *dev;
+	int ret;
+
+	printf("ext_usb_hub_init\n");
+	ret = uclass_get_device_by_seq(UCLASS_I2C, EXT_USB_HUB_I2C_BUS, &bus);
+	if (ret) {
+		printf("%s: No bus %d\n", __func__, EXT_USB_HUB_I2C_BUS);
+		return;
+	}
+
+	/* @DOC: we use external usb hub present on Max Carrier to perform
+	 * carrier detection */
+	ret = dm_i2c_probe(bus, EXT_USB_HUB_I2C_ADR, 0, &dev);
+	if (ret) {
+		printf("%s: Can't find device id=0x%x, on bus %d\n",
+			   __func__, EXT_USB_HUB_I2C_ADR, EXT_USB_HUB_I2C_BUS);
+		ext_usb_hub_presence = 0;
+		return;
+	}
+
+	ext_usb_hub_presence = 1;
+
+	ret = dm_i2c_write(dev, 0x00, ext_usb_hub_cfg_1, sizeof(ext_usb_hub_cfg_1));
+	if (ret) {
+		printf("%s: Fail to write first configuration\n", __func__);
+		return;
+	}
+
+	ret = dm_i2c_write(dev, 0xFF, ext_usb_hub_cfg_2, sizeof(ext_usb_hub_cfg_2));
+	if (ret) {
+		printf("%s: Fail to write second configuration\n", __func__);
+		return;
+	}
+}
+
 DECLARE_GLOBAL_DATA_PTR;
 
-#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
+#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1 | PAD_CTL_PUE | PAD_CTL_PE)
 #define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
 
 static iomux_v3_cfg_t const uart_pads[] = {
-	IMX8MM_PAD_UART2_RXD_UART2_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
-	IMX8MM_PAD_UART2_TXD_UART2_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+	IMX8MM_PAD_UART3_RXD_UART3_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+	IMX8MM_PAD_UART3_TXD_UART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
 };
 
 static iomux_v3_cfg_t const wdog_pads[] = {
@@ -96,7 +295,7 @@ int board_early_init_f(void)
 
 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
 
-	init_uart_clk(1);
+	init_uart_clk(2);
 
 #ifdef CONFIG_NAND_MXS
 	setup_gpmi_nand(); /* SPL will call the board_early_init_f */
@@ -308,17 +507,84 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
 
 	return USB_INIT_DEVICE;
 }
+#else
+int board_usb_init(int index, enum usb_init_type init)
+{
+        imx8m_usb_power(index, true);
+        return 0;
+}
 
+int board_usb_cleanup(int index, enum usb_init_type init)
+{
+        imx8m_usb_power(index, false);
+        return 0;
+}
 #endif
+
+#define FEC_RST_PAD       IMX_GPIO_NR(3, 6)
+
+static void setup_iomux_fec(void)
+{
+	printf("setup_iomux_fec\n");
+
+	/* reset PHY and ensure RX_DV/CLK125_EN is pulled high to enable TX_REF_CLK */
+	gpio_request(FEC_RST_PAD, "fec1_rst");
+	gpio_direction_output(FEC_RST_PAD, 0);
+	udelay(500);
+	gpio_direction_output(FEC_RST_PAD, 1);
+	udelay(100000);
+	gpio_free(FEC_RST_PAD);
+}
+
+#define CONFIG_BREAKOUT_IS_DEFAULT
 
 int board_init(void)
 {
+	model = &carrier_unknown;
+
 #ifdef CONFIG_USB_TCPC
 	setup_typec();
 #endif
 
+	setup_iomux_fec();
+
 	if (IS_ENABLED(CONFIG_FEC_MXC))
 		setup_fec();
+
+	/* ANX7625 usb typec controller and power delivery configuration on portenta-x8 */
+	/* @TODO: selectable with CONFIG_USB_TCPC? */
+#ifndef CONFIG_SPL_BUILD
+	anx7625_probe(1);
+#endif
+
+#ifdef EXT_USB_HUB
+	ext_usb_hub_init();
+#endif
+
+	if (ext_usb_hub_presence) {
+		printf("Max carrier detected!\n");
+		set_max_carrier_model();
+		return 0;
+	}
+
+	if (probe_eeprom(EEPROM_CARRIER_I2C_BUS, EEPROM_CARRIER_I2C_ADR)) {
+		printf("Carrier detected!\n");
+		/* @TODO: carrier model detection */
+		printf("Rasp-Tenta carrier detected!\n");
+		set_rasptenta_carrier_model();
+		if (probe_eeprom(EEPROM_HAT_I2C_BUS, EEPROM_HAT_I2C_ADR)) {
+			printf("Hat detected!\n");
+			model->has_hat = true;
+			/* @TODO: hat model detection */
+		}
+		return 0;
+	}
+
+/* Breakout carrier is not detectable */
+#ifdef CONFIG_BREAKOUT_IS_DEFAULT
+	printf("Breakout carrier detected!\n");
+	set_breakout_carrier_model();
+#endif
 
 	return 0;
 }
@@ -330,8 +596,24 @@ int board_late_init(void)
 #endif
 
 	if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
-		env_set("board_name", "EVK");
-		env_set("board_rev", "iMX8MM");
+		int boot_device = mmc_get_env_dev();
+
+		env_set_ulong("devnum", boot_device);
+		env_set_ulong("ovldev", boot_device);
+		env_set_ulong("mmcdev", boot_device);
+
+		env_set("board_name", model->board_name);
+		env_set("board_rev", model->board_rev);
+		if (env_get("carrier_custom") == NULL) {
+			if (model->is_on_carrier) {
+				env_set("is_on_carrier", "yes");
+				env_set("carrier_name", model->carrier_name);
+				if (model->has_hat) {
+					env_set("has_hat", "yes");
+					env_set("hat_name", model->hat_name);
+				}
+			}
+		}
 	}
 
 	return 0;
