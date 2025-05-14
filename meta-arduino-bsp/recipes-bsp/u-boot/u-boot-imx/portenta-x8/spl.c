@@ -64,14 +64,14 @@ void spl_dram_init(void)
 #define PC MUX_PAD_CTRL(I2C_PAD_CTRL)
 struct i2c_pads_info i2c_pad_info1 = {
 	.scl = {
-		.i2c_mode = IMX8MM_PAD_I2C1_SCL_I2C1_SCL | PC,
-		.gpio_mode = IMX8MM_PAD_I2C1_SCL_GPIO5_IO14 | PC,
-		.gp = IMX_GPIO_NR(5, 14),
+		.i2c_mode = IMX8MM_PAD_I2C2_SCL_I2C2_SCL | PC | ((iomux_v3_cfg_t)(IOMUX_CONFIG_SION) << MUX_MODE_SHIFT),
+		.gpio_mode = IMX8MM_PAD_I2C2_SCL_GPIO5_IO16 | PC,
+		.gp = IMX_GPIO_NR(5, 16),
 	},
 	.sda = {
-		.i2c_mode = IMX8MM_PAD_I2C1_SDA_I2C1_SDA | PC,
-		.gpio_mode = IMX8MM_PAD_I2C1_SDA_GPIO5_IO15 | PC,
-		.gp = IMX_GPIO_NR(5, 15),
+		.i2c_mode = IMX8MM_PAD_I2C2_SDA_I2C2_SDA | PC | ((iomux_v3_cfg_t)(IOMUX_CONFIG_SION) << MUX_MODE_SHIFT),
+		.gpio_mode = IMX8MM_PAD_I2C2_SDA_GPIO5_IO17 | PC,
+		.gp = IMX_GPIO_NR(5, 17),
 	},
 };
 
@@ -191,7 +191,7 @@ int board_mmc_getcd(struct mmc *mmc)
 }
 
 #if CONFIG_IS_ENABLED(POWER_LEGACY)
-#define I2C_PMIC	0
+#define I2C_PMIC	1
 #ifdef CONFIG_POWER_PCA9450
 int power_init_board(void)
 {
@@ -258,6 +258,9 @@ int power_init_board(void)
 	pmic_reg_write(p, BD718XX_4TH_NODVS_BUCK_VOLT, 0x28);
 #endif
 
+	/* enable LDO5 and set to 3.0V for ANX7625 */
+	pmic_reg_write(p, BD718XX_LDO5_VOLT, 0xcc);
+
 	/* lock the PMIC regs */
 	pmic_reg_write(p, BD718XX_REGLOCK, 0x11);
 
@@ -285,6 +288,8 @@ int board_fit_config_name_match(const char *name)
 }
 #endif
 
+#define ANX7625_VBUS_CTL_PAD      IMX_GPIO_NR(4, 13)
+
 void board_init_f(ulong dummy)
 {
 	int ret;
@@ -300,6 +305,10 @@ void board_init_f(ulong dummy)
 
 	preloader_console_init();
 
+	printf("Turn Off VBUS\n");
+	gpio_request(ANX7625_VBUS_CTL_PAD, "anx_vbus_ctl"); /* 0 = VBUS On, 1 = VBUS Off */
+	gpio_direction_output(ANX7625_VBUS_CTL_PAD, 1);
+
 	ret = spl_init();
 	if (ret) {
 		debug("spl_init() failed: %d\n", ret);
@@ -309,9 +318,13 @@ void board_init_f(ulong dummy)
 	enable_tzc380();
 
 	/* Adjust pmic voltage to 1.0V for 800M */
-	setup_i2c(0, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
+	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
 
 	power_init_board();
+
+	printf("Turn on SE050\n");
+	gpio_request(IMX_GPIO_NR(1, 3), "CRYPTO_EN");
+	gpio_direction_output(IMX_GPIO_NR(1, 3), 1);
 
 	/* DDR initialization */
 	spl_dram_init();
