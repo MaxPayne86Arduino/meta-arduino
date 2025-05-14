@@ -132,7 +132,7 @@ enum anx7625_pd_msg_type {
 #define POWER_DELIVERY_TIMEOUT    50 // [x10 = 500ms]
 #define OCM_LOADING_TIME          10
 
-#if defined(CONFIG_TARGET_PORTENTA_X8)
+#if defined(CONFIG_TARGET_PORTENTA_X8) || defined(CONFIG_TARGET_IMX8MM_EVK)
 #define ANX7625_POWER_EN_PAD      IMX_GPIO_NR(4, 25)
 #define ANX7625_RESET_N_PAD       IMX_GPIO_NR(4, 26)
 #define ANX7625_CABLE_DET_PAD     IMX_GPIO_NR(4, 27)
