@@ -10,6 +10,8 @@ SRC_URI:append:portenta-x8 = " \
     file://imx8mm_evk.c \
     file://spl.c \
     file://lpddr4_timing.c \
+    file://anx7625/anx7625.c \
+    file://anx7625/anx7625.h \
 "
 
 do_override_files_portenta_x8 () {
@@ -33,6 +35,9 @@ do_override_files_portenta_x8 () {
     cp ${WORKDIR}/spl.c ${S}/board/freescale/imx8mm_evk/spl.c
 
     cp ${WORKDIR}/imx8mm_evk.h ${S}/include/configs/imx8mm_evk.h
+
+    cp ${WORKDIR}/anx7625/anx7625.c ${S}/board/freescale/imx8mm_evk/anx7625.c
+    cp ${WORKDIR}/anx7625/anx7625.h ${S}/board/freescale/imx8mm_evk/anx7625.h
 }
 
 SRC_URI:append:portenta-x8 = " \
