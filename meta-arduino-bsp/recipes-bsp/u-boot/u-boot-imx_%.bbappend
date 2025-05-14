@@ -18,7 +18,7 @@ do_override_files_portenta_x8 () {
     bbwarn Overriding files for ${MACHINE}
 
     # Override Makefile
-    cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
+    cp ${WORKDIR}/Makefile ${S}/board/freescale/imx8mm_evk/Makefile
 
     # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use
     cp ${WORKDIR}/imx8mm_evk_defconfig ${S}/configs/imx8mm_evk_defconfig
