@@ -15,3 +15,7 @@ obj-$(CONFIG_IMX8M_LPDDR4) += lpddr4_timing.o
 obj-$(CONFIG_IMX8M_DDR4) += ddr4_timing.o
 endif
 endif
+
+ifndef CONFIG_SPL_BUILD
+obj-y += anx7625.o
+endif
