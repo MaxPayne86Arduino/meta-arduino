@@ -1,6 +1,41 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append:portenta-x8 = " \
+    file://Makefile \
+    file://imx8mm_evk_defconfig \
+    file://imx8mm-evk.dts \
+    file://imx8mm-evk.dtsi \
+    file://imx8mm-evk-u-boot.dtsi \
+    file://imx8mm_evk.h \
+    file://imx8mm_evk.c \
+    file://spl.c \
+    file://lpddr4_timing.c \
+"
+
+do_override_files_portenta_x8 () {
+    bbwarn Overriding files for ${MACHINE}
+
+    # Override Makefile
+    cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
+
+    # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use
+    cp ${WORKDIR}/imx8mm_evk_defconfig ${S}/configs/imx8mm_evk_defconfig
+
+    cp ${WORKDIR}/imx8mm-evk.dts ${S}/arch/arm/dts/imx8mm-evk.dts
+    cp ${WORKDIR}/imx8mm-evk.dtsi ${S}/arch/arm/dts/imx8mm-evk.dtsi
+
+    # @TODO: u-boot auto-includes the *-u-boot.dtsi prepending MACHINE to the board devicetree
+    # see scripts/Makefile.lib, so should never be included directly from board devicetree
+    cp ${WORKDIR}/imx8mm-evk-u-boot.dtsi ${S}/arch/arm/dts/imx8mm-evk-u-boot.dtsi
+
+    cp ${WORKDIR}/imx8mm_evk.c ${S}/board/freescale/imx8mm_evk/imx8mm_evk.c
+    cp ${WORKDIR}/lpddr4_timing.c ${S}/board/freescale/imx8mm_evk/lpddr4_timing.c
+    cp ${WORKDIR}/spl.c ${S}/board/freescale/imx8mm_evk/spl.c
+
+    cp ${WORKDIR}/imx8mm_evk.h ${S}/include/configs/imx8mm_evk.h
+}
+
+SRC_URI:append:portenta-x8 = " \
     file://board/anx7625.c \
     file://board/anx7625.h \
     file://board/Kconfig \
@@ -91,7 +126,8 @@ SRC_URI:append:imx8mp-astrial = " \
 "
 
 do_override_files_imx8mp_astrial () {
-    bbwarn Overriding files for imx8mp-evk
+    bbwarn Overriding files for ${MACHINE}
+
     # Override Makefile
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
@@ -117,7 +153,7 @@ do_override_files_imx8mp_astrial () {
 
 python () {
     if d.getVar('MACHINE') == 'portenta-x8':
-        bb.build.addtask('do_create_machine_portenta_x8', 'do_configure', 'do_patch', d)
+        bb.build.addtask('do_override_files_portenta_x8', 'do_configure', 'do_patch', d)
     elif d.getVar('MACHINE') == 'portenta-x9':
         bb.build.addtask('do_override_files_portenta_x9', 'do_configure', 'do_patch', d)
     elif d.getVar('MACHINE') == 'imx8mp-astrial':
