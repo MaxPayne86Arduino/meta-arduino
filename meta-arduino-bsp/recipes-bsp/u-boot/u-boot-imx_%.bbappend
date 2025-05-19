@@ -29,6 +29,7 @@ do_override_files_portenta_x8 () {
     # @TODO: u-boot auto-includes the *-u-boot.dtsi prepending MACHINE to the board devicetree
     # see scripts/Makefile.lib, so should never be included directly from board devicetree
     cp ${WORKDIR}/imx8mm-evk-u-boot.dtsi ${S}/arch/arm/dts/imx8mm-evk-u-boot.dtsi
+    cp ${WORKDIR}/imx8mm-u-boot.dtsi ${S}/arch/arm/dts/imx8mm-u-boot.dtsi
 
     cp ${WORKDIR}/imx8mm_evk.c ${S}/board/freescale/imx8mm_evk/imx8mm_evk.c
     cp ${WORKDIR}/lpddr4_timing.c ${S}/board/freescale/imx8mm_evk/lpddr4_timing.c
