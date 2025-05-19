@@ -1030,59 +1030,7 @@ dtb-$(CONFIG_ARCH_IMX8ULP) += \
 	imx8ulp-watch.dtb
 
 dtb-$(CONFIG_ARCH_IMX8M) += \
-	imx8mm-data-modul-edm-sbc.dtb \
-	imx8mm-ddr4-evk.dtb \
-	imx8mm-ddr4-ab2.dtb \
-	imx8mm-ddr3l-val.dtb \
-	imx8mm-ddr4-val.dtb \
-	imx8mm-evk.dtb \
-	imx8mm-ab2.dtb \
-	imx8mm-icore-mx8mm-ctouch2.dtb \
-	imx8mm-icore-mx8mm-edimm2.2.dtb \
-	imx8mm-kontron-bl.dtb \
-	imx8mm-kontron-bl-osm-s.dtb \
-	imx8mm-mx8menlo.dtb \
-	imx8mm-phg.dtb \
-	imx8mm-venice.dtb \
-	imx8mm-venice-gw71xx-0x.dtb \
-	imx8mm-venice-gw72xx-0x.dtb \
-	imx8mm-venice-gw73xx-0x.dtb \
-	imx8mm-venice-gw7901.dtb \
-	imx8mm-venice-gw7902.dtb \
-	imx8mm-venice-gw7903.dtb \
-	imx8mm-venice-gw7904.dtb \
-	imx8mm-verdin-wifi-dev.dtb \
-	phycore-imx8mm.dtb \
-	imx8mn-bsh-smm-s2.dtb \
-	imx8mn-bsh-smm-s2pro.dtb \
-	imx8mn-ddr3l-evk.dtb \
-	imx8mn-ddr4-evk.dtb \
-	imx8mn-ddr4-ab2.dtb \
-	imx8mq-cm.dtb \
-	imx8mn-evk.dtb \
-	imx8mn-ab2.dtb \
-	imx8mn-var-som-symphony.dtb \
-	imx8mn-venice.dtb \
-	imx8mn-venice-gw7902.dtb \
-	imx8mq-ddr3l-val.dtb \
-	imx8mq-ddr4-val.dtb \
-	imx8mq-evk.dtb \
-	imx8mm-beacon-kit.dtb \
-	imx8mn-beacon-kit.dtb \
-	imx8mq-mnt-reform2.dtb \
-	imx8mq-phanbell.dtb \
-	imx8mp-dhcom-pdk2.dtb \
-	imx8mp-ddr4-evk.dtb \
-	imx8mp-evk.dtb \
-	imx8mp-icore-mx8mp-edimm2.2.dtb \
-	imx8mp-msc-sm2s.dtb \
-	imx8mp-phyboard-pollux-rdk.dtb \
-	imx8mp-venice.dtb \
-	imx8mp-venice-gw74xx.dtb \
-	imx8mp-verdin-wifi-dev.dtb \
-	imx8mq-pico-pi.dtb \
-	imx8mq-kontron-pitx-imx8m.dtb \
-	imx8mq-librem5-r4.dtb
+	imx8mm-evk.dtb
 
 dtb-$(CONFIG_ARCH_IMX9) += \
 	imx95-19x19-evk.dtb \
