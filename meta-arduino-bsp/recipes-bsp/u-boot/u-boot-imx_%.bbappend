@@ -6,6 +6,7 @@ SRC_URI:append:portenta-x8 = " \
     file://imx8mm-evk.dts \
     file://imx8mm-evk.dtsi \
     file://imx8mm-evk-u-boot.dtsi \
+    file://imx8mm-u-boot.dtsi \
     file://imx8mm_evk.h \
     file://imx8mm_evk.c \
     file://spl.c \
