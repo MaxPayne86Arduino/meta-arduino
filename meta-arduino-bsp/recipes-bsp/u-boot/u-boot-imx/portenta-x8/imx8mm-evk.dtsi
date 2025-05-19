@@ -237,13 +237,13 @@
 			};
 
 			/* @TODO: supplies anx7625, handled in spl.c */
-			ldo5_reg: LDO5 {
+			/*ldo5_reg: LDO5 {
 				regulator-name = "LDO5";
 				regulator-min-microvolt = <3000000>;
 				regulator-min-microvolt = <3000000>;
 				regulator-boot-on;
 				regulator-always-on;
-			};
+			};*/
 
 			ldo6_reg: LDO6 {
 				regulator-name = "LDO6";
