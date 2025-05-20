@@ -59,6 +59,8 @@ SRC_URI:append:portenta-x9 = " \
 "
 
 do_override_files_portenta_x9 () {
+    bbwarn Overriding files for ${MACHINE}
+
     # Override Makefile
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
