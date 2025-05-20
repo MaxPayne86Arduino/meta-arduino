@@ -46,49 +46,6 @@ do_override_files_portenta_x8 () {
     cp ${WORKDIR}/anx7625/anx7625.h ${S}/board/freescale/imx8mm_evk/anx7625.h
 }
 
-SRC_URI:append:portenta-x8 = " \
-    file://board/anx7625.c \
-    file://board/anx7625.h \
-    file://board/Kconfig \
-    file://board/lpddr4_timing.c \
-    file://board/Makefile \
-    file://board/mmc.c \
-    file://board/portenta-x8.c \
-    file://board/portenta-x8_defconfig \
-    file://board/portenta-x8.h \
-    file://board/spl.c \
-    file://devicetree/Makefile \
-    file://devicetree/portenta-x8.dts \
-    file://devicetree/portenta-x8-u-boot.dtsi \
-    file://common/fat.c \
-    file://common/Kconfig \
-    file://common/spl_mmc.c \
-"
-
-do_create_machine_portenta_x8 () {
-    # Overrides
-    cp ${WORKDIR}/common/Kconfig ${S}/arch/arm/mach-imx/imx8m/Kconfig
-    cp ${WORKDIR}/common/fat.c ${S}/env/fat.c
-    #cp ${WORKDIR}/common/spl_mmc.c ${S}/common/spl/spl_mmc.c
-    cp ${WORKDIR}/devicetree/Makefile ${S}/arch/arm/dts/Makefile
-
-    # Machine files (new)
-    cp ${WORKDIR}/devicetree/portenta-x8.dts ${S}/arch/arm/dts/portenta-x8.dts
-    cp ${WORKDIR}/devicetree/portenta-x8-u-boot.dtsi ${S}/arch/arm/dts/portenta-x8-u-boot.dtsi
-    cp ${WORKDIR}/board/portenta-x8_defconfig ${S}/configs/portenta-x8_defconfig
-    cp ${WORKDIR}/board/portenta-x8.h ${S}/include/configs/portenta-x8.h
-
-    mkdir -p ${S}/board/arduino/portenta-x8
-    cp ${WORKDIR}/board/Makefile ${S}/board/arduino/portenta-x8/Makefile
-    cp ${WORKDIR}/board/Kconfig ${S}/board/arduino/portenta-x8/Kconfig
-    cp ${WORKDIR}/board/anx7625.h ${S}/board/arduino/portenta-x8/anx7625.h
-    cp ${WORKDIR}/board/anx7625.c ${S}/board/arduino/portenta-x8/anx7625.c
-    cp ${WORKDIR}/board/spl.c ${S}/board/arduino/portenta-x8/spl.c
-    cp ${WORKDIR}/board/lpddr4_timing.c ${S}/board/arduino/portenta-x8/lpddr4_timing.c
-    cp ${WORKDIR}/board/portenta-x8.c ${S}/board/arduino/portenta-x8/portenta-x8.c
-    cp ${WORKDIR}/board/mmc.c ${S}/board/arduino/portenta-x8/mmc.c
-}
-
 SRC_URI:append:portenta-x9 = " \
     file://Makefile \
     file://portenta-x9_defconfig \
