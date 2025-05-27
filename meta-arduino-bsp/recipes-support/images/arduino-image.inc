@@ -1,23 +1,6 @@
 # Setup image features
 IMAGE_FEATURES:append = " ssh-server-dropbear"
 
-# @TODO: following packages should be exclusively configured with
-# MACHINE_EXTRA_RRECOMMENDS in <machine-name>.conf
-CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " arduino-device-tree"
-CORE_IMAGE_EXTRA_INSTALL:append:portenta-x9 = " \
-    kernel-module-nxp-wlan \
-    firmware-nxp-wifi-nxpiw612-sdio \
-    firmware-nxp-wifi \
-    kernel-module-btnxpuart \
-    lmbench \
-"
-
-CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " arduino-device-tree"
-CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-astrial = " \
-    hailo-pcie-driver \
-    lmbench \
-"
-
 # Install extra out of tree kernel drivers (som)
 CORE_IMAGE_EXTRA_INSTALL += " \
     dtbocfg \
