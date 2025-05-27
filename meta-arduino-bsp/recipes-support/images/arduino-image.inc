@@ -48,6 +48,8 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-base \
     systemd \
+    networkmanager \
+    networkmanager-wifi \
     networkmanager-nmcli \
     iperf3 \
     openocd \
