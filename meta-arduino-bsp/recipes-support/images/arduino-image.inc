@@ -108,3 +108,11 @@ write_git_sha() {
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "write_git_sha; "
+
+# Late rootfs tweaks
+late_rootfs_tweaks() {
+    # Remove interfaces from init-ifupdown
+    rm ${IMAGE_ROOTFS}/etc/network/interfaces
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "late_rootfs_tweaks; "
