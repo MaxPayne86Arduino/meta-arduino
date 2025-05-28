@@ -13,7 +13,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ov5647-mipi \
     lan865x \
 "
-# End of MACHINE_EXTRA_RRECOMMENDS section
 
 # Install custom u-boot scripts (mandatory for eMMC / SD Card boot)
 CORE_IMAGE_EXTRA_INSTALL += " \
