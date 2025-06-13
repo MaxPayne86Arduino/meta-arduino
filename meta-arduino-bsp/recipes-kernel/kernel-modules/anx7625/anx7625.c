@@ -2751,8 +2751,10 @@ free_wq:
 		destroy_workqueue(platform->workqueue);
 
 free_platform:
-	kfree(platform);
 	anx7625_unregister_i2c_dummy_clients(platform);
+	kfree(platform);
+	/* free properly also this */
+	kfree(platform->usb_typec);
 
 	return ret;
 }
