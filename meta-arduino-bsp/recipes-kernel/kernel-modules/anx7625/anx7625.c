@@ -2654,8 +2654,14 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 	mutex_init(&platform->lock);
 
 	ret = anx7625_register_i2c_dummy_clients(platform, client);
-	if (ret < 0)
-		goto free_platform;
+	if (ret < 0) {
+	   /* do not go to free_platform if this fails because the function itself
+	      unregister the dummy clients */
+		kfree(platform);
+		/* free properly also this */
+		kfree(platform->usb_typec);
+		return ret;
+	}
 
 	if (IS_ENABLED(CONFIG_OF))
 		platform->bridge.of_node = client->dev.of_node;
