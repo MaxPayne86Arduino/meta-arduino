@@ -4,8 +4,8 @@ This repository contains two Yocto layers designed to support Arduino hardware p
 
 ## Layers Overview
 
-### 1. `meta-arduino-bsp`
-This layer provides Board Support Package (BSP) configurations for Arduino hardware platforms. It includes:
+### 1. `meta-arduino-nxp`
+This layer provides Board Support Package (BSP) configurations for Arduino hardware platforms based on nxp processor. It includes:
 - Device tree overlays.
 - Kernel module recipes for Arduino-supported peripherals.
 - U-Boot configurations for Arduino boards.
@@ -88,7 +88,7 @@ This layer provides specific customizations targeting the Linux Micro Platform (
    ```
 5. Add the layers to your `bblayers.conf` file:
    ```bash
-   echo 'BBLAYERS += "${BSPDIR}/sources/meta-arduino/meta-arduino-bsp"' >> conf/bblayers.conf
+   echo 'BBLAYERS += "${BSPDIR}/sources/meta-arduino/meta-arduino-nxp"' >> conf/bblayers.conf
    ```
 6. Customize your `local.conf` file to optimize the build environment:
    ```bash
