@@ -11,6 +11,7 @@
 
 / {
 	model = "Arduino i.MX8MM Portenta X8 board";
+        compatible = "arduino,portenta-x8", "fsl, imx8mm-evk", "fsl,imx8mm";
 
 	chosen {
 		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200";
