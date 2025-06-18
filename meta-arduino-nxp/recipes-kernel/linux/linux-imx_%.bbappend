@@ -22,6 +22,11 @@ SRC_URI:append:portenta-x8 = " \
     file://defconfig \
     file://DVFS-0001-Add_400MHz_200MHz_100MHz.patch \
 "
+# Removed this patch since in @ the tag lf-6.6.52-2.2.0 (scarthgap) this patch is alredy
+# present in the kernel code
+SRC_URI:remove:portenta-x8 = " \
+    file://generic/PCIE-0001-PCIE_PHY_CMN_REG063.patch \
+"
 
 SRC_URI:append:portenta-x9 = " \
     file://defconfig \
