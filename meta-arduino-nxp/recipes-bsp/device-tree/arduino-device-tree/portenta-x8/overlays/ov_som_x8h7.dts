@@ -114,4 +114,15 @@
 			};
 		};
 	};
+
+	fragment@3 {
+		target-path = "/";
+		__overlay__ {
+			x8h7_rst: x8h7rst {
+				compatible = "portenta,x8h7rst";
+			   nrst-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>; // NRST_STM32
+				boot0-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>; // BOOT0_STM32
+			};
+		};
+	};
 };
