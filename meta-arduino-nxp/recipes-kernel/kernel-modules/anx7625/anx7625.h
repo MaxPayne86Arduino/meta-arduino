@@ -1,23 +1,11 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright(c) 2020, Analogix Semiconductor. All rights reserved.
- * Copyright(c) 2020, Foundries.io. All rights reserved.
  *
  */
 
 #ifndef __ANX7625_H__
 #define __ANX7625_H__
-
-#include <drm/drm_bridge.h>
-
-//#include <drm/drm_dp_helper.h>
-#include <linux/media-bus-format.h>
-#include <video/display_timing.h>
-
-#include <linux/usb/role.h>
-#include <linux/usb/typec.h>
-
-#define MIPI_DSI_MODE_EOT_PACKET MIPI_DSI_MODE_NO_EOT_PACKET
 
 #define ANX7625_DRV_VERSION "0.1.04"
 
@@ -55,37 +43,39 @@
 /***************************************************************/
 /* Register definition of device address 0x58 */
 
-#define TCPC_PRODUCT_ID_L		0x02
-#define TCPC_PRODUCT_ID_H		0x03
-#define TCPC_ALERT_0			0x10
-#define TCPC_ALERT_CC_STS_CHG	BIT(0)
-#define TCPC_ALERT_1			0x11
+#define PRODUCT_ID_L 0x02
+#define PRODUCT_ID_H 0x03
 
-#define TCPC_TCPC_CONTROL		0x19
-#define TCPC_TCPC_CTL_PLUG_OR	BIT(0)
-#define TCPC_ROLE_CONTROL		0x1A
-#define TCPC_CC_STATUS			0x1D
-#define TCPC_PWR_STATUS			0x1E
-#define TCPC_COMMAND			0x23
-#define TCPC_ANALOG_CTRL_0		0xA0
-#define TCPC_AC0_CC1_RA		BIT(4)
-#define TCPC_AC0_CC_VRD_VBUS_SHORT BIT(5)
-#define TCPC_ANALOG_CTRL_1		0xA1
-#define TCPC_INTR_ALERT_0		0xCB
-#define TCPC_INTR_ALERT_1		0xCC
-#define TCPC_INTR_SOFTWARE_INT	BIT(3)
-#define TCPC_INTR_RECEIVED_MSG	BIT(5)
+#define INTR_ALERT_1  0xCC
+#define INTR_SOFTWARE_INT BIT(3)
+#define INTR_RECEIVED_MSG BIT(5)
 
+#define SYSTEM_STSTUS 0x45
+#define INTERFACE_CHANGE_INT 0x44
+#define HPD_STATUS_CHANGE 0x80
+#define HPD_STATUS 0x80
 
 /******** END of I2C Address 0x58 ********/
 
 /***************************************************************/
 /* Register definition of device address 0x70 */
+#define TX_HDCP_CTRL0			0x01
+#define STORE_AN			BIT(7)
+#define RX_REPEATER			BIT(6)
+#define RE_AUTHEN			BIT(5)
+#define SW_AUTH_OK			BIT(4)
+#define HARD_AUTH_EN			BIT(3)
+#define ENC_EN				BIT(2)
+#define BKSV_SRM_PASS			BIT(1)
+#define KSVLIST_VLD			BIT(0)
 
-#define  I2C_ADDR_70_DPTX              0x70
+#define SP_TX_WAIT_R0_TIME		0x40
+#define SP_TX_WAIT_KSVR_TIME		0x42
+#define SP_TX_SYS_CTRL1_REG		0x80
+#define HDCP2TX_FW_EN			BIT(4)
 
-#define SP_TX_LINK_BW_SET_REG 0xA0
-#define SP_TX_LANE_COUNT_SET_REG 0xA1
+#define SP_TX_LINK_BW_SET_REG		0xA0
+#define SP_TX_LANE_COUNT_SET_REG	0xA1
 
 #define M_VID_0 0xC0
 #define M_VID_1 0xC1
@@ -94,11 +84,14 @@
 #define N_VID_1 0xC4
 #define N_VID_2 0xC5
 
-/******** END of I2C Address 0x70 *********/
+#define KEY_START_ADDR			0x9000
+#define KEY_RESERVED			416
+
+#define HDCP14KEY_START_ADDR		(KEY_START_ADDR + KEY_RESERVED)
+#define HDCP14KEY_SIZE			624
 
 /***************************************************************/
 /* Register definition of device address 0x72 */
-
 #define AUX_RST	0x04
 #define RST_CTRL2 0x07
 
@@ -137,13 +130,24 @@
 #define AUDIO_CHANNEL_STATUS_6 0xd5
 #define TDM_SLAVE_MODE 0x10
 #define I2S_SLAVE_MODE 0x08
+#define AUDIO_LAYOUT   0x01
+
+#define HPD_DET_TIMER_BIT0_7   0xea
+#define HPD_DET_TIMER_BIT8_15  0xeb
+#define HPD_DET_TIMER_BIT16_23 0xec
+/* HPD debounce time 2ms for 27M clock */
+#define HPD_TIME               54000
 
 #define AUDIO_CONTROL_REGISTER 0xe6
 #define TDM_TIMING_MODE 0x08
 
 #define I2C_ADDR_72_DPTX              0x72
 
-#define  VIDEO_CONTROL_0  0x08
+#define HP_MIN			8
+#define HBLANKING_MIN		80
+#define SYNC_LEN_DEF		32
+#define HFP_HBP_DEF		((HBLANKING_MIN - SYNC_LEN_DEF) / 2)
+#define VIDEO_CONTROL_0	0x08
 
 #define  ACTIVE_LINES_L         0x14
 #define  ACTIVE_LINES_H         0x15  /* Bit[7:6] are reserved */
@@ -165,76 +169,102 @@
 /******** END of I2C Address 0x72 *********/
 
 /***************************************************************/
+/* Register definition of device address 0x7a */
+#define DP_TX_SWING_REG_CNT		0x14
+#define DP_TX_LANE0_SWING_REG0		0x00
+#define DP_TX_LANE1_SWING_REG0		0x14
+/******** END of I2C Address 0x7a *********/
+
+/***************************************************************/
 /* Register definition of device address 0x7e */
 
-#define I2C_ADDR_7E_FLASH_CONTROLLER	0x7E
+#define  I2C_ADDR_7E_FLASH_CONTROLLER  0x7E
 
-#define FLASH_LOAD_STA			0x05
+#define R_BOOT_RETRY		0x00
+#define R_RAM_ADDR_H		0x01
+#define R_RAM_ADDR_L		0x02
+#define R_RAM_LEN_H		0x03
+#define R_RAM_LEN_L		0x04
+#define FLASH_LOAD_STA          0x05
 #define FLASH_LOAD_STA_CHK	BIT(7)
 
-#define AP_AUX_ADDR_7_0			0x11
-#define AP_AUX_ADDR_15_8		0x12
-#define AP_AUX_ADDR_19_16		0x13
-#define AP_AUX_CTRL_STATUS		0x14
-/* note: bit[0:3] AUX status, bit 4 op_en, bit 5 address only */
-#define AP_AUX_CTRL_OP_EN	BIT(4)
-#define AP_AUX_CTRL_ADDRONLY	BIT(5)
-#define AP_AUX_BUFF_START		0x15
-#define PIXEL_CLOCK_L			0x25
-#define PIXEL_CLOCK_H			0x26
-#define AP_AUX_COMMAND			0x27 /* com+len */
-/* bit 0&1: 3D video structure */
-/* 0x01: frame packing,  0x02:Line alternative, 0x03:Side-by-side(full) */
-#define AP_AV_STATUS			0x28
-#define AP_VIDEO_CHG		BIT(2)
-#define AP_AUDIO_CHG		BIT(3)
-#define AP_MIPI_MUTE		BIT(4) /* 1: MIPI input mute, 0: ummute */
-#define AP_MIPI_RX_EN		BIT(5) /* 1: MIPI RX input in  0: no RX in */
-#define AP_DISABLE_PD		(u8)BIT(6)
-#define AP_DISABLE_DISPLAY	BIT(7)
-#define MAX_VOLTAGE_SETTING		0x29 /*0xd0*/
-#define MAX_POWER_SETTING		0x2A /*0xd1*/
-#define MIN_POWER_SETTING		0x2B /*0xd2*/
-#define AUTO_PD_MODE			0x2F /*0x6e*/
-#define AUTO_PD_ENABLE		(u8)BIT(1)
-#define OCM_FW_VERSION			0x31
-#define OCM_FW_REVERSION		0x32
-#define XTAL_FRQ_SEL			0x3F
-#define TRYSRC_EN				0x04
-#define TRYSNK_EN				0x08
-/* bit field positions */
-#define XTAL_FRQ_SEL_POS	5
-/* bit field values */
-#define XTAL_FRQ_19M2		(0 << XTAL_FRQ_SEL_POS)
-#define XTAL_FRQ_27M		(4 << XTAL_FRQ_SEL_POS)
-#define R_DSC_CTRL_0			0x40
-/* 1=DSC enabled, 0=DSC disabled */
-#define R_DSC_EN		BIT(0)
-#define INTERFACE_CHANGE_INT_MASK	0x43
-#define INT_MASK_OFF		0
-#define INTERFACE_CHANGE_INT		0x44
-#define REC_MSG_CHANGE		BIT(0)
-#define REC_ACK_CHANGE		BIT(1)
-#define VCONN_CHANGE		BIT(2)
-#define VBUS_CHANGE		BIT(3)
-#define CC_STATUS_CHANGE	BIT(4)
-#define DATA_ROLE_CHANGE	BIT(5)
-#define HPD_STATUS_CHANGE	BIT(7)
-#define SYSTEM_STSTUS			0x45
-#define VCONN_STATUS		BIT(2)
-#define VBUS_STATUS		BIT(3)
-#define DATA_ROLE_STATUS	BIT(5)
-#define HPD_STATUS		BIT(7)
-#define NEW_CC_STATUS			0x46
-#define OCM_DEBUG_REG_8			0x88
-#define OCM_MAIN_RELEASE	0
-#define OCM_MAIN_RESET		BIT(6)
+#define R_RAM_CTRL              0x05
+/* bit positions */
+#define FLASH_DONE              BIT(7)
+#define BOOT_LOAD_DONE          BIT(6)
+#define CRC_OK                  BIT(5)
+#define LOAD_DONE               BIT(4)
+#define O_RW_DONE               BIT(3)
+#define FUSE_BUSY               BIT(2)
+#define DECRYPT_EN              BIT(1)
+#define LOAD_START              BIT(0)
 
-/******** END of I2C Address 0x7e *********/
+#define FLASH_ADDR_HIGH         0x0F
+#define FLASH_ADDR_LOW          0x10
+#define FLASH_LEN_HIGH          0x31
+#define FLASH_LEN_LOW           0x32
+#define R_FLASH_RW_CTRL         0x33
+/* bit positions */
+#define READ_DELAY_SELECT       BIT(7)
+#define GENERAL_INSTRUCTION_EN  BIT(6)
+#define FLASH_ERASE_EN          BIT(5)
+#define RDID_READ_EN            BIT(4)
+#define REMS_READ_EN            BIT(3)
+#define WRITE_STATUS_EN         BIT(2)
+#define FLASH_READ              BIT(1)
+#define FLASH_WRITE             BIT(0)
+
+#define FLASH_BUF_BASE_ADDR     0x60
+#define FLASH_BUF_LEN           0x20
+
+#define  XTAL_FRQ_SEL    0x3F
+/* bit field positions */
+#define  XTAL_FRQ_SEL_POS    5
+/* bit field values */
+#define  XTAL_FRQ_19M2   (0 << XTAL_FRQ_SEL_POS)
+#define  XTAL_FRQ_27M    (4 << XTAL_FRQ_SEL_POS)
+
+#define  R_DSC_CTRL_0    0x40
+#define  READ_STATUS_EN  7
+#define  CLK_1MEG_RB     6  /* 1MHz clock reset; 0=reset, 0=reset release */
+#define  DSC_BIST_DONE   1  /* Bit[5:1]: 1=DSC MBIST pass */
+#define  DSC_EN          0x01  /* 1=DSC enabled, 0=DSC disabled */
+
+#define OCM_FW_VERSION   0x31
+#define OCM_FW_REVERSION 0x32
+
+#define AP_AUX_ADDR_7_0   0x11
+#define AP_AUX_ADDR_15_8  0x12
+#define AP_AUX_ADDR_19_16 0x13
+
+/* Bit[0:3] AUX status, bit 4 op_en, bit 5 address only */
+#define AP_AUX_CTRL_STATUS 0x14
+#define AP_AUX_CTRL_OP_EN 0x10
+#define AP_AUX_CTRL_ADDRONLY 0x20
+
+#define AP_AUX_BUFF_START 0x15
+#define PIXEL_CLOCK_L	0x25
+#define PIXEL_CLOCK_H	0x26
+
+#define AP_AUX_COMMAND	0x27  /* com+len */
+#define LENGTH_SHIFT	4
+#define DPCD_CMD(len, cmd)	((((len) - 1) << LENGTH_SHIFT) | (cmd))
+
+/* Bit 0&1: 3D video structure */
+/* 0x01: frame packing,  0x02:Line alternative, 0x03:Side-by-side(full) */
+#define AP_AV_STATUS 0x28
+#define AP_VIDEO_CHG  BIT(2)
+#define AP_AUDIO_CHG  BIT(3)
+#define AP_MIPI_MUTE  BIT(4) /* 1:MIPI input mute, 0: ummute */
+#define AP_MIPI_RX_EN BIT(5) /* 1: MIPI RX input in  0: no RX in */
+#define AP_DISABLE_PD BIT(6)
+#define AP_DISABLE_DISPLAY BIT(7)
+
+#define GPIO_CTRL_2   0x49
+#define HPD_SOURCE    BIT(6)
 
 /***************************************************************/
 /* Register definition of device address 0x84 */
-
 #define  MIPI_PHY_CONTROL_3            0x03
 #define  MIPI_HS_PWD_CLK               7
 #define  MIPI_HS_RT_CLK                6
@@ -255,7 +285,9 @@
 #define  MIPI_VIDEO_STABLE_CNT           0x0A
 
 #define  MIPI_LANE_CTRL_10               0x0F
-#define  MIPI_DIGITAL_ADJ_1   0x1B
+#define  MIPI_DIGITAL_ADJ_1     0x1B
+#define  IVO_MID0               0x26
+#define  IVO_MID1               0xCF
 
 #define  MIPI_PLL_M_NUM_23_16   0x1E
 #define  MIPI_PLL_M_NUM_15_8    0x1F
@@ -392,20 +424,23 @@ struct s_edid_data {
 
 /***************** Display End *****************/
 
+#define MAX_LANES_SUPPORT	4
+
 struct anx7625_platform_data {
-	struct gpio_desc *gpio_vbus_on;
 	struct gpio_desc *gpio_p_on;
 	struct gpio_desc *gpio_reset;
-	struct gpio_desc *gpio_cbl_det;
-	struct gpio_desc *gpio_intr_comm;
-	struct drm_panel *panel;
-	u32 panel_flags;
+	struct regulator_bulk_data supplies[3];
+	struct drm_bridge *panel_bridge;
 	int intp_irq;
+	int is_dpi;
+	int mipi_lanes;
+	int audio_en;
+	int dp_lane0_swing_reg_cnt;
+	u8 lane0_reg_data[DP_TX_SWING_REG_CNT];
+	int dp_lane1_swing_reg_cnt;
+	u8 lane1_reg_data[DP_TX_SWING_REG_CNT];
 	u32 low_power_mode;
-	u32 internal_panel;
 	struct device_node *mipi_host_node;
-	struct device_node *panel_node;
-	struct fwnode_handle *connector_fwnode;
 };
 
 struct anx7625_i2c_client {
@@ -418,47 +453,38 @@ struct anx7625_i2c_client {
 	struct i2c_client *tcpc_client;
 };
 
-struct anx7625_usb_typec {
-	struct typec_port	*port;
-	struct typec_capability capability;
-	struct typec_partner	*partner;
-
-	enum typec_port_type	port_type;
-	enum typec_pwr_opmode	pwr_opmode;
-	bool vbus_on;
-
-	struct usb_role_switch	*role_sw;
-
-	bool usb_data_role_timeout;
-};
-
 struct anx7625_data {
 	struct anx7625_platform_data pdata;
-	atomic_t initializing;
-	atomic_t power_status;
-	atomic_t panel_power;
-	atomic_t cable_connected;
+	struct platform_device *audio_pdev;
 	int hpd_status;
 	int hpd_high_cnt;
+	int dp_en;
+	int hdcp_cp;
 	/* Lock for work queue */
 	struct mutex lock;
-	struct i2c_client *client;
+	struct device *dev;
 	struct anx7625_i2c_client i2c;
 	struct i2c_client *last_client;
+	struct timer_list hdcp_timer;
 	struct s_edid_data slimport_edid_p;
+	struct device *codec_dev;
+	hdmi_codec_plugged_cb plugged_cb;
 	struct work_struct work;
 	struct workqueue_struct *workqueue;
+	struct delayed_work hdcp_work;
+	struct workqueue_struct *hdcp_workqueue;
+	/* Lock for hdcp work queue */
+	struct mutex hdcp_wq_lock;
+	/* Lock for aux transfer and disable */
+	struct mutex aux_lock;
 	char edid_block;
 	struct display_timing dt;
 	u8 display_timing_valid;
 	struct drm_bridge bridge;
 	u8 bridge_attached;
-	struct drm_connector connector;
+	struct drm_connector *connector;
 	struct mipi_dsi_device *dsi;
-	struct drm_display_mode vid_info;
-	struct notifier_block event_nb;
-	struct platform_device *audio_pdev;
-	struct anx7625_usb_typec *usb_typec;
+	struct drm_dp_aux aux;
 };
 
 #endif  /* __ANX7625_H__ */
