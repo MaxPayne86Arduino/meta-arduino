@@ -1315,6 +1315,7 @@ static void anx7625_config(struct anx7625_data *ctx)
 			  XTAL_FRQ_SEL, XTAL_FRQ_27M);
 }
 
+#ifdef USE_DISABLE_PD_DISABLE_PROTOCOL
 static int anx7625_hpd_timer_config(struct anx7625_data *ctx)
 {
 	int ret;
@@ -1368,6 +1369,7 @@ static void anx7625_disable_pd_protocol(struct anx7625_data *ctx)
 	/* Set HPD irq detect window to 2ms */
 	anx7625_hpd_timer_config(ctx);
 }
+#endif
 
 static int anx7625_ocm_loading_check(struct anx7625_data *ctx)
 {
