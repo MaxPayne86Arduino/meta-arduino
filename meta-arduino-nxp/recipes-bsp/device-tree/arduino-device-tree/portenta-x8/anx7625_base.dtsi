@@ -12,8 +12,9 @@
 		compatible ="analogix,anx7625";
 		status = "okay";
 		reg = <0x58>;
-		vdda-supply = <&ldo5_reg>;
-
+      vdd10-supply = <&buck6_reg>;
+      vdd18-supply = <&buck5_reg>;
+      vdd33-supply = <&ldo5_reg>;
 		// 1: internal panel always connected
 		// !=1: usbc dp port is modeled as a panel that can
 		// be present or not depending on the actual usbc cable connection
