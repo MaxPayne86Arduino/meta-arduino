@@ -554,7 +554,8 @@ int board_init(void)
 	/* ANX7625 usb typec controller and power delivery configuration on portenta-x8 */
 	/* @TODO: selectable with CONFIG_USB_TCPC? */
 #ifndef CONFIG_SPL_BUILD
-	anx7625_probe(1);
+	//anx7625_probe(1);
+	anx7625_probe_disable_low_power_mode();
 #endif
 
 #ifdef EXT_USB_HUB
