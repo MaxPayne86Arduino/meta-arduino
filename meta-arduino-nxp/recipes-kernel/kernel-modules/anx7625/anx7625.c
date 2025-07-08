@@ -39,6 +39,23 @@
 #include "anx7625.h"
 
 /*
+ * In order to get interrupts to work, we need to remove the
+ * anx7625_disable_pd_protocol calls. Due to double negative
+ * naming, let's create a #define to keep the feature, but
+ * commented it out to disable the disable_pd_protocol calls.
+ */
+// #define USE_DISABLE_PD_DISABLE_PROTOCOL
+#define DEBUG
+
+#ifdef DEBUG
+#ifdef DRM_DEV_DEBUG_DRIVER
+#undef DRM_DEV_DEBUG_DRIVER
+#define DRM_DEV_DEBUG_DRIVER(dev, fmt, ...) \
+dev_printk(KERN_ERR, dev, fmt, ##__VA_ARGS__)
+#endif
+#endif
+
+/*
  * There is a sync issue while access I2C register between AP(CPU) and
  * internal firmware(OCM), to avoid the race condition, AP should access
  * the reserved slave address before slave address occurs changes.
@@ -1367,7 +1384,9 @@ static int anx7625_ocm_loading_check(struct anx7625_data *ctx)
 	if ((ret & FLASH_LOAD_STA_CHK) != FLASH_LOAD_STA_CHK)
 		return -ENODEV;
 
+#ifdef USE_DISABLE_PD_DISABLE_PROTOCOL
 	anx7625_disable_pd_protocol(ctx);
+#endif
 
 	DRM_DEV_DEBUG_DRIVER(dev, "Firmware ver %02x%02x,",
 			     anx7625_reg_read(ctx,
@@ -2765,7 +2784,9 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 	}
 
 	if (!platform->pdata.low_power_mode) {
+#ifdef USE_DISABLE_PD_DISABLE_PROTOCOL
 		anx7625_disable_pd_protocol(platform);
+#endif
 		pm_runtime_get_sync(dev);
 		_anx7625_hpd_polling(platform, 5000 * 100);
 	}
