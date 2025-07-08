@@ -282,6 +282,14 @@ static int anx7625_power_on(struct udevice *dev)
 	return ret;
 }
 
+static int anx7625_power_on_disable_low_power_mode()
+{
+	debug("%s\n", __func__);
+	gpio_direction_output(ANX7625_POWER_EN_PAD, 1);
+	gpio_direction_output(ANX7625_RESET_N_PAD, 1);
+	return 0;
+}
+
 static void anx7625_standby(void)
 {
 	debug("%s\n", __func__);
@@ -1024,6 +1032,35 @@ int anx7625_probe(uint8_t i2c_bus_num)
 #endif
 	} else {
 		printf("USB TypeC cable not connected\n");
+	}
+
+	free_gpios();
+
+	debug("%s: done\n", __func__);
+	return 0;
+}
+
+/* With new Analogix OCM firmware v1410, negotiation in u-boot is not
+needed anymore since default values requested by OCM are already ok. We just
+need to enable the IC without entering low power mode, which is triggered when
+IC is powered on and we toggle RESET_N and POWER_EN pins. So we keep
+them both high here, since by default on imx8mm processor pin are input with
+pull down ~56k after power-on reset. Later the kernel would not
+touch them and just respond to interrupt requests. */
+int anx7625_probe_disable_low_power_mode(void)
+{
+	int ret = -ENODEV;
+
+	debug("%s: start\n", __func__);
+
+	request_gpios();
+	vbus_off();
+	leds_off();
+
+	ret = anx7625_power_on_disable_low_power_mode();
+	if (ret) {
+		printf("%s: Failed to power on anx7625 in disable low power mode\n", __func__);
+		return -EIO;
 	}
 
 	free_gpios();
