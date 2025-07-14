@@ -85,6 +85,18 @@
 					};
 				};
 			};
+			aux-bus {
+				panel: panel {
+					compatible = "edp-panel";
+					/* TODO: fix HPD on ALT DP mode */
+					no-hpd;
+					port {
+						panel_in: endpoint {
+							remote-endpoint = <&anx7625_out>;
+						};
+					};
+				};
+			};
 		};
 	};
 
