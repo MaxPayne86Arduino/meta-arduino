@@ -286,6 +286,7 @@ static int anx7625_power_on_disable_low_power_mode()
 {
 	debug("%s\n", __func__);
 	gpio_direction_output(ANX7625_POWER_EN_PAD, 1);
+	udelay(10000); /* 10ms */
 	gpio_direction_output(ANX7625_RESET_N_PAD, 1);
 	return 0;
 }
