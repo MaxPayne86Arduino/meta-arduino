@@ -1722,6 +1722,8 @@ static int anx7625_parse_dt(struct device *dev,
 	if (mipi_lanes > 0)
 		pdata->mipi_lanes = mipi_lanes;
 
+	DRM_DEV_DEBUG_DRIVER(dev, "mipi_lanes=%d\n", pdata->mipi_lanes);
+
 	if (pdata->is_dpi)
 		DRM_DEV_DEBUG_DRIVER(dev, "found MIPI DPI host node.\n");
 	else
