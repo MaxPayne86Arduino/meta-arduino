@@ -73,11 +73,16 @@
 
 				port@0 {
 					reg = <0>;
-					lvds_from_dsi: endpoint {
-						remote-endpoint = <&dsi_to_lvds>;
+					anx_dsi_in: endpoint {
+						remote-endpoint = <&dsi_out_ep>;
 					};
 				};
-
+				port@1 {
+					reg = <1>;
+					anx7625_out: endpoint {
+						remote-endpoint = <&panel_in>;
+					};
+				};
 				port@3 {
 					reg = <3>;
 					codec_endpoint: endpoint {
@@ -104,10 +109,15 @@
 		target = <&mipi_dsi>;
 		__overlay__ {
 			status = "okay";
+			port@0 {
+				dsim_from_lcdif: endpoint {
+				 /* This new definition is intentionally empty */
+				};
+			};
 			port@1 {
-				dsi_to_lvds: endpoint {
-					remote-endpoint = <&lvds_from_dsi>;
-					attach-bridge;
+				dsi_out_ep: endpoint {
+					//remote-endpoint = <&lvds_from_dsi>;
+					//attach-bridge;
 				};
 			};
 		};
