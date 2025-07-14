@@ -12,9 +12,12 @@
 		compatible ="analogix,anx7625";
 		status = "okay";
 		reg = <0x58>;
-      vdd10-supply = <&buck6_reg>;
-      vdd18-supply = <&buck5_reg>;
-      vdd33-supply = <&ldo5_reg>;
+		vdd10-supply = <&buck6_reg>;
+		vdd18-supply = <&buck5_reg>;
+		vdd33-supply = <&ldo5_reg>;
+		analogix,audio-enable;
+		analogix,lane0-swing = /bits/ 8 <0x14 0x54 0x64 0x74>;
+		analogix,lane1-swing = /bits/ 8 <0x14 0x54 0x64 0x74>;
 		// 1: internal panel always connected
 		// !=1: usbc dp port is modeled as a panel that can
 		// be present or not depending on the actual usbc cable connection
@@ -25,7 +28,9 @@
 		//enable-gpios = <&gpio4 25 0x0>;     // VIDEO_EN active high
 		//reset-gpios = <&gpio4 26 0x0>;      // VIDEO_RSTN active low
 		cbl_det-gpios = <&gpio4 27 0x0>;    // VIDEO_CABLE cable input active high
-		intr_comm-gpios = <&gpio4 20 IRQ_TYPE_NONE>;  // VIDEO_ALT comm irq input active low
+		//intr_comm-gpios = <&gpio4 20 IRQ_TYPE_LEVEL_LOW>;  // VIDEO_ALT comm irq input active low
+		interrupt-parent = <&gpio4>;
+		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
 		#sound-dai-cells = <0>;
 
 		typec1_con: connector {
