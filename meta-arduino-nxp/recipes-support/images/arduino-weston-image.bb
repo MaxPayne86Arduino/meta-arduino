@@ -1,0 +1,15 @@
+DESCRIPTION = "Arduino basic weston image that includes \
+multimedia packages (VPU and GPU) when available, plus console."
+
+LICENSE = "MIT"
+
+inherit core-image-weston
+
+IMAGE_FEATURES += " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', \
+       bb.utils.contains('DISTRO_FEATURES', 'x11', 'x11-base', '', d), d)} \
+"
+
+IMAGE_FEATURES:remove = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'x11-base', '', d)}"
+
+include recipes-support/images/arduino-image.inc
