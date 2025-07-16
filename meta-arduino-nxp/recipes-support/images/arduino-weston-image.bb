@@ -3,7 +3,7 @@ multimedia packages (VPU and GPU) when available, plus console."
 
 LICENSE = "MIT"
 
-inherit core-image-weston
+include recipes-graphics/images/core-image-weston.bb
 
 IMAGE_FEATURES += " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', \
