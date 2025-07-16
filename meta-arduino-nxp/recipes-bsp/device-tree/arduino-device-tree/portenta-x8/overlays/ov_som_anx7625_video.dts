@@ -75,6 +75,7 @@
 					reg = <0>;
 					lvds_from_dsi: endpoint {
 						remote-endpoint = <&dsi_to_lvds>;
+						data-lanes = <0 1 2 3>;
 					};
 				};
 
