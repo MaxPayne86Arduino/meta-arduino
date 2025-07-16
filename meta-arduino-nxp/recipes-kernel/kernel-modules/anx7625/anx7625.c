@@ -2117,6 +2117,7 @@ static int anx7625_setup_dsi_device(struct anx7625_data *ctx)
 
 	ctx->dsi = dsi;
 
+	DRM_DEV_DEBUG_DRIVER(dev, "++++ anx7625 setup dsi - FINISHED\n");
 	return 0;
 }
 
@@ -2222,9 +2223,25 @@ static int anx7625_bridge_attach(struct drm_bridge *bridge,
 	int err;
 	struct device *dev = ctx->dev;
 
+	DRM_DEV_DEBUG_DRIVER(dev, "CBK +++ ANX7625 bridge attach\n");
+
+	struct anx7625_data *platform = ctx;
+
+   /* moved from probe (this initialization was performed too early) */
+	if (!platform->pdata.is_dpi) {
+			int ret = anx7625_setup_dsi_device(ctx);
+			if (ret) {
+				return ret;
+			}
+		}
+
 	DRM_DEV_DEBUG_DRIVER(dev, "drm attach\n");
-	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR))
-		return -EINVAL;
+	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)) {
+		/* removed this return because at the present the DRM bridge is not
+		   providing the expected flag */
+		DRM_DEV_DEBUG_DRIVER(dev, "WARNING - expected DRM_BRIDGE_ATTACH_NO_CONNECTOR not present\n");
+		//return -EINVAL;
+	}
 
 	if (!bridge->encoder) {
 		DRM_DEV_ERROR(dev, "Parent encoder object not found");
@@ -2248,6 +2265,7 @@ static int anx7625_bridge_attach(struct drm_bridge *bridge,
 
 	ctx->bridge_attached = 1;
 
+   DRM_DEV_DEBUG_DRIVER(dev, "CBK +++ ANX7625 bridge attach COMPLETED\n");
 	return 0;
 }
 
@@ -2286,7 +2304,8 @@ static void anx7625_bridge_mode_set(struct drm_bridge *bridge,
 {
 	struct anx7625_data *ctx = bridge_to_anx7625(bridge);
 	struct device *dev = ctx->dev;
-
+   
+   DRM_DEV_DEBUG_DRIVER(dev, "CBK +++ ANX7625_mode set\n");
 	DRM_DEV_DEBUG_DRIVER(dev, "drm mode set\n");
 
 	ctx->dt.pixelclock.min = mode->clock;
@@ -2324,6 +2343,7 @@ static void anx7625_bridge_mode_set(struct drm_bridge *bridge,
 	DRM_DEV_DEBUG_DRIVER(dev, "vsync_end(%d),vtotal(%d).\n",
 			     mode->vsync_end,
 			     mode->vtotal);
+	DRM_DEV_DEBUG_DRIVER(dev, "CBK +++ ANX7625_mode set - COMPLETED\n");
 }
 
 static bool anx7625_bridge_mode_fixup(struct drm_bridge *bridge,
@@ -2634,7 +2654,10 @@ static int anx7625_link_bridge(struct drm_dp_aux *aux)
 	struct anx7625_data *platform = container_of(aux, struct anx7625_data, aux);
 	struct device *dev = aux->dev;
 	int ret;
+   /* this code is moved in the probe so that the ops functions are
+      available early */
 
+   #ifdef DO_NOT_USE_THIS_CODE
 	ret = anx7625_parse_dt_panel(dev, &platform->pdata);
 	if (ret) {
 		DRM_DEV_ERROR(dev, "fail to parse DT for panel : %d\n", ret);
@@ -2653,6 +2676,7 @@ static int anx7625_link_bridge(struct drm_dp_aux *aux)
 				    DRM_MODE_CONNECTOR_DisplayPort;
 
 	drm_bridge_add(&platform->bridge);
+	#endif
 
 	if (!platform->pdata.is_dpi) {
 		ret = anx7625_attach_dsi(platform);
@@ -2744,12 +2768,14 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 			DRM_DEV_ERROR(dev, "fail to parse DT : %d\n", ret);
 		goto free_wq;
 	}
-
+   /* moved to the attach callback */
+   #ifdef DO_NOT_USE_THIS_CODE
 	if (!platform->pdata.is_dpi) {
 		ret = anx7625_setup_dsi_device(platform);
 		if (ret < 0)
 			goto free_wq;
 	}
+	#endif
 
 	/*
 	 * Registering the i2c devices will retrigger deferred probe, so it
@@ -2770,11 +2796,40 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 	if (ret)
 		goto free_wq;
 
+	/* this code has been moved here from the anx7625_link_bridge
+	   the anx7625_link_bridge was called here below but this function
+	   attempted also to initialize the DSI that is not available at
+	   the present causing a crash */
+	ret = anx7625_parse_dt_panel(dev, &platform->pdata);
+	if (ret) {
+		DRM_DEV_ERROR(dev, "fail to parse DT for panel : %d\n", ret);
+		return ret;
+	}
+
+	platform->bridge.funcs = &anx7625_bridge_funcs;
+	platform->bridge.of_node = dev->of_node;
+	if (!anx7625_of_panel_on_aux_bus(dev))
+		platform->bridge.ops |= DRM_BRIDGE_OP_EDID;
+	if (!platform->pdata.panel_bridge)
+		platform->bridge.ops |= DRM_BRIDGE_OP_HPD |
+					DRM_BRIDGE_OP_DETECT;
+	platform->bridge.type = platform->pdata.panel_bridge ?
+				    DRM_MODE_CONNECTOR_eDP :
+				    DRM_MODE_CONNECTOR_DisplayPort;
+
+	drm_bridge_add(&platform->bridge);
+
 	/*
 	 * Populating the aux bus will retrigger deferred probe, so it needs to
 	 * be done after calls that might return EPROBE_DEFER, otherwise we can
 	 * get an infinite loop.
 	 */
+
+	
+	/* this part of code has been removed since the link bridge function
+	   is trying to initialize the dsi which is not avalable and it will
+	   be only if anx probe is completed */
+   #ifdef DO_NOT_USE_THIS_CODE
 	ret = devm_of_dp_aux_populate_bus(&platform->aux, anx7625_link_bridge);
 	if (ret) {
 		if (ret != -ENODEV) {
@@ -2783,9 +2838,12 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 		}
 
 		ret = anx7625_link_bridge(&platform->aux);
-		if (ret)
+		if (ret) {
 			goto free_wq;
+		}
 	}
+	#endif
+	
 
 	if (!platform->pdata.low_power_mode) {
 #ifdef USE_DISABLE_PD_DISABLE_PROTOCOL
