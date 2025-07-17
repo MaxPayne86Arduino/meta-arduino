@@ -1,5 +1,5 @@
 DESCRIPTION = "Arduino basic weston image that includes \
-multimedia packages (VPU and GPU) when available, plus console."
+multimedia packages (VPU and GPU) when available."
 
 LICENSE = "MIT"
 
