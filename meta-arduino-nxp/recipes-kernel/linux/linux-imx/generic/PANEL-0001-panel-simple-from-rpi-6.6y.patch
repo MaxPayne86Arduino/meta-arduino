@@ -1,14 +1,5 @@
-From a696b04a3b0930721df6580ba1da47e47f0a1e77 Mon Sep 17 00:00:00 2001
-From: maidnl <d.aimo@arduino.cc>
-Date: Wed, 18 Jun 2025 11:35:51 +0200
-Subject: [PATCH] Rebased patch for panel
-
----
- drivers/gpu/drm/panel/panel-simple.c | 215 +++++++++++++++++++++++++++
- 1 file changed, 215 insertions(+)
-
 diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index fb8a57afe687..7bdc4641b0b8 100644
+index fb8a57afe687..3efd2f3514ac 100644
 --- a/drivers/gpu/drm/panel/panel-simple.c
 +++ b/drivers/gpu/drm/panel/panel-simple.c
 @@ -40,6 +40,7 @@
@@ -180,7 +171,7 @@ index fb8a57afe687..7bdc4641b0b8 100644
  static const struct of_device_id dsi_of_match[] = {
  	{
  		.compatible = "auo,b080uan01",
-@@ -4878,21 +4977,137 @@ static const struct of_device_id dsi_of_match[] = {
+@@ -4878,21 +4977,138 @@ static const struct of_device_id dsi_of_match[] = {
  	}, {
  		.compatible = "osddisplays,osd101t2045-53ts",
  		.data = &osd101t2045_53ts
@@ -194,10 +185,11 @@ index fb8a57afe687..7bdc4641b0b8 100644
  };
  MODULE_DEVICE_TABLE(of, dsi_of_match);
  
-++/* Checks for DSI panel definition in device-tree, analog to panel_dpi */
-++static int panel_dsi_dt_probe(struct device *dev,
-++			  struct panel_desc_dsi *desc_dsi)
-++{
++
++/* Checks for DSI panel definition in device-tree, analog to panel_dpi */
++static int panel_dsi_dt_probe(struct device *dev,
++			  struct panel_desc_dsi *desc_dsi)
++{
 +	struct panel_desc *desc;
 +	struct display_timing *timing;
 +	const struct device_node *np;
@@ -318,6 +310,3 @@ index fb8a57afe687..7bdc4641b0b8 100644
  	err = panel_simple_probe(&dsi->dev, &desc->desc);
  	if (err < 0)
  		return err;
--- 
-2.43.0
-
