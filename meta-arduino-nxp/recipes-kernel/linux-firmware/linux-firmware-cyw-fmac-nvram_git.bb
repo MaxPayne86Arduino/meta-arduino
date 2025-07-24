@@ -13,17 +13,24 @@ PV = "20210112"
 
 S = "${WORKDIR}/git"
 
+BRCM_TXT_FILE_LINK_NAME = "brcmfmac43430-sdio.arduino,${MACHINE}.txt"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/
     install -d ${D}${nonarch_base_libdir}/firmware/brcm
 
     install -m 0644 ${S}/LICENCE.cypress ${D}${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-nvram
     install -m 0644 ${S}/cyfmac43430-sdio.1DX.txt ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.txt
+
+    cd ${D}/${nonarch_base_libdir}/firmware/brcm
+
+    ln -sf brcmfmac43430-sdio.txt ${BRCM_TXT_FILE_LINK_NAME}
 }
 
 FILES:${PN} = " \
     ${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-nvram \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.txt \
+    ${nonarch_base_libdir}/firmware/brcm/${BRCM_TXT_FILE_LINK_NAME} \
 "
 
 COMPATIBLE_MACHINE ?= "^$"

@@ -13,6 +13,9 @@ PV = "20240304"
 
 S = "${WORKDIR}/git"
 
+BRCM_BIN_FILE_LINK_NAME = "brcmfmac43430-sdio.arduino,${MACHINE}.bin"
+BRCM_BLOB_FILE_LINK_NAME = "brcmfmac43430-sdio.arduino,${MACHINE}.clm_blob"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/
     install -d ${D}${nonarch_base_libdir}/firmware/brcm
@@ -20,12 +23,20 @@ do_install() {
     install -m 0644 ${S}/LICENCE ${D}${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-fw
     install -m 0644 ${S}/cyfmac43430-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.bin
     install -m 0644 ${S}/cyfmac43430-sdio.1DX.clm_blob ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.clm_blob
+
+    cd ${D}/${nonarch_base_libdir}/firmware/brcm
+
+    ln -sf brcmfmac43430-sdio.bin ${BRCM_BIN_FILE_LINK_NAME}
+    ln -sf brcmfmac43430-sdio.clm_blob ${BRCM_BLOB_FILE_LINK_NAME}
+
 }
 
 FILES:${PN} = " \
     ${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-fw \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.bin \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.clm_blob \
+    ${nonarch_base_libdir}/firmware/brcm/${BRCM_BIN_FILE_LINK_NAME} \
+    ${nonarch_base_libdir}/firmware/brcm/${BRCM_BLOB_FILE_LINK_NAME} \
 "
 
 COMPATIBLE_MACHINE ?= "^$"
