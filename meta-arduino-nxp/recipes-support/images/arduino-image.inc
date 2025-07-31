@@ -81,7 +81,7 @@ ARDUINO-GID = "1001"
 # Create arduino user and add to groups
 EXTRA_USERS_PARAMS += " \
     groupadd -g ${ARDUINO-GID} ${ARDUINO-USER}; \
-    useradd -u ${ARDUINO-UID} -g ${ARDUINO-GID} -p '' -G audio,sudo,users,plugdev -d /home/${ARDUINO-USER} -r -s /bin/bash ${ARDUINO-USER} \
+    useradd -u ${ARDUINO-UID} -g ${ARDUINO-GID} -p '' -G audio,sudo,users,plugdev -d /home/${ARDUINO-USER} -r -s /bin/bash ${ARDUINO-USER}; \
 "
 
 # Create home directory for arduino user and set permissions
