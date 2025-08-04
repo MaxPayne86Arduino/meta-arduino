@@ -14,4 +14,3 @@ IMAGE_FEATURES:remove = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'x11
 
 include recipes-support/images/arduino-image.inc
 
-INITRAMFS_MODULES += "imx-sdma.ko"
