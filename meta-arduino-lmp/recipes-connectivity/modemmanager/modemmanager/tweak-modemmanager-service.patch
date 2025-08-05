@@ -1,0 +1,22 @@
+diff --git a/data/ModemManager.service.in b/data/ModemManager.service.in
+index 4e4472d9..295f9f1e 100644
+--- a/data/ModemManager.service.in
++++ b/data/ModemManager.service.in
+@@ -1,13 +1,15 @@
+ [Unit]
+ Description=Modem Manager
+-After=@MM_POLKIT_SERVICE@
+-Requires=@MM_POLKIT_SERVICE@
++After=@MM_POLKIT_SERVICE@ stm32h7-program.service create-docker-envfile.service
++Requires=@MM_POLKIT_SERVICE@ stm32h7-program.service create-docker-envfile.service
+ ConditionVirtualization=!container
+ 
+ [Service]
+ Type=dbus
+ BusName=org.freedesktop.ModemManager1
++ExecStartPre=@sbindir@/modem_on.sh
+ ExecStart=@sbindir@/ModemManager
++ExecStopPost=@sbindir@/modem_off.sh
+ StandardError=null
+ Restart=on-abort
+ CapabilityBoundingSet=CAP_SYS_ADMIN CAP_NET_ADMIN
