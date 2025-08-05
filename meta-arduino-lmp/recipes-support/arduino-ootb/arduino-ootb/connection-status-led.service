@@ -1,0 +1,8 @@
+[Unit]
+Description=Connection status led
+After=network-online.target
+
+[Service]
+LogLevelMax=err
+Type=oneshot
+ExecStart=/bin/sh /usr/bin/connection_status_led
