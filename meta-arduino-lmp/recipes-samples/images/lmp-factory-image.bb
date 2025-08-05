@@ -27,7 +27,7 @@ require ${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'recipes-samples/images/
 require ${@bb.utils.contains('MACHINE_FEATURES', 'xeno4', 'recipes-samples/images/lmp-feature-xeno4.inc', '', d)}
 
 # Enable jailhouse related recipes if provided by the machine
-require ${@bb.utils.contains('MACHINE_FEATURES', 'jailhouse', 'recipes-samples/images/lmp-feature-jailhouse.inc', '', d)}
+#require ${@bb.utils.contains('MACHINE_FEATURES', 'jailhouse', 'recipes-samples/images/lmp-feature-jailhouse.inc', '', d)}
 
 require recipes-samples/images/lmp-feature-softhsm.inc
 require recipes-samples/images/lmp-feature-wireguard.inc
