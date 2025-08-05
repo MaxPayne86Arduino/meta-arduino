@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-arduino:"
 
 SRC_URI:append:portenta-x8 = " \
     file://Makefile \
