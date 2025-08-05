@@ -48,14 +48,14 @@ do_override_files_portenta_x8 () {
 
 SRC_URI:append:portenta-x9 = " \
     file://Makefile \
-    file://portenta-x9_defconfig \
-    file://portenta-x9_inline_ecc_defconfig \
-    file://portenta-x9.dts \
-    file://portenta-x9-u-boot.dtsi \
-    file://portenta-x9.c \
-    file://portenta-x9_lpddr4x_timing.c \
-    file://portenta-x9_spl.c \
-    file://portenta-x9.h \
+    file://imx93_11x11_evk_defconfig \
+    file://imx93_11x11_evk_inline_ecc_defconfig \
+    file://imx93-11x11-evk.dts \
+    file://imx93-11x11-evk-u-boot.dtsi \
+    file://imx93_evk.c \
+    file://lpddr4x_timing.c \
+    file://spl.c \
+    file://imx93_evk.h \
 "
 
 do_override_files_portenta_x9 () {
@@ -65,20 +65,20 @@ do_override_files_portenta_x9 () {
     cp ${WORKDIR}/Makefile ${S}/arch/arm/dts/Makefile
 
     # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use
-    cp ${WORKDIR}/portenta-x9_defconfig ${S}/configs/imx93_11x11_evk_defconfig
-    cp ${WORKDIR}/portenta-x9_inline_ecc_defconfig ${S}/configs/imx93_11x11_evk_inline_ecc_defconfig
+    cp ${WORKDIR}/imx93_11x11_evk_defconfig ${S}/configs/imx93_11x11_evk_defconfig
+    cp ${WORKDIR}/imx93_11x11_evk_inline_ecc_defconfig ${S}/configs/imx93_11x11_evk_inline_ecc_defconfig
 
-    cp ${WORKDIR}/portenta-x9.dts ${S}/arch/arm/dts/imx93-11x11-evk.dts
+    cp ${WORKDIR}/imx93-11x11-evk.dts ${S}/arch/arm/dts/imx93-11x11-evk.dts
 
     # @TODO: u-boot auto-includes the *-u-boot.dtsi prepending MACHINE to the board devicetree
     # see scripts/Makefile.lib, so should never be included directly from board devicetree
-    cp ${WORKDIR}/portenta-x9-u-boot.dtsi ${S}/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
+    cp ${WORKDIR}/imx93-11x11-evk-u-boot.dtsi ${S}/arch/arm/dts/imx93-11x11-evk-u-boot.dtsi
 
-    cp ${WORKDIR}/portenta-x9.c ${S}/board/freescale/imx93_evk/imx93_evk.c
-    cp ${WORKDIR}/portenta-x9_lpddr4x_timing.c ${S}/board/freescale/imx93_evk/lpddr4x_timing.c
-    cp ${WORKDIR}/portenta-x9_spl.c ${S}/board/freescale/imx93_evk/spl.c
+    cp ${WORKDIR}/imx93_evk.c ${S}/board/freescale/imx93_evk/imx93_evk.c
+    cp ${WORKDIR}/lpddr4x_timing.c ${S}/board/freescale/imx93_evk/lpddr4x_timing.c
+    cp ${WORKDIR}/spl.c ${S}/board/freescale/imx93_evk/spl.c
 
-    cp ${WORKDIR}/portenta-x9.h ${S}/include/configs/imx93_evk.h
+    cp ${WORKDIR}/imx93_evk.h ${S}/include/configs/imx93_evk.h
 }
 
 SRC_URI:append:imx8mp-astrial = " \
