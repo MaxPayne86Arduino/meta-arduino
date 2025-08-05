@@ -83,16 +83,16 @@ do_override_files_portenta_x9 () {
 
 SRC_URI:append:imx8mp-astrial = " \
     file://Makefile \
-    file://imx8mp_astrial_defconfig \
-    file://imx8mp_astrial_inline_ecc_defconfig \
-    file://imx8mp_astrial_ndm_defconfig \
-    file://imx8mp-astrial.dts \
-    file://imx8mp-astrial-u-boot.dtsi \
-    file://imx8mp_astrial.c \
-    file://imx8mp-astrial_lpddr4_timing.c \
-    file://imx8mp-astrial_lpddr4_timing_ndm.c \
-    file://imx8mp-astrial_spl.c \
-    file://imx8mp_astrial.h \
+    file://imx8mp_evk_defconfig \
+    file://imx8mp_evk_inline_ecc_defconfig \
+    file://imx8mp_evk_ndm_defconfig \
+    file://imx8mp-evk.dts \
+    file://imx8mp-evk-u-boot.dtsi \
+    file://imx8mp_evk.c \
+    file://lpddr4_timing.c \
+    file://lpddr4_timing_ndm.c \
+    file://spl.c \
+    file://imx8mp_evk.h \
 "
 
 do_override_files_imx8mp_astrial () {
@@ -103,22 +103,22 @@ do_override_files_imx8mp_astrial () {
 
     # @TODO: inspect UBOOT_CONFIG_BASENAME for defconfig in use.
     # The modes ECC and NDM are NAND-specific
-    cp ${WORKDIR}/imx8mp_astrial_defconfig ${S}/configs/imx8mp_evk_defconfig
-    cp ${WORKDIR}/imx8mp_astrial_ndm_defconfig ${S}/configs/imx8mp_evk_ndm_defconfig
-    cp ${WORKDIR}/imx8mp_astrial_inline_ecc_defconfig ${S}/configs/imx8mp_evk_inline_ecc_defconfig
+    cp ${WORKDIR}/imx8mp_evk_defconfig ${S}/configs/imx8mp_evk_defconfig
+    cp ${WORKDIR}/imx8mp_evk_ndm_defconfig ${S}/configs/imx8mp_evk_ndm_defconfig
+    cp ${WORKDIR}/imx8mp_evk_inline_ecc_defconfig ${S}/configs/imx8mp_evk_inline_ecc_defconfig
 
-    cp ${WORKDIR}/imx8mp-astrial.dts ${S}/arch/arm/dts/imx8mp-evk.dts
+    cp ${WORKDIR}/imx8mp-evk.dts ${S}/arch/arm/dts/imx8mp-evk.dts
 
     # @TODO: u-boot auto-includes the *-u-boot.dtsi prepending MACHINE to the board devicetree
     # see scripts/Makefile.lib, so should never be included directly from board devicetree
-    cp ${WORKDIR}/imx8mp-astrial-u-boot.dtsi ${S}/arch/arm/dts/imx8mp-evk-u-boot.dtsi
+    cp ${WORKDIR}/imx8mp-evk-u-boot.dtsi ${S}/arch/arm/dts/imx8mp-evk-u-boot.dtsi
 
-    cp ${WORKDIR}/imx8mp_astrial.c ${S}/board/freescale/imx8mp_evk/imx8mp_evk.c
-    cp ${WORKDIR}/imx8mp-astrial_lpddr4_timing.c ${S}/board/freescale/imx8mp_evk/lpddr4_timing.c
-    cp ${WORKDIR}/imx8mp-astrial_lpddr4_timing_ndm.c ${S}/board/freescale/imx8mp_evk/lpddr4_timing_ndm.c
-    cp ${WORKDIR}/imx8mp-astrial_spl.c ${S}/board/freescale/imx8mp_evk/spl.c
+    cp ${WORKDIR}/imx8mp_evk.c ${S}/board/freescale/imx8mp_evk/imx8mp_evk.c
+    cp ${WORKDIR}/lpddr4_timing.c ${S}/board/freescale/imx8mp_evk/lpddr4_timing.c
+    cp ${WORKDIR}/lpddr4_timing_ndm.c ${S}/board/freescale/imx8mp_evk/lpddr4_timing_ndm.c
+    cp ${WORKDIR}/spl.c ${S}/board/freescale/imx8mp_evk/spl.c
 
-    cp ${WORKDIR}/imx8mp_astrial.h ${S}/include/configs/imx8mp_evk.h
+    cp ${WORKDIR}/imx8mp_evk.h ${S}/include/configs/imx8mp_evk.h
 }
 
 python () {
