@@ -53,7 +53,6 @@ OPENCV = " \
 "
 
 CORE_IMAGE_BASE_INSTALL += " \
-    automount-boot \
     dtc \
     stress-ng \
     u-boot-fio-env \
