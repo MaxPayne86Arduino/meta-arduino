@@ -1,12 +1,17 @@
 include recipes-bsp/device-tree/arduino-device-tree.inc
 
-do_move_files() {
+# This is necessary since devicetree bbclass is building dts files in the workdir,
+# ignoring everything else
+do_move_dts_files() {
+    bbdebug 2 "Moving dts files for MACHINE=${MACHINE}"
     cp ${WORKDIR}/${MACHINE}/*.dts* ${WORKDIR}/
-    cp ${WORKDIR}/${MACHINE}/overlays/*.dts ${WORKDIR}/
+    if [ -d "${WORKDIR}/${MACHINE}/overlays" ]; then
+        cp ${WORKDIR}/${MACHINE}/overlays/*.dts ${WORKDIR}/
+    fi
 }
 
 python () {
-    bb.build.addtask('do_move_files', 'do_configure', 'do_patch', d)
+    bb.build.addtask('do_move_dts_files', 'do_configure', 'do_patch', d)
 }
 
 FILES:${PN} += " \
