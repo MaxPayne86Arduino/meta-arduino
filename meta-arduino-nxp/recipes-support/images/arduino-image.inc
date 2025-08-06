@@ -1,6 +1,11 @@
 # Setup image features
 IMAGE_FEATURES:append = " ssh-server-dropbear"
 
+# Install root devicetree and devicetree overlays
+CORE_IMAGE_EXTRA_INSTALL += " \
+    arduino-device-tree \
+"
+
 # Install extra out of tree kernel drivers (som)
 CORE_IMAGE_EXTRA_INSTALL += " \
     dtbocfg \
