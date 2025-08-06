@@ -1,7 +1,7 @@
 include recipes-bsp/device-tree/arduino-device-tree.inc
 
 do_move_files() {
-    cp ${WORKDIR}/${MACHINE}/*.dts ${WORKDIR}/
+    cp ${WORKDIR}/${MACHINE}/*.dts* ${WORKDIR}/
     cp ${WORKDIR}/${MACHINE}/overlays/*.dts ${WORKDIR}/
 }
 
