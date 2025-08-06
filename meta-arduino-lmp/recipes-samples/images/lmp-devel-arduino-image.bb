@@ -57,7 +57,6 @@ CORE_IMAGE_BASE_INSTALL += " \
     stress-ng \
     u-boot-fio-env \
     u-boot-fw-utils \
-    ${OPENCV} \
 "
 
 # Custom task to write git SHA to /etc/os-release
