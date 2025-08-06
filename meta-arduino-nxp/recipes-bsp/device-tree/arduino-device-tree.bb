@@ -26,15 +26,6 @@ python () {
     bb.build.addtask('do_move_dts_files', 'do_configure', 'do_patch', d)
 }
 
-# Beware /boot is overridden by rpi-bootfiles package
-# when p1 partition is mounted in /boot by default /etc/fstab
-do_install:append:raspberrypi4-64() {
-    for DTB_FILE in `ls *.dtb *.dtbo`; do
-        install -Dm 0644 ${B}/${DTB_FILE} ${D}/boot/devicetree/${DTB_FILE}
-    done
-}
-
 FILES:${PN}:append: = " \
     /boot/devicetree \
 "
-
