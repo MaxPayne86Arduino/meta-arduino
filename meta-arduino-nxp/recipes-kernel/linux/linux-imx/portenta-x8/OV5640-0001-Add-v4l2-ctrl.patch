@@ -1,0 +1,296 @@
+From a2c27c344c9f2ccbfa6a9d5bcb91e0affc9f4da5 Mon Sep 17 00:00:00 2001
+From: maidnl <d.aimo@arduino.cc>
+Date: Fri, 8 Aug 2025 10:59:42 +0200
+Subject: [PATCH] Add v4l2 controls to ov5640 mipi driver
+
+---
+ .../media/platform/mxc/capture/mxc_mipi_csi.c |   9 +
+ .../platform/mxc/capture/ov5640_mipi_v2.c     | 201 +++++++++++++++++-
+ 2 files changed, 199 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/media/platform/mxc/capture/mxc_mipi_csi.c b/drivers/media/platform/mxc/capture/mxc_mipi_csi.c
+index 358d91e95442..7cb845419b19 100644
+--- a/drivers/media/platform/mxc/capture/mxc_mipi_csi.c
++++ b/drivers/media/platform/mxc/capture/mxc_mipi_csi.c
+@@ -979,8 +979,17 @@ static int mipi_csis_parse_dt(struct platform_device *pdev,
+ static int mipi_csis_pm_resume(struct device *dev, bool runtime);
+ static const struct of_device_id mipi_csis_of_match[];
+ 
++static int subdev_notifier_complete(struct v4l2_async_notifier *notifier)
++{
++   struct csi_state *state = notifier_to_mipi_dev(notifier);
++	v4l2_info(&state->v4l2_dev, "complete callback for subdevice called");
++   return v4l2_device_register_subdev_nodes(&state->v4l2_dev);
++}
++
+ static const struct v4l2_async_notifier_operations mxc_mipi_csi_subdev_ops = {
+ 	.bound = subdev_notifier_bound,
++	.complete = subdev_notifier_complete,
++
+ };
+ 
+ /* register parent dev */
+diff --git a/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c b/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
+index 4c5a675fe4f0..ae3ab04274e1 100644
+--- a/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
++++ b/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
+@@ -98,6 +98,35 @@ struct ov5640_mode_info {
+ 	u32 init_data_size;
+ };
+ 
++struct ov5640_ctrls {
++	struct v4l2_ctrl_handler handler;
++	struct v4l2_ctrl *pixel_rate;
++	struct v4l2_ctrl *link_freq;
++	struct v4l2_ctrl *hblank;
++	struct v4l2_ctrl *vblank;
++	struct {
++		struct v4l2_ctrl *auto_exp;
++		struct v4l2_ctrl *exposure;
++	};
++	struct {
++		struct v4l2_ctrl *auto_wb;
++		struct v4l2_ctrl *blue_balance;
++		struct v4l2_ctrl *red_balance;
++	};
++	struct {
++		struct v4l2_ctrl *auto_gain;
++		struct v4l2_ctrl *gain;
++	};
++	struct v4l2_ctrl *brightness;
++	struct v4l2_ctrl *light_freq;
++	struct v4l2_ctrl *saturation;
++	struct v4l2_ctrl *contrast;
++	struct v4l2_ctrl *hue;
++	struct v4l2_ctrl *test_pattern;
++	struct v4l2_ctrl *hflip;
++	struct v4l2_ctrl *vflip;
++};
++
+ struct ov5640 {
+ 	struct v4l2_subdev		subdev;
+ 	struct i2c_client *i2c_client;
+@@ -105,17 +134,9 @@ struct ov5640 {
+ 	const struct ov5640_datafmt	*fmt;
+ 	struct v4l2_captureparm streamcap;
+ 	bool on;
+-
+-	/* control settings */
+-	int brightness;
+-	int hue;
+-	int contrast;
+-	int saturation;
+-	int red;
+-	int green;
+-	int blue;
+-	int ae_mode;
+-
++	#ifdef USE_MEDIA_CONTROLLER
++   struct media_pad		pad;
++   #endif
+ 	u32 mclk;
+ 	u8 mclk_source;
+ 	struct clk *sensor_clk;
+@@ -123,6 +144,8 @@ struct ov5640 {
+ 
+ 	void (*io_init)(struct ov5640 *);
+ 	int pwn_gpio, rst_gpio;
++	
++	struct ov5640_ctrls ctrls;
+ };
+ 
+ struct ov5640_res {
+@@ -474,6 +497,131 @@ static int get_capturemode(int width, int height)
+ 	return -1;
+ }
+ 
++static int ov5640_set_ctrl_hflip(struct ov5640 *sensor, int value)
++{
++	return ov5640_write_reg(sensor, 0x3820, value ? 0x06 : 0x00);
++}
++
++static int ov5640_set_ctrl_vflip(struct ov5640 *sensor, int value)
++{
++	return ov5640_write_reg(sensor, 0x3821,value ? 0x06 : 0x00);
++}
++
++static int ov5640_set_ctrl_saturation(struct ov5640 *sensor, int value)
++{
++   ov5640_write_reg(sensor, 0x5583, value & 0xff);
++	return ov5640_write_reg(sensor, 0x5584, value & 0xff);
++}
++
++static int ov5640_set_ctrl_contrast(struct ov5640 *sensor, int value)
++{
++	return ov5640_write_reg(sensor, 0x5586, value & 0xff);
++}
++
++static int ov5640_set_ctrl_hue(struct ov5640 *sensor, int value)
++{
++	return ov5640_write_reg(sensor, 0x5585, value & 0xff);
++}
++
++static int ov5640_set_ctrl_white_balance(struct ov5640 *sensor, int awb)
++{
++	return ov5640_write_reg(sensor, 0x3406, awb ? 0x00 : 0x01);
++}
++
++static int ov5640_set_ctrl_exposure(struct ov5640 *sensor, int auto_exposure)
++{
++	return ov5640_write_reg(sensor, 0x3503, auto_exposure ? 0x00 : 0x08);
++}
++
++static const char * const test_pattern_menu[] = {
++	"Disabled",
++	"Color Bars",
++};
++
++static int ov5640_set_ctrl_test_pattern(struct ov5640 *sensor, int value)
++{ 
++   return ov5640_write_reg(sensor, 0x503D, value ? 0x80 : 0x00);;
++}
++static inline struct ov5640 *to_ov5640_from_sd(struct v4l2_subdev *sd)
++{
++	return container_of(sd, struct ov5640, subdev);
++}
++
++static int ov5640_s_ctrl(struct v4l2_ctrl *ctrl)
++{
++	struct v4l2_subdev *sd = &container_of(ctrl->handler, struct ov5640, ctrls.handler)->subdev;
++	struct ov5640 *sensor = to_ov5640_from_sd(sd);
++	int ret;
++
++	switch (ctrl->id) {
++	case V4L2_CID_AUTO_WHITE_BALANCE:
++		ret = ov5640_set_ctrl_white_balance(sensor, ctrl->val);
++		break;
++	case V4L2_CID_EXPOSURE_AUTO:
++		ret = ov5640_set_ctrl_exposure(sensor, ctrl->val);
++		break;
++	case V4L2_CID_HUE:
++		ret = ov5640_set_ctrl_hue(sensor, ctrl->val);
++		break;
++	case V4L2_CID_CONTRAST:
++		ret = ov5640_set_ctrl_contrast(sensor, ctrl->val);
++		break;
++	case V4L2_CID_SATURATION:
++		ret = ov5640_set_ctrl_saturation(sensor, ctrl->val);
++		break;
++	case V4L2_CID_TEST_PATTERN:
++		ret = ov5640_set_ctrl_test_pattern(sensor, ctrl->val);
++		break;
++	case V4L2_CID_HFLIP:
++		ret = ov5640_set_ctrl_hflip(sensor, ctrl->val);
++		break;
++	case V4L2_CID_VFLIP:
++		ret = ov5640_set_ctrl_vflip(sensor, ctrl->val);
++		break;
++	default:
++		ret = -EINVAL;
++		break;
++	}
++
++	return ret;
++}
++
++static const struct v4l2_ctrl_ops ov5640_ctrl_ops = {
++	.s_ctrl = ov5640_s_ctrl,
++};
++
++static int ov5640_init_controls(struct ov5640 *sensor)
++{
++	const struct v4l2_ctrl_ops *ops = &ov5640_ctrl_ops;
++	struct v4l2_ctrl_handler *hdl = &sensor->ctrls.handler;
++	struct ov5640_ctrls *ctrls = &sensor->ctrls;
++	int ret;
++
++	// Initialize the handler with an estimate of the number of controls.
++	v4l2_ctrl_handler_init(hdl, 10);
++
++	// Use the driver's global mutex for locking
++	hdl->lock = &ov5640_mutex;
++
++	// Create Controls
++	ctrls->auto_wb = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_AUTO_WHITE_BALANCE, 0, 1, 1, 1);
++	ctrls->auto_exp = v4l2_ctrl_new_std_menu(hdl, ops, V4L2_CID_EXPOSURE_AUTO, V4L2_EXPOSURE_MANUAL, 0, V4L2_EXPOSURE_AUTO);
++	ctrls->saturation = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_SATURATION, 0, 255, 1, 64);
++	ctrls->hue = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_HUE, 0, 359, 1, 0);
++	ctrls->contrast = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_CONTRAST, 0, 255, 1, 128);
++	ctrls->hflip = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_HFLIP, 0, 1, 1, 0);
++	ctrls->vflip = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_VFLIP, 0, 1, 1, 0);
++	ctrls->test_pattern = v4l2_ctrl_new_std_menu_items(hdl, ops, V4L2_CID_TEST_PATTERN, ARRAY_SIZE(test_pattern_menu) - 1, 0, 0, test_pattern_menu);
++
++	if (hdl->error) {
++		ret = hdl->error;
++		v4l2_ctrl_handler_free(hdl);
++		return ret;
++	}
++    // Assign the handler to the sub-device
++	sensor->subdev.ctrl_handler = hdl;
++	return 0;
++}
+ static struct ov5640 *to_ov5640(const struct i2c_client *client)
+ {
+ 	return container_of(i2c_get_clientdata(client), struct ov5640, subdev);
+@@ -1299,6 +1447,12 @@ static int ov5640_s_power(struct v4l2_subdev *sd, int on)
+ 		if (analog_regulator)
+ 			if (regulator_enable(analog_regulator) != 0)
+ 				return -EIO;
++
++      int ret = v4l2_ctrl_handler_setup(&sensor->ctrls.handler);
++	   if (ret) {
++        	return ret;
++	   }
++
+ 	} else if (!on && sensor->on) {
+ 		ov5640_regualtor_disable();
+ 	}
+@@ -1652,6 +1806,7 @@ static const struct v4l2_subdev_pad_ops ov5640_subdev_pad_ops = {
+ };
+ 
+ static struct v4l2_subdev_core_ops ov5640_subdev_core_ops = {
++	.log_status = v4l2_ctrl_subdev_log_status,
+ 	.s_power	= ov5640_s_power,
+ #ifdef CONFIG_VIDEO_ADV_DEBUG
+ 	.g_register	= ov5640_get_register,
+@@ -1816,6 +1971,26 @@ static int ov5640_probe(struct i2c_client *client)
+ 	}
+ 
+ 	v4l2_i2c_subdev_init(&sensor->subdev, client, &ov5640_subdev_ops);
++   
++	sensor->subdev.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
++	sensor->subdev.entity.function = MEDIA_ENT_F_CAM_SENSOR;
++
++	#ifdef USE_MEDIA_CONTROLLER
++	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
++	retval = media_entity_pads_init(&sensor->subdev.entity, 1, &sensor->pad);
++	if (retval < 0) {
++		dev_err(dev, "Failed to init media entity pads\n");
++       // Add cleanup logic here if needed
++		return retval;
++	}
++	#endif
++   
++	retval = ov5640_init_controls(sensor);
++   if (retval) {
++      ov5640_regualtor_disable();
++      clk_disable_unprepare(sensor->sensor_clk); 
++		return retval;
++   }
+ 
+ 	sensor->subdev.grp_id = 678;
+ 	retval = v4l2_async_register_subdev(&sensor->subdev);
+@@ -1840,6 +2015,10 @@ static void ov5640_remove(struct i2c_client *client)
+ 	struct ov5640 *sensor = to_ov5640(client);
+ 
+ 	v4l2_async_unregister_subdev(sd);
++	#ifdef USE_MEDIA_CONTROLLER
++   media_entity_cleanup(&sensor->subdev.entity);
++   #endif
++   v4l2_ctrl_handler_free(&sensor->ctrls.handler);
+ 
+ 	clk_disable_unprepare(sensor->sensor_clk);
+ 
+-- 
+2.43.0
+
