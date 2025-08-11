@@ -15,6 +15,8 @@ SRC_URI:append = " \
     file://generic/TOSHIBA-0002-drm-bridge-tc358762-Program-the-DPI-mode-into-the-ch.patch \
     file://generic/TOSHIBA-0003-drm-bridge-tc358762-revert-move-ops-to-enable.patch \
     file://generic/ISI-0001-Added-support-for-RAW-bayer-formats-on-imx8-platform.patch \
+    file://generic/MIPI-CSI-0001-added-ops-notifier-complete.patch \
+    file://generic/OV5640-0001-add-v4l2-controls.patch \
 "
 
 SRC_URI:append:portenta-x8 = " \
