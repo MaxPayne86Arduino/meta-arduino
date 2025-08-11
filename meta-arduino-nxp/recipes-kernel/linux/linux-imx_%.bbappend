@@ -20,7 +20,6 @@ SRC_URI:append = " \
 SRC_URI:append:portenta-x8 = " \
     file://defconfig \
     file://DVFS-0001-Add_400MHz_200MHz_100MHz.patch \
-    file://OV5640-0001-Add-v4l2-ctrl.patch \
 "
 
 SRC_URI:append:portenta-x9 = " \
