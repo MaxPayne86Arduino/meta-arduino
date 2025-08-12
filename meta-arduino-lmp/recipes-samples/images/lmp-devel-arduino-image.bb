@@ -57,6 +57,7 @@ CORE_IMAGE_BASE_INSTALL += " \
     stress-ng \
     u-boot-fio-env \
     u-boot-fw-utils \
+    u-boot-default-script \
 "
 
 # Custom task to write git SHA to /etc/os-release
