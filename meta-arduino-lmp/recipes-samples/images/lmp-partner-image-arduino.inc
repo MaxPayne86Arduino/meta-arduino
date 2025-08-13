@@ -53,3 +53,5 @@ fakeroot do_populate_rootfs_add_custom_sudoers () {
 }
 
 IMAGE_PREPROCESS_COMMAND += "do_populate_rootfs_add_custom_sudoers; "
+
+IMAGE_FSTYPES:append = " wic.zst tar.zst"
