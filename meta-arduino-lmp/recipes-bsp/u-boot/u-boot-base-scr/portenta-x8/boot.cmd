@@ -1,4 +1,4 @@
-fatload mmc ${mmcdev}:1 ${loadaddr} /uEnv.txt
+load mmc 2:1 ${loadaddr} /boot/uEnv.txt
 env import -t ${loadaddr} ${filesize}
 
 # Som ov list
