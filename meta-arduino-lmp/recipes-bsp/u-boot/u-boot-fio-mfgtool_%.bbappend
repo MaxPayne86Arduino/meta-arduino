@@ -1,3 +1,3 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:${THISDIR}/u-boot-fio:"
 
-require u-boot-fio-arduino.inc
+include recipes-bsp/u-boot/u-boot-arduino.inc
