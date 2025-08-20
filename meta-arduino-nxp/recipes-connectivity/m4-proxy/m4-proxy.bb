@@ -5,11 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-RDEPENDS:${PN} = "bash"
-RDEPENDS:${PN}-dev = "bash"
-
 GO_IMPORT = "github.com/arduino/portentax8-m4-proxy"
-
 GO_INSTALL = "${GO_IMPORT}/proxy"
 
 SRC_URI = " \
