@@ -1,3 +1,4 @@
+printenv "Booting with mmcdev: ${mmcdev} loadaddr: ${loadaddr}"
 load mmc 2:1 ${loadaddr} /boot/uEnv.txt
 env import -t ${loadaddr} ${filesize}
 
@@ -43,4 +44,5 @@ setenv rasp_base_ovl ' \
 # setenv carrier_custom 1
 # setenv overlays 'ov_name1 ov_name2...'
 
+printenv "Booting with bootcmd: ${bootcmd}"
 run bootcmd
