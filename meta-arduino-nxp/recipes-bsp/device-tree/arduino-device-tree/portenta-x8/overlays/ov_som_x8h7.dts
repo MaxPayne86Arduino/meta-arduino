@@ -11,6 +11,7 @@
  * - uart
  * - gpio
  * - rtc
+ * - rpc
  */
 
 /dts-v1/;
@@ -71,6 +72,12 @@
 	fragment@2 {
 		target-path = "/";
 		__overlay__ {
+			x8h7_rst: x8h7rst {
+				compatible = "portenta,x8h7rst";
+				nrst-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>; // NRST_STM32
+				boot0-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>; // BOOT0_STM32
+			};
+
 			x8h7_adc: x8h7adc {
 				compatible = "portenta,x8h7_adc";
 			};
@@ -111,17 +118,6 @@
 
 			x8h7_h7: x8h7h7 {
 				compatible = "portenta,x8h7_h7";
-			};
-		};
-	};
-
-	fragment@3 {
-		target-path = "/";
-		__overlay__ {
-			x8h7_rst: x8h7rst {
-				compatible = "portenta,x8h7rst";
-			   nrst-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>; // NRST_STM32
-				boot0-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>; // BOOT0_STM32
 			};
 		};
 	};
