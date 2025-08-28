@@ -52,6 +52,7 @@ do_install() {
     install -m 0744 ${S}/scripts/reset.sh ${D}/usr/arduino/extra/reset.sh
     install -m 0744 ${S}/scripts/program.sh ${D}/usr/arduino/extra/program.sh
     install -m 0744 ${S}/scripts/program-h7.sh ${D}/usr/arduino/extra/program-h7.sh
+    install -m 0744 ${S}/scripts/program-m4.sh ${D}/usr/arduino/extra/program-m4.sh
     install -m 0744 ${S}/scripts/load_modules_pre.sh ${D}/usr/arduino/extra/load_modules_pre.sh
     install -m 0744 ${S}/scripts/load_modules_post.sh ${D}/usr/arduino/extra/load_modules_post.sh
     install -m 0744 ${S}/scripts/unload_modules.sh ${D}/usr/arduino/extra/unload_modules.sh
@@ -78,6 +79,7 @@ FILES:${PN} = " \
     /usr/arduino/extra/reset.sh \
     /usr/arduino/extra/program.sh \
     /usr/arduino/extra/program-h7.sh \
+    /usr/arduino/extra/program-m4.sh \
     /usr/arduino/extra/load_modules_pre.sh \
     /usr/arduino/extra/load_modules_post.sh \
     /usr/arduino/extra/unload_modules.sh \
