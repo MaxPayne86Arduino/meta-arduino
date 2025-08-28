@@ -17,6 +17,7 @@ SRC_URI:append = " \
     file://generic/ISI-0001-Added-support-for-RAW-bayer-formats-on-imx8-platform.patch \
     file://generic/MIPI-CSI-0001-added-ops-notifier-complete.patch \
     file://generic/OV5640-0001-add-v4l2-controls.patch \
+    file://generic/LEDS-TRIGGER-0001-backporting-triggers-gpio.patch \
 "
 
 SRC_URI:append:portenta-x8 = " \
