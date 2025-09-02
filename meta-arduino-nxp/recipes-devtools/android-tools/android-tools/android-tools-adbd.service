@@ -10,6 +10,8 @@ Restart=on-failure
 RestartSec=2
 Environment=UDC_DIR=/sys/class/udc
 Environment=UDC_ENTRY=ci_hdrc.0
+# To enable adb listen on tcp uncomment this setting
+# Environment="SERVICE_ADB_TCP_PORT=5555"
 LogLevelMax=crit
 ExecStartPre=/usr/bin/arduino-android-gadget-setup start
 ExecStart=/usr/bin/adbd
