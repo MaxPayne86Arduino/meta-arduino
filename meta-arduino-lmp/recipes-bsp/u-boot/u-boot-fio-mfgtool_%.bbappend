@@ -1,3 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:${THISDIR}/u-boot-fio:"
 
-include recipes-bsp/u-boot/u-boot-arduino.inc
+SRC_URI:append:portenta-x8 = " \
+    file://u-boot-fio-arduino-changes-portenta-x8.patch \
+"
