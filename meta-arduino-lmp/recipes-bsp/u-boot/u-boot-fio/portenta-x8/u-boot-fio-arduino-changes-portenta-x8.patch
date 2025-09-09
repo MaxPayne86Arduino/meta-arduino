@@ -1,0 +1,2817 @@
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 737e959a6b..a7afd7756a 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -1117,71 +1117,7 @@ dtb-$(CONFIG_ARCH_IMX8ULP) += \
+ 	imx8ulp-watch.dtb
+ 
+ dtb-$(CONFIG_ARCH_IMX8M) += \
+-	imx8mm-data-modul-edm-sbc.dtb \
+-	imx8mm-ddr4-evk.dtb \
+-	imx8mm-ddr4-ab2.dtb \
+-	imx8mm-evk.dtb \
+-	imx8mm-ab2.dtb \
+-	imx8mm-icore-mx8mm-ctouch2.dtb \
+-	imx8mm-icore-mx8mm-edimm2.2.dtb \
+-	imx8mm-kontron-bl.dtb \
+-	imx8mm-kontron-bl-osm-s.dtb \
+-	imx8mm-mx8menlo.dtb \
+-	imx8mm-phg.dtb \
+-	imx8mm-phyboard-polis-rdk.dtb \
+-	imx8mm-phygate-tauri-l.dtb \
+-	imx8mm-venice.dtb \
+-	imx8mm-venice-gw71xx-0x.dtb \
+-	imx8mm-venice-gw72xx-0x.dtb \
+-	imx8mm-venice-gw73xx-0x.dtb \
+-	imx8mm-venice-gw7901.dtb \
+-	imx8mm-venice-gw7902.dtb \
+-	imx8mm-venice-gw7903.dtb \
+-	imx8mm-venice-gw7904.dtb \
+-	imx8mm-venice-gw7905-0x.dtb \
+-	imx8mm-verdin-wifi-dev.dtb \
+-	imx8mn-bsh-smm-s2.dtb \
+-	imx8mn-bsh-smm-s2pro.dtb \
+-	imx8mn-ddr3l-evk.dtb \
+-	imx8mn-ddr4-evk.dtb \
+-	imx8mn-ddr4-ab2.dtb \
+-	imx8mq-cm.dtb \
+-	imx8mn-evk.dtb \
+-	imx8mn-ab2.dtb \
+-	imx8mn-var-som-symphony.dtb \
+-	imx8mn-venice.dtb \
+-	imx8mn-venice-gw7902.dtb \
+-	imx8mq-evk.dtb \
+-	imx8mm-beacon-kit.dtb \
+-	imx8mn-beacon-kit.dtb \
+-	imx8mq-mnt-reform2.dtb \
+-	imx8mq-phanbell.dtb \
+-	imx8mp-beacon-kit.dtb \
+-	imx8mp-data-modul-edm-sbc.dtb \
+-	imx8mp-dhcom-som-overlay-rev100.dtbo \
+-	imx8mp-dhcom-som-overlay-eth1xfast.dtbo \
+-	imx8mp-dhcom-som-overlay-eth2xfast.dtbo \
+-	imx8mp-dhcom-pdk-overlay-eth2xfast.dtbo \
+-	imx8mp-debix-model-a.dtb \
+-	imx8mp-dhcom-pdk2.dtb \
+-	imx8mp-dhcom-pdk3.dtb \
+-	imx8mp-dhcom-pdk3-overlay-rev100.dtbo \
+-	imx8mp-ddr4-evk.dtb \
+-	imx8mp-evk.dtb \
+-	imx8mp-icore-mx8mp-edimm2.2.dtb \
+-	imx8mp-msc-sm2s.dtb \
+-	imx8mp-phyboard-pollux-rdk.dtb \
+-	imx8mp-venice.dtb \
+-	imx8mp-venice-gw71xx-2x.dtb \
+-	imx8mp-venice-gw72xx-2x.dtb \
+-	imx8mp-venice-gw73xx-2x.dtb \
+-	imx8mp-venice-gw74xx.dtb \
+-	imx8mp-venice-gw7905-2x.dtb \
+-	imx8mp-verdin-wifi-dev.dtb \
+-	imx8mp-navqp.dtb \
+-	imx8mq-pico-pi.dtb \
+-	imx8mq-kontron-pitx-imx8m.dtb \
+-	imx8mq-librem5-r4.dtb
++	imx8mm-evk.dtb
+ 
+ dtb-$(CONFIG_ARCH_IMX9) += \
+ 	imx95-15x15-evk.dtb \
+diff --git a/arch/arm/dts/imx8mm-evk-u-boot.dtsi b/arch/arm/dts/imx8mm-evk-u-boot.dtsi
+index 725e36cad0..c453536004 100644
+--- a/arch/arm/dts/imx8mm-evk-u-boot.dtsi
++++ b/arch/arm/dts/imx8mm-evk-u-boot.dtsi
+@@ -54,7 +54,7 @@
+ 	bootph-pre-ram;
+ };
+ 
+-&pinctrl_uart2 {
++&pinctrl_uart3 {
+ 	bootph-pre-ram;
+ };
+ 
+@@ -90,7 +90,7 @@
+ 	bootph-pre-ram;
+ };
+ 
+-&uart2 {
++&uart3 {
+ 	bootph-pre-ram;
+ };
+ 
+@@ -136,11 +136,11 @@
+ 	bootph-pre-ram;
+ };
+ 
+-&{/soc@0/bus@30800000/i2c@30a20000/pca9450@25} {
++&{/soc@0/bus@30800000/i2c@30a30000/bd71847@4b} {
+ 	bootph-pre-ram;
+ };
+ 
+-&{/soc@0/bus@30800000/i2c@30a20000/pca9450@25/regulators} {
++&{/soc@0/bus@30800000/i2c@30a30000/bd71847@4b/regulators} {
+ 	bootph-pre-ram;
+ };
+ 
+@@ -157,7 +157,7 @@
+ };
+ 
+ &fec1 {
+-	phy-reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++	phy-reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
+ 	phy-reset-duration = <15>;
+ 	phy-reset-post-delay = <100>;
+ };
+@@ -176,7 +176,6 @@
+ 
+ &usbotg1 {
+ 	status = "okay";
+-	extcon = <&ptn5110>;
+ };
+ 
+ &mipi_dsi {
+diff --git a/arch/arm/dts/imx8mm-evk.dts b/arch/arm/dts/imx8mm-evk.dts
+index 73d2061efd..7ed4c9d2fc 100644
+--- a/arch/arm/dts/imx8mm-evk.dts
++++ b/arch/arm/dts/imx8mm-evk.dts
+@@ -9,31 +9,11 @@
+ #include "imx8mm-evk.dtsi"
+ 
+ / {
+-	model = "NXP i.MX8MM EVK board";
++	model = "Arduino Portenta X8 i.MX8MM board";
+ 	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
+ 
+ 	chosen {
+-		bootargs = "console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200";
+-	};
+-
+-	aliases {
+-		spi0 = &flexspi;
+-	};
+-};
+-
+-&flexspi {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_flexspi>;
+-	status = "okay";
+-
+-	flash@0 {
+-		reg = <0>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "jedec,spi-nor";
+-		spi-max-frequency = <80000000>;
+-		spi-tx-bus-width = <1>;
+-		spi-rx-bus-width = <4>;
++		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200";
+ 	};
+ };
+ 
+@@ -50,17 +30,6 @@
+ };
+ 
+ &iomuxc {
+-	pinctrl_flexspi: flexspigrp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_NAND_ALE_QSPI_A_SCLK               0x1c2
+-			MX8MM_IOMUXC_NAND_CE0_B_QSPI_A_SS0_B            0x82
+-			MX8MM_IOMUXC_NAND_DATA00_QSPI_A_DATA0           0x82
+-			MX8MM_IOMUXC_NAND_DATA01_QSPI_A_DATA1           0x82
+-			MX8MM_IOMUXC_NAND_DATA02_QSPI_A_DATA2           0x82
+-			MX8MM_IOMUXC_NAND_DATA03_QSPI_A_DATA3           0x82
+-		>;
+-	};
+-
+ 	pinctrl_usdhc3: usdhc3grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK               0x190
+diff --git a/arch/arm/dts/imx8mm-evk.dtsi b/arch/arm/dts/imx8mm-evk.dtsi
+index 200274972f..5928e127d7 100644
+--- a/arch/arm/dts/imx8mm-evk.dtsi
++++ b/arch/arm/dts/imx8mm-evk.dtsi
+@@ -11,7 +11,7 @@
+ 
+ / {
+ 	chosen {
+-		stdout-path = &uart2;
++		stdout-path = &uart3;
+ 	};
+ 
+ 	memory@40000000 {
+@@ -24,27 +24,24 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_gpio_led>;
+ 
+-		led-0 {
+-			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
+-			default-state = "on";
++		ledR {
++			label = "ledR";
++			gpios = <&gpio5 2 GPIO_ACTIVE_LOW>;
++			default-state = "off";
+ 		};
+-	};
+ 
+-	pcie0_refclk: pcie0-refclk {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <100000000>;
+-	};
++		ledG {
++			label = "ledG";
++			gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
+ 
+-	reg_pcie0: regulator-pcie {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_pcie0_reg>;
+-		regulator-name = "MPCIE_3V3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio1 5 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
++		ledB {
++			label = "ledB";
++			gpios = <&gpio5 1 GPIO_ACTIVE_LOW>;
++			linux,default-trigger = "heartbeat";
++			default-state = "off";
++		};
+ 	};
+ 
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+@@ -58,105 +55,6 @@
+ 		off-on-delay-us = <20000>;
+ 		enable-active-high;
+ 	};
+-
+-	backlight: backlight {
+-		compatible = "pwm-backlight";
+-		pwms = <&pwm1 0 5000000 0>;
+-		brightness-levels = <0 255>;
+-		num-interpolated-steps = <255>;
+-		default-brightness-level = <250>;
+-	};
+-
+-	ir-receiver {
+-		compatible = "gpio-ir-receiver";
+-		gpios = <&gpio1 13 GPIO_ACTIVE_LOW>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_ir>;
+-		linux,autosuspend-period = <125>;
+-	};
+-
+-	audio_codec_bt_sco: audio-codec-bt-sco {
+-		compatible = "linux,bt-sco";
+-		#sound-dai-cells = <1>;
+-	};
+-
+-	wm8524: audio-codec {
+-		#sound-dai-cells = <0>;
+-		compatible = "wlf,wm8524";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_wlf>;
+-		wlf,mute-gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
+-	};
+-
+-	sound-bt-sco {
+-		compatible = "simple-audio-card";
+-		simple-audio-card,name = "bt-sco-audio";
+-		simple-audio-card,format = "dsp_a";
+-		simple-audio-card,bitclock-inversion;
+-		simple-audio-card,frame-master = <&btcpu>;
+-		simple-audio-card,bitclock-master = <&btcpu>;
+-
+-		btcpu: simple-audio-card,cpu {
+-			sound-dai = <&sai2>;
+-			dai-tdm-slot-num = <2>;
+-			dai-tdm-slot-width = <16>;
+-		};
+-
+-		simple-audio-card,codec {
+-			sound-dai = <&audio_codec_bt_sco 1>;
+-		};
+-	};
+-
+-	sound-wm8524 {
+-		compatible = "simple-audio-card";
+-		simple-audio-card,name = "wm8524-audio";
+-		simple-audio-card,format = "i2s";
+-		simple-audio-card,frame-master = <&cpudai>;
+-		simple-audio-card,bitclock-master = <&cpudai>;
+-		simple-audio-card,widgets =
+-			"Line", "Left Line Out Jack",
+-			"Line", "Right Line Out Jack";
+-		simple-audio-card,routing =
+-			"Left Line Out Jack", "LINEVOUTL",
+-			"Right Line Out Jack", "LINEVOUTR";
+-
+-		cpudai: simple-audio-card,cpu {
+-			sound-dai = <&sai3>;
+-			dai-tdm-slot-num = <2>;
+-			dai-tdm-slot-width = <32>;
+-		};
+-
+-		simple-audio-card,codec {
+-			sound-dai = <&wm8524>;
+-			clocks = <&clk IMX8MM_CLK_SAI3_ROOT>;
+-		};
+-	};
+-
+-	dsi_host: dsi-host {
+-		compatible = "samsung,sec-mipi-dsi";
+-		status = "okay";
+-	};
+-
+-	rm67199_panel {
+-		compatible = "raydium,rm67199";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
+-		reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
+-		dsi-lanes = <4>;
+-		video-mode = <2>;	/* 0: burst mode
+-					 * 1: non-burst mode with sync event
+-					 * 2: non-burst mode with sync pulse
+-					 */
+-		panel-width-mm = <68>;
+-		panel-height-mm = <121>;
+-		status = "okay";
+-
+-		port {
+-			rm67191_from_dsim: endpoint {
+-				remote-endpoint = <&dsim_to_rm67191>;
+-			};
+-		};
+-	};
+ };
+ 
+ &A53_0 {
+@@ -175,13 +73,14 @@
+ 	cpu-supply = <&buck2_reg>;
+ };
+ 
+-
+-&ecspi2 {
++/* Connected to ext. STM32H7, no driver in spl/u-boot, see X8H7 in kernel */
++&ecspi3 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
+-	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
++	pinctrl-0 = <&pinctrl_ecspi3 &pinctrl_ecspi3_cs>;
++	num-cs = <1>;
++	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+ 	spidev0: spi@0 {
+@@ -206,7 +105,7 @@
+ 		ethphy0: ethernet-phy@0 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+ 			reg = <0>;
+-			reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++			reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <15000>;
+ 			reset-deassert-us = <100000>;
+ 			qca,disable-smarteee;
+@@ -228,71 +127,86 @@
+ 	scl-gpios = <&gpio5 14 GPIO_ACTIVE_HIGH>;
+ 	sda-gpios = <&gpio5 15 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
++};
+ 
+-	pmic_nxp: pca9450@25 {
+-		compatible = "nxp,pca9450a";
+-		reg = <0x25>;
++&i2c2 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	pinctrl-1 = <&pinctrl_i2c2_gpio>;
++	scl-gpios = <&gpio5 16 GPIO_ACTIVE_HIGH>;
++	sda-gpios = <&gpio5 17 GPIO_ACTIVE_HIGH>;
++	status = "okay";
++
++	pmic_nxp: bd71847@4b {
++		compatible = "rohm,bd71847";
++		reg = <0x4b>;
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		pinctrl-names = "default";
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++		rohm,reset-snvs-powered;
+ 
+ 		regulators {
+ 			buck1_reg: BUCK1 {
+ 				regulator-name = "BUCK1";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
++				regulator-min-microvolt = <700000>;
++				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+-				regulator-ramp-delay = <3125>;
+-				nxp,dvs-run-voltage = <850000>;
+-				nxp,dvs-standby-voltage = <800000>;
++				regulator-ramp-delay = <1250>;
+ 			};
+ 
+ 			buck2_reg: BUCK2 {
+ 				regulator-name = "BUCK2";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
++				regulator-min-microvolt = <700000>;
++				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+-				regulator-ramp-delay = <3125>;
++				regulator-ramp-delay = <1250>;
++				rohm,dvs-run-voltage = <1000000>;
++				rohm,dvs-idle-voltage = <900000>;
+ 			};
+ 
++			/* BUCK5 in Datasheet */
+ 			buck3_reg: BUCK3 {
+ 				regulator-name = "BUCK3";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
++				regulator-min-microvolt = <700000>;
++				regulator-max-microvolt = <1350000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
++			/* BUCK6 in Datasheet */
+ 			buck4_reg: BUCK4 {
+ 				regulator-name = "BUCK4";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
++				regulator-min-microvolt = <3000000>;
++				regulator-max-microvolt = <3300000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
++			/* BUCK7 in Datasheet */
+ 			buck5_reg: BUCK5 {
+ 				regulator-name = "BUCK5";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
++				regulator-min-microvolt = <1605000>;
++				regulator-max-microvolt = <1995000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
++			/* BUCK8 in Datasheet */
+ 			buck6_reg: BUCK6 {
+ 				regulator-name = "BUCK6";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <1400000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
+ 			ldo1_reg: LDO1 {
+ 				regulator-name = "LDO1";
+-				regulator-min-microvolt = <1600000>;
++				regulator-min-microvolt = <3000000>;
+ 				regulator-max-microvolt = <3300000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+@@ -300,15 +214,15 @@
+ 
+ 			ldo2_reg: LDO2 {
+ 				regulator-name = "LDO2";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <1150000>;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <900000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
+ 			ldo3_reg: LDO3 {
+ 				regulator-name = "LDO3";
+-				regulator-min-microvolt = <800000>;
++				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <3300000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+@@ -316,72 +230,29 @@
+ 
+ 			ldo4_reg: LDO4 {
+ 				regulator-name = "LDO4";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <3300000>;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <1800000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
+-			ldo5_reg: LDO5 {
++			/* @TODO: supplies anx7625, handled in spl.c */
++			/*ldo5_reg: LDO5 {
+ 				regulator-name = "LDO5";
+-				regulator-min-microvolt = <1800000>;
+-				regulator-max-microvolt = <3300000>;
+-			};
+-
+-		};
+-	};
+-};
+-
+-&i2c2 {
+-	clock-frequency = <400000>;
+-	pinctrl-names = "default", "gpio";
+-	pinctrl-0 = <&pinctrl_i2c2>;
+-	pinctrl-1 = <&pinctrl_i2c2_gpio>;
+-	scl-gpios = <&gpio5 16 GPIO_ACTIVE_HIGH>;
+-	sda-gpios = <&gpio5 17 GPIO_ACTIVE_HIGH>;
+-	status = "okay";
+-
+-	adv_bridge: adv7535@3d {
+-		compatible = "adi,adv7535";
+-		reg = <0x3d>;
+-		adi,addr-cec = <0x3c>;
+-		adi,dsi-lanes = <4>;
+-		status = "okay";
+-
+-		port {
+-			adv7535_from_dsim: endpoint {
+-				remote-endpoint = <&dsim_to_adv7535>;
+-			};
+-		};
+-	};
++				regulator-min-microvolt = <3000000>;
++				regulator-min-microvolt = <3000000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};*/
+ 
+-	ptn5110: tcpc@50 {
+-		compatible = "nxp,ptn5110";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_typec1>;
+-		reg = <0x50>;
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <11 8>;
+-		status = "okay";
+-
+-		port {
+-			typec1_dr_sw: endpoint {
+-				remote-endpoint = <&usb1_drd_sw>;
++			ldo6_reg: LDO6 {
++				regulator-name = "LDO6";
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
+ 			};
+ 		};
+-
+-		typec1_con: connector {
+-			compatible = "usb-c-connector";
+-			label = "USB-C";
+-			power-role = "dual";
+-			data-role = "dual";
+-			try-power-role = "sink";
+-			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+-			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+-				     PDO_VAR(5000, 20000, 3000)>;
+-			op-sink-microwatt = <15000000>;
+-			self-powered;
+-		};
+ 	};
+ };
+ 
+@@ -393,68 +264,19 @@
+ 	scl-gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
+ 	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+-
+-	pca6416: gpio@20 {
+-		compatible = "ti,tca6416";
+-		reg = <0x20>;
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-	};
+-};
+-
+-&pcie_phy {
+-	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
+-	fsl,tx-deemph-gen1 = <0x2d>;
+-	fsl,tx-deemph-gen2 = <0xf>;
+-	clocks = <&pcie0_refclk>;
+-	status = "okay";
+-};
+-
+-&pcie0 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_pcie0>;
+-	reset-gpio = <&gpio4 21 GPIO_ACTIVE_LOW>;
+-	clocks = <&clk IMX8MM_CLK_PCIE1_ROOT>, <&clk IMX8MM_CLK_PCIE1_AUX>,
+-		 <&pcie0_refclk>;
+-	clock-names = "pcie", "pcie_aux", "pcie_bus";
+-	assigned-clocks = <&clk IMX8MM_CLK_PCIE1_AUX>,
+-			  <&clk IMX8MM_CLK_PCIE1_CTRL>;
+-	assigned-clock-rates = <10000000>, <250000000>;
+-	assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_50M>,
+-				 <&clk IMX8MM_SYS_PLL2_250M>;
+-	vpcie-supply = <&reg_pcie0>;
+-	status = "okay";
+-};
+-
+-&sai2 {
+-	#sound-dai-cells = <0>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_sai2>;
+-	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
+-	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+-	assigned-clock-rates = <24576000>;
+-	status = "okay";
+-};
+-
+-&sai3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_sai3>;
+-	assigned-clocks = <&clk IMX8MM_CLK_SAI3>;
+-	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+-	assigned-clock-rates = <24576000>;
+-	status = "okay";
+ };
+ 
+ &snvs_pwrkey {
+ 	status = "okay";
+ };
+ 
+-&uart2 { /* console */
++&uart3 { /* console */
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart2>;
++	pinctrl-0 = <&pinctrl_uart3>;
+ 	status = "okay";
+ };
+ 
++/* SoM USBC Port Connector J3 */
+ &usbotg1 {
+ 	dr_mode = "otg";
+ 	hnp-disable;
+@@ -466,11 +288,20 @@
+ 	samsung,picophy-dc-vol-level-adjust = <7>;
+ 	status = "okay";
+ 
+-	port {
++	/* @TODO: connector should go to anx7625 */
++	/*port {
+ 		usb1_drd_sw: endpoint {
+ 			remote-endpoint = <&typec1_dr_sw>;
+ 		};
+-	};
++	};*/
++};
++
++&usbotg2 {
++	dr_mode = "host";
++	disable-over-current;
++	samsung,picophy-pre-emp-curr-control = <3>;
++	samsung,picophy-dc-vol-level-adjust = <7>;
++	status = "okay";
+ };
+ 
+ &usdhc2 {
+@@ -480,7 +311,7 @@
+ 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+-	cd-gpios = <&gpio1 15 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+ 	bus-width = <4>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	status = "okay";
+@@ -493,50 +324,22 @@
+ 	status = "okay";
+ };
+ 
+-&pwm1 {
++&iomuxc {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_backlight>;
+-	status = "okay";
+-};
+-
+-&lcdif {
+-	display = <&display0>;
+-	status = "okay";
+-
+-	display0: display@0 {
+-		bits-per-pixel = <24>;
+-		bus-width = <24>;
+-	};
+-};
++	pinctrl-0 = <&pinctrl_hog_1>, <&pinctrl_hog_2>;
+ 
+-&mipi_dsi {
+-	status = "okay";
+-
+-	port@1 {
+-		dsim_to_adv7535: endpoint {
+-			remote-endpoint = <&adv7535_from_dsim>;
+-		};
+-	};
+-
+-	port@2 {
+-		dsim_to_rm67191: endpoint {
+-			remote-endpoint = <&rm67191_from_dsim>;
+-		};
+-	};
+-};
+-
+-&iomuxc {
+-	pinctrl_ecspi2: ecspi2grp {
++	pinctrl_ecspi3: ecspi3grp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK		0x82
+-			MX8MM_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI		0x82
+-			MX8MM_IOMUXC_ECSPI2_MISO_ECSPI2_MISO		0x82
++			MX8MM_IOMUXC_UART1_RXD_ECSPI3_SCLK		0x82
++			MX8MM_IOMUXC_UART1_TXD_ECSPI3_MOSI		0x82
++			MX8MM_IOMUXC_UART2_RXD_ECSPI3_MISO		0x82
+ 		>;
+ 	};
+ 
+-	pinctrl_ecspi2_cs: ecspi2csgrp {
++	pinctrl_ecspi3_cs: ecspi3csgrp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x40000
++			/* MX8MM_IOMUXC_UART2_TXD_ECSPI3_SS0		0x40000*/
++			MX8MM_IOMUXC_UART2_TXD_GPIO5_IO25		0x40000
+ 		>;
+ 	};
+ 
+@@ -556,25 +359,16 @@
+ 			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x91
+ 			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
+ 			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
+-			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22		0x19
++			MX8MM_IOMUXC_NAND_DATA00_GPIO3_IO6		0x16 /* ENET_nRST */
++			MX8MM_IOMUXC_NAND_DATA01_GPIO3_IO7		0x41 /* ENET_nINT */
+ 		>;
+ 	};
+ 
+ 	pinctrl_gpio_led: gpioledgrp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_NAND_READY_B_GPIO3_IO16	0x19
+-		>;
+-	};
+-
+-	pinctrl_ir: irgrp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13              0x4f
+-		>;
+-	};
+-
+-	pinctrl_gpio_wlf: gpiowlfgrp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_I2C4_SDA_GPIO5_IO21	0xd6
++			MX8MM_IOMUXC_SAI3_MCLK_GPIO5_IO2	0x19
++			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28	0x19
++			MX8MM_IOMUXC_SAI3_TXD_GPIO5_IO1	0x19
+ 		>;
+ 	};
+ 
+@@ -599,19 +393,6 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_pcie0: pcie0grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_I2C4_SCL_PCIE1_CLKREQ_B    0x61
+-			MX8MM_IOMUXC_SAI2_RXFS_GPIO4_IO21       0x41
+-		>;
+-	};
+-
+-	pinctrl_pcie0_reg: pcie0reggrp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5       0x41
+-		>;
+-	};
+-
+ 	pinctrl_i2c1_gpio: i2c1-gpiogrp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_I2C1_SCL_GPIO5_IO14        		0x1c3
+@@ -635,7 +416,7 @@
+ 
+ 	pinctrl_pmic: pmicirqgrp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x141
++			MX8MM_IOMUXC_NAND_DATA02_GPIO3_IO8		0x141
+ 		>;
+ 	};
+ 
+@@ -645,40 +426,16 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_sai2: sai2grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SAI2_TXC_SAI2_TX_BCLK      0xd6
+-			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC     0xd6
+-			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0    0xd6
+-			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0    0xd6
+-		>;
+-	};
+-
+-	pinctrl_sai3: sai3grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SAI3_TXFS_SAI3_TX_SYNC     0xd6
+-			MX8MM_IOMUXC_SAI3_TXC_SAI3_TX_BCLK      0xd6
+-			MX8MM_IOMUXC_SAI3_MCLK_SAI3_MCLK        0xd6
+-			MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0     0xd6
+-		>;
+-	};
+-
+-	pinctrl_typec1: typec1grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SD1_STROBE_GPIO2_IO11	0x159
+-		>;
+-	};
+-
+-	pinctrl_uart2: uart2grp {
++	pinctrl_uart3: uart3grp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x140
+-			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX	0x140
++			MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX	0x140
++			MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX	0x140
+ 		>;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2grpgpiogrp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15	0x1c4
++			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12	0x1c4
+ 		>;
+ 	};
+ 
+@@ -724,15 +481,28 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_backlight: backlightgrp {
++	/* Some of these pins are leaved configured by internal ROM code */
++	/* NOTE: ext. STM32H7 pins, see also ecspi3 */
++	pinctrl_hog_1: hoggrp-1 {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO01_PWM1_OUT	0x06
++			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10		0x110 /* NRST_STM32 Pull Down */
++			MX8MM_IOMUXC_GPIO1_IO11_GPIO1_IO11		0x110 /* BOOT0_STM32 Pull Down */
++			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x110 /* SWDIO_STM32 Pull Down */
++			MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15		0x110 /* SWCLK_STM32 Pull Down */
++			MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7		0x110 /* PA0_STM32 Pull Down M4 led red */
++			MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x151 /* PC1_STM32 Pull Up IRQ */
+ 		>;
+ 	};
+ 
+-	pinctrl_mipi_dsi_en: mipidsiengrp {
++	/* @TODO: anx7625 pins, need proper u-boot driver impl. */
++	pinctrl_hog_2: hoggrp-2 {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19
++			MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25		0x19 /* POWER_EN */
++			MX8MM_IOMUXC_SAI2_MCLK_GPIO4_IO27		0x51 /* CABLE_DET */
++			MX8MM_IOMUXC_SAI1_MCLK_GPIO4_IO20		0x151 /* ALERT_N */
++			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26		0x19 /* RESET_N */
++			MX8MM_IOMUXC_SAI1_TXD1_GPIO4_IO13		0x19 /* VBUS_CTL */
++			MX8MM_IOMUXC_SAI1_RXFS_GPIO4_IO0		0x19 /* EN_I2S */
+ 		>;
+ 	};
+ };
+diff --git a/board/freescale/imx8mm_evk/Makefile b/board/freescale/imx8mm_evk/Makefile
+index b3f1c185a3..0a66c50693 100644
+--- a/board/freescale/imx8mm_evk/Makefile
++++ b/board/freescale/imx8mm_evk/Makefile
+@@ -15,3 +15,7 @@ obj-$(CONFIG_IMX8M_LPDDR4) += lpddr4_timing.o
+ obj-$(CONFIG_IMX8M_DDR4) += ddr4_timing.o
+ endif
+ endif
++
++ifndef CONFIG_SPL_BUILD
++obj-y += anx7625.o
++endif
+diff --git a/board/freescale/imx8mm_evk/anx7625.c b/board/freescale/imx8mm_evk/anx7625.c
+new file mode 100644
+index 0000000000..e58407060a
+--- /dev/null
++++ b/board/freescale/imx8mm_evk/anx7625.c
+@@ -0,0 +1,1033 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2021 Arduino
++ * Copyright 2021 Foundries.io
++ */
++
++#define DEBUG 1
++#include <common.h>
++#include <asm/mach-imx/iomux-v3.h>
++#include <asm-generic/gpio.h>
++#include <asm/arch/imx8mm_pins.h>
++#include <asm/mach-imx/gpio.h>
++#include <dm.h>
++#include <i2c.h>
++#include <dm/uclass.h>
++#include <linux/bitops.h>
++#include <linux/delay.h>
++
++#define ANX7625_DRV_VERSION       "0.1.04-uboot"
++
++#define USE_PD_2_0_ONLY
++
++/* @TODO: obtain gpios from dts */
++#define I2C_ADDR_ANX_58           0x2c /* 0x58 */
++#define I2C_ADDR_ANX_7E           0x3f /* 0x7e */
++
++/* addr 58 registers */
++#define TCPC_ROLE_CONTROL         0x1a
++#define DRP_CONTROL                 (uint8_t)BIT(6)
++#define TCPC_INTR_ALERT_1         0xcc
++#define INTR_BIT2                   (uint8_t)BIT(2)
++#define INTR_SOFTWARE_INT           (uint8_t)BIT(3)
++#define INTR_BIT4                   (uint8_t)BIT(4)
++#define INTR_RECEIVED_MSG           (uint8_t)BIT(5)
++
++/* addr 7e registers */
++#define FLASH_LOAD_STA            0x05
++#define FLASH_LOAD_STA_CHK          (uint8_t)BIT(7)
++
++/* Setting is in increments of 100mV */
++#define MAX_VOLTAGE_SETTING_REG   0x29
++/* 5V */
++#define MAX_VOLTAGE_VALUE_V         5
++#define MAX_VOLTAGE_VALUE_MV        (MAX_VOLTAGE_VALUE_V * 1000)
++#define MAX_VOLTAGE_VALUE           (MAX_VOLTAGE_VALUE_V * 10)
++/* Setting is in increments of 500mW */
++#define MAX_POWER_SETTING_REG     0x2a
++/* 5V @ 3000mA = 15000mW */
++#define MAX_POWER_VALUE_MA          3000
++#define MAX_POWER_VALUE_MW          (MAX_POWER_VALUE_MA * MAX_VOLTAGE_VALUE_V)
++#define MAX_POWER_VALUE             (MAX_POWER_VALUE_MW / 500)
++
++/* Setting is in increments of 500mW */
++#define MIN_POWER_SETTING_REG     0x2b
++/* 5V @ 900mA = 4500mW */
++#define MIN_POWER_VALUE_MA          900
++#define MIN_POWER_VALUE_MW          (MIN_POWER_VALUE_MA * MAX_VOLTAGE_VALUE_V)
++#define MIN_POWER_VALUE             (MIN_POWER_VALUE_MW / 500)
++
++#define MAX_RDO_VOLTAGE_SETTING   0x2c
++#define RDO_VOLTAGE_UNIT_TO_V(x)    (x / 10)
++
++#define MAX_RDO_POWER_SETTING     0x2d
++#define RDO_POWER_UNIT_TO_MA(x)     ((x * 500) / MAX_VOLTAGE_VALUE_V)
++
++#define AUTO_PD_MODE              0x2f
++#define AUTO_PD_ENABLE_BIT              (uint8_t)BIT(1)
++#define TRYSRC_EN                   (uint8_t)BIT(2)
++#define TRYSNK_EN                   (uint8_t)BIT(3)
++#define GOTO_SAFE5V_EN              (uint8_t)BIT(4)
++#define OCM_FW_VERSION            0x31
++#define OCM_FW_REVERSION          0x32
++#define XTAL_FRQ_SEL              0x3f
++#define INTERFACE_CHANGE_INT_MASK 0x43
++#define INT_MASK_OFF                0
++#define INTERFACE_CHANGE_INT      0x44
++#define RECVD_MSG_INT               (uint8_t)BIT(0)
++#define VCONN_CHG_INT               (uint8_t)BIT(2)
++#define VBUS_CHG_INT                (uint8_t)BIT(3)
++#define CC_STATUS_CHG_INT           (uint8_t)BIT(4)
++#define DATA_ROLE_CHG_INT           (uint8_t)BIT(5)
++#define PR_C_GOT_POWER              (uint8_t)BIT(6)
++#define DP_HPD_CHANGE               (uint8_t)BIT(7)
++#define INTERFACE_STATUS          0x45
++#define CC_STATUS                 0x46
++
++#define INTERFACE_PD_MSG_SEND_BUF 0xc0
++#define INTERFACE_PD_MSG_RECV_BUF 0xe0
++#define INTERFACE_PD_MSG_TIMEOUT_MS 3
++#define INTERFACE_PD_MSG_RETRIES    3
++
++enum anx7625_pd_msg_type {
++	TYPE_PWR_SRC_CAP = 0x00,
++	TYPE_PWR_SNK_CAP = 0x01,
++	TYPE_DP_SNK_IDENTITY = 0x02,
++	TYPE_SVID = 0x03,
++	TYPE_GET_DP_SNK_CAP = 0x04,
++	TYPE_ACCEPT = 0x05,
++	TYPE_REJECT = 0x06,
++	TYPE_PSWAP_REQ = 0x10,
++	TYPE_DSWAP_REQ = 0x11,
++	TYPE_GOTO_MIN_REQ = 0x12,
++	TYPE_VCONN_SWAP_REQ = 0x13,
++	TYPE_VDM = 0x14,
++	TYPE_DP_SNK_CFG = 0x15,
++	TYPE_PWR_OBJ_REQ = 0x16,
++	TYPE_PD_STATUS_REQ = 0x17,
++	TYPE_DP_ALT_ENTER = 0x19,
++	TYPE_DP_ALT_EXIT = 0x1a,
++	TYPE_GET_SNK_CAP = 0x1b,
++	TYPE_SOP_PRIME = 0x1c,
++	TYPE_SOP_DOUBLE_PRIME = 0x1d,
++	TYPE_RESPONSE_TO_REQ = 0xf0,
++	TYPE_SOFT_RST = 0xf1,
++	TYPE_HARD_RST = 0xf2,
++	TYPE_RESTART = 0xf3
++};
++
++/* PDO Fixed Flags */
++#define PDO_FIXED_DATA_SWAP  ((uint32_t)BIT(25)) /* Data role swap command */
++#define PDO_FIXED_COMM_CAP   ((uint32_t)BIT(26)) /* USB Communications Capable */
++#define PDO_FIXED_DUAL_ROLE  ((uint32_t)BIT(29)) /* Dual role device */
++
++/* Voltage in 50mV units */
++#define PDO_FIXED_VOLT(mv)   (uint32_t)((((uint32_t)mv) / 50) << 10)
++/* Max current in 10mA units */
++#define PDO_FIXED_CURR(ma)   (uint32_t)((((uint32_t)ma) / 10))
++
++/* Build a fixed PDO packet */
++#define PDO_FIXED(mv, ma, flags) (PDO_FIXED_VOLT(mv) | PDO_FIXED_CURR(ma) | (flags))
++
++#define POWER_DELIVERY_TIMEOUT    50 // [x10 = 500ms]
++#define OCM_LOADING_TIME          10
++
++#if defined(CONFIG_TARGET_PORTENTA_X8) || defined(CONFIG_TARGET_IMX8MM_EVK)
++#define ANX7625_POWER_EN_PAD      IMX_GPIO_NR(4, 25)
++#define ANX7625_RESET_N_PAD       IMX_GPIO_NR(4, 26)
++#define ANX7625_CABLE_DET_PAD     IMX_GPIO_NR(4, 27)
++#define ANX7625_VBUS_CTL_PAD      IMX_GPIO_NR(4, 13)
++#define LEDR_PAD                  IMX_GPIO_NR(5, 2)
++#define LEDG_PAD                  IMX_GPIO_NR(4, 28)
++#define LEDB_PAD                  IMX_GPIO_NR(5, 1)
++#define USDHC2_CD_GPIO	IMX_GPIO_NR(2, 18)
++#define USDHC2_PWR_GPIO IMX_GPIO_NR(2, 19)
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define SAI2_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE | PAD_CTL_PE | \
++			 PAD_CTL_FSEL2)
++#define SAI2_GPIO_PAD_CTRL (PAD_CTL_HYS | PAD_CTL_DSE1)
++
++static iomux_v3_cfg_t const sai2_cable_det_pad =
++	IMX8MM_PAD_SAI2_MCLK_GPIO4_IO27 | MUX_PAD_CTRL(SAI2_PAD_CTRL);
++#else
++#error ANX/LED GPIOs not configured for this board
++#endif
++
++#define ANX7625_DUMP_MSG              1
++/* #define ANX7625_VERBOSE              1 */
++#define ANX7625_NEGOTIATE_PD          1
++#define ANX7625_LOOP_ON_ERROR         1 /* If defined when negotiation fails blink red led repeatedly to warn the user and doesn't boot into kernel */
++#define ANX7625_NEGOTIATE_ENDS_SETUP  1 /* If defined exits immediately after power negotiation is finished, otherwise waits for the timeout to occours */
++
++static uint8_t last_chip_addr;
++
++static void request_gpios(void)
++{
++	gpio_request(LEDR_PAD, "ledr");
++	gpio_request(LEDG_PAD, "ledg");
++	gpio_request(LEDB_PAD, "ledb");
++
++	gpio_request(ANX7625_POWER_EN_PAD, "anx_power_en");
++	gpio_request(ANX7625_RESET_N_PAD, "anx_reset_n");
++	gpio_request(ANX7625_CABLE_DET_PAD, "anx_cable_det");
++	imx_iomux_v3_setup_pad(sai2_cable_det_pad);
++	gpio_direction_input(ANX7625_CABLE_DET_PAD);
++	gpio_request(ANX7625_VBUS_CTL_PAD, "anx_vbus_ctl"); /* 0 = VBUS On, 1 = VBUS Off */
++}
++
++static void free_gpios(void)
++{
++	gpio_free(LEDR_PAD);
++	gpio_free(LEDG_PAD);
++	gpio_free(LEDB_PAD);
++
++	gpio_free(ANX7625_POWER_EN_PAD);
++	gpio_free(ANX7625_RESET_N_PAD);
++	gpio_free(ANX7625_CABLE_DET_PAD);
++	gpio_free(ANX7625_VBUS_CTL_PAD);
++}
++
++static void leds_off(void)
++{
++	gpio_direction_output(LEDR_PAD, 1);
++	gpio_direction_output(LEDG_PAD, 1);
++	gpio_direction_output(LEDB_PAD, 1);
++}
++
++static void vbus_off(void)
++{
++    printf("%s\n", __func__);
++    gpio_direction_output(ANX7625_VBUS_CTL_PAD, 1);
++}
++
++static void vbus_on(void)
++{
++    printf("%s\n", __func__);
++    gpio_direction_output(ANX7625_VBUS_CTL_PAD, 0);
++}
++
++#if defined(ANX7625_NEGOTIATE_PD) && defined(ANX7625_LOOP_ON_ERROR)
++static void led_red_on(void)
++{
++	gpio_direction_output(LEDR_PAD, 0);
++}
++
++static void led_red_off(void)
++{
++	gpio_direction_output(LEDR_PAD, 1);
++}
++#endif
++
++/*
++ * There is a sync issue while access I2C register between AP(CPU) and
++ * internal firmware(OCM), to avoid the race condition, AP should access
++ * the reserved slave address before slave address occurs changes.
++ */
++static int i2c_access_workaround(struct udevice *dev)
++{
++	struct dm_i2c_chip *chip;
++	uint offset;
++	uint8_t valb = 0x0;
++
++	chip = dev_get_parent_plat(dev);
++	if (!chip) {
++		printf("%s: can't find chip!\n", __func__);
++		return -ENODEV;
++	}
++
++	if (chip->chip_addr == last_chip_addr) {
++		return 0;
++	}
++
++	last_chip_addr = chip->chip_addr;
++	if (last_chip_addr == I2C_ADDR_ANX_58)
++		offset = 0x0;
++	else
++		offset = 0x39;
++
++	return dm_i2c_write(dev, offset, &valb, 1);
++}
++
++/* helper function to avoid needing a local valb everywhere */
++static int dm_i2c_writeb(struct udevice *dev, uint offset, const uint8_t buffer)
++{
++	uint8_t valb = buffer;
++
++	i2c_access_workaround(dev);
++	return dm_i2c_write(dev, offset, &valb, 1);
++}
++
++static int anx7625_power_on(struct udevice *dev)
++{
++	int ret = 0;
++
++	debug("%s\n", __func__);
++	gpio_direction_output(ANX7625_POWER_EN_PAD, 1);
++	udelay(10000); /* 10ms */
++	gpio_direction_output(ANX7625_RESET_N_PAD, 1);
++#ifndef USE_PD_2_0_ONLY
++	udelay(10000); /* 10ms */
++#else
++	udelay(1000); /* 1ms */
++	ret = dm_i2c_writeb(dev, 0xDF, 0x01); // Set PD2.0 version
++	ret |= dm_i2c_writeb(dev, 0x2F, 0x02); // Force OCM to check version specified in previous reg
++	if (ret) {
++		printf("%s %d dm_i2c_write failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++	udelay(9000); /* 1ms */
++#endif
++	return ret;
++}
++
++static void anx7625_standby(void)
++{
++	debug("%s\n", __func__);
++	gpio_direction_output(ANX7625_RESET_N_PAD, 0);
++	udelay(10000); /* 10ms */
++	gpio_direction_output(ANX7625_POWER_EN_PAD, 0);
++	udelay(10000); /* 10ms */
++}
++
++static uint8_t anx7625_msg_calc_checksum(uint8_t *msg_buf, uint8_t msg_size)
++{
++	uint8_t checksum = 0;
++
++	for (int i = 0; i < msg_size; i++)
++		checksum += msg_buf[i];
++
++	return (uint8_t)(0 - checksum);
++}
++
++#ifdef ANX7625_DUMP_MSG
++static char *anx7625_msg_type_str(enum anx7625_pd_msg_type msg_type)
++{
++	return  (msg_type == TYPE_PWR_SRC_CAP) ? "SRC CAP" :
++		(msg_type == TYPE_PWR_SNK_CAP) ? "SNK CAP" :
++		(msg_type == TYPE_PWR_OBJ_REQ) ? "RDO" :
++		(msg_type == TYPE_DP_SNK_IDENTITY) ? "SNK identity" :
++		(msg_type == TYPE_SVID) ? "SVID" :
++		(msg_type == TYPE_PSWAP_REQ) ? "PR_SWAP" :
++		(msg_type == TYPE_DSWAP_REQ) ? "DR_SWAP" :
++		(msg_type == TYPE_GOTO_MIN_REQ) ? "GOTO_MIN" :
++		(msg_type == TYPE_DP_ALT_ENTER) ? "DPALT_ENTER" :
++		(msg_type == TYPE_DP_ALT_EXIT) ? "DPALT_EXIT" :
++		(msg_type == TYPE_VCONN_SWAP_REQ) ? "VCONN_SWAP" :
++		(msg_type == TYPE_GET_DP_SNK_CAP) ? "GET_SINK_DP_CAP" :
++		(msg_type == TYPE_DP_SNK_CFG) ? "dp cap" :
++		(msg_type == TYPE_SOFT_RST) ? "Soft Reset" :
++		(msg_type == TYPE_HARD_RST) ? "Hard Reset" :
++		(msg_type == TYPE_RESTART) ? "Restart" :
++		(msg_type == TYPE_PD_STATUS_REQ) ? "PD Status" :
++		(msg_type == TYPE_ACCEPT) ? "ACCEPT" :
++		(msg_type == TYPE_REJECT) ? "REJECT" :
++		(msg_type == TYPE_VDM) ? "VDM" :
++		(msg_type == TYPE_RESPONSE_TO_REQ) ? "Response to Request" :
++		(msg_type == TYPE_SOP_PRIME) ? "SOP'" :
++		(msg_type == TYPE_SOP_DOUBLE_PRIME) ? "SOP\"" :
++		"Unknown";
++}
++
++static void anx7625_msg_dump(const uint8_t *msg_buf, uint8_t msg_size)
++{
++	debug("%s:", __func__);
++	for (int i = 0; i < msg_size; i++) {
++		if (i == 0)
++	                debug(" (%d)", msg_buf[i]);
++		else if (i == 1)
++	                debug(" [0x%02x/%s]", msg_buf[i], anx7625_msg_type_str(msg_buf[i]));
++		else if (i == msg_size - 1)
++	                debug(" {0x%02x}", msg_buf[i]);
++		else
++	                debug(" 0x%02x", msg_buf[i]);
++	}
++	debug("\n");
++}
++#endif
++
++static int anx7625_msg_wait_for_ready(struct udevice *dev, int timeout_ms)
++{
++	int ret, count = 0;
++	uint8_t valb = 0;
++
++	if (timeout_ms) {
++		while (count <= (timeout_ms * 10)) {
++			ret = dm_i2c_read(dev, INTERFACE_PD_MSG_SEND_BUF, &valb, 1);
++			if (ret)
++				return ret;
++			else if (valb == 0)
++				break;
++
++			count++;
++			udelay(100); /* 100us */
++		}
++
++		if (valb != 0)
++			return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
++static int anx7625_msg_send(struct udevice *dev, enum anx7625_pd_msg_type msg_type,
++			    const uint8_t *msg_buf, uint8_t msg_size)
++{
++	int ret;
++	uint8_t pd_msg_buffer[32];
++
++	pd_msg_buffer[0] = msg_size + 1;
++	pd_msg_buffer[1] = (uint8_t)msg_type;
++	if (msg_size > 0)
++		memcpy(&pd_msg_buffer[2], msg_buf, msg_size);
++	pd_msg_buffer[msg_size + 2] = anx7625_msg_calc_checksum(pd_msg_buffer, msg_size + 2);
++
++	i2c_access_workaround(dev);
++
++	ret = anx7625_msg_wait_for_ready(dev, INTERFACE_PD_MSG_TIMEOUT_MS);
++	if (ret)
++		return ret;
++
++#ifdef ANX7625_DUMP_MSG
++	anx7625_msg_dump(pd_msg_buffer, pd_msg_buffer[0] + 2);
++#endif
++	ret = dm_i2c_write(dev, INTERFACE_PD_MSG_SEND_BUF + 1, &pd_msg_buffer[1], msg_size + 2);
++	if (ret) {
++		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
++		return -EIO;
++	}
++
++	ret = dm_i2c_writeb(dev, INTERFACE_PD_MSG_SEND_BUF, pd_msg_buffer[0]);
++	if (ret) {
++		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
++		return -EIO;
++	}
++
++	return 0;
++}
++
++/* Remember to clear the ALERT register. Set 0xCC bit5 as 1 to receive the next message */
++static int anx7625_msg_recv(struct udevice *dev, enum anx7625_pd_msg_type *msg_type,
++			    uint8_t *msg_buf, uint8_t *msg_size, uint8_t retries)
++{
++	static uint8_t pd_msg_recv_buffer[32];
++	int ret, count = 0;
++	uint8_t checksum = 0;
++
++	while (count < retries) {
++		ret = dm_i2c_read(dev, INTERFACE_PD_MSG_RECV_BUF, pd_msg_recv_buffer, 32);
++		if (ret) {
++			printf("%s: dm_i2c_read failed, err:%d\n", __func__, ret);
++			return ret;
++		}
++
++		if (pd_msg_recv_buffer[0] == 0) {
++			count++;
++			continue;
++		}
++
++		/* length check */
++		if (pd_msg_recv_buffer[0] >= 32) {
++			printf("%s: bad length: %d\n", __func__, pd_msg_recv_buffer[0]);
++			return -EINVAL;
++		}
++
++#ifdef ANX7625_DUMP_MSG
++		anx7625_msg_dump(pd_msg_recv_buffer, pd_msg_recv_buffer[0] + 2);
++#endif
++
++		/* checksum */
++		checksum = anx7625_msg_calc_checksum(pd_msg_recv_buffer, pd_msg_recv_buffer[0] + 1);
++		if (pd_msg_recv_buffer[pd_msg_recv_buffer[0] + 1] != checksum) {
++			printf("%s: checksum error [0x%x vs. 0x%x]\n", __func__,
++			       pd_msg_recv_buffer[pd_msg_recv_buffer[0] + 1],
++			       checksum);
++			return -EINVAL;
++		}
++
++		/* copy data */
++		*msg_size = pd_msg_recv_buffer[0] - 1;
++		*msg_type = (enum anx7625_pd_msg_type) pd_msg_recv_buffer[1];
++		if (*msg_size > 0)
++			memcpy(msg_buf, &pd_msg_recv_buffer[2], *msg_size);
++
++		/* clear recv packet */
++		dm_i2c_writeb(dev, INTERFACE_PD_MSG_RECV_BUF, 0);
++		return 0;
++	}
++
++	return -ETIMEDOUT;
++}
++
++/* @TODO: confirm/discard below
++ * DFP only mode: we always start as UFP(Rd), the other device is always DFP(Rp)
++ * DRP mode: after connection we switch between Rp(DFP) and Rd(UFP) until we detect a valid connection. When
++ * connection is detected, start either in UFP or DFP mode.
++ * The DFP sends SOURCE_CAPS in loop immediately after connection and waits for ack.
++ * In case DFP becames SINK (or SINK becames DFP like in our case) then SINK needs to send SNK_CAPS that need
++ * to be accepted by other device. This is because current sink may be different between DFP and UFP modes.
++ * In DFP only mode we can switch data role (became DFP) after POWER_RDY message. The Rp/Rd connection
++ * remains fixed, only data role is changed.
++ * We currently setup anx to work in DFP only mode (it has no limitations for the features we want to implement)
++ * so below messages are likely to be ignored by hub or psu.
++ * Identity should be provided under request from discover identity message. DFP sends discovery identity message.
++ * Android driver is implementing anx in DRP mode.
++ */
++static int anx7625_setup_pd_cap(struct udevice *dev)
++{
++	int ret;
++
++	/* TODO: locate data in dts */
++
++	static uint32_t init_src_caps[1] = {
++		/* 5000mV, 3A, Fixed */
++		PDO_FIXED(MAX_VOLTAGE_VALUE_MV, MAX_POWER_VALUE_MA, PDO_FIXED_DUAL_ROLE | PDO_FIXED_COMM_CAP | PDO_FIXED_DATA_SWAP),
++	};
++	static uint32_t init_snk_caps[3] = {
++		/* 5000mV, 3A, Fixed */
++		PDO_FIXED(MAX_VOLTAGE_VALUE_MV, MAX_POWER_VALUE_MA, PDO_FIXED_DUAL_ROLE | PDO_FIXED_COMM_CAP | PDO_FIXED_DATA_SWAP),
++	};
++	static uint8_t init_dp_snk_ident[16] = {
++		0x00, 0x00, 0x00, 0xec, /* snk_id_hdr */
++		0x00, 0x00, 0x00, 0x00, /* snk_cert */
++		0x00, 0x00, 0x00, 0x00, /* snk_prd */
++		0x39, 0x00, 0x00, 0x51  /* 5snk_ama */
++	};
++	static uint8_t init_svid[4] = { 0x00, 0x00, 0x01, 0xff };
++
++	/* SRC capabilities */
++	ret = anx7625_msg_send(dev, TYPE_PWR_SRC_CAP,
++			       (const uint8_t *)init_src_caps, sizeof(init_src_caps));
++	if (ret) {
++		debug("%s: failed to send SRC cap\n", __func__);
++		return -EIO;
++	}
++
++	/* SNK capabilities */
++	ret = anx7625_msg_send(dev, TYPE_PWR_SNK_CAP,
++			       (const uint8_t *)init_snk_caps, sizeof(init_snk_caps));
++	if (ret) {
++		debug("%s: failed to send SNK cap\n", __func__);
++		return -EIO;
++	}
++
++	/* DP SNK ident */
++	ret = anx7625_msg_send(dev, TYPE_DP_SNK_IDENTITY,
++			       init_dp_snk_ident, sizeof(init_dp_snk_ident));
++	if (ret) {
++		debug("%s: failed to send DP SNK ident\n", __func__);
++		return -EIO;
++	}
++
++	/* SVID ident */
++	ret = anx7625_msg_send(dev, TYPE_SVID,
++			       init_svid, sizeof(init_svid));
++	if (ret) {
++		debug("%s: failed to send SVID\n", __func__);
++		return -EIO;
++	}
++
++	debug("%s: succeeded\n", __func__);
++	return 0;
++}
++
++static int anx7625_config(struct udevice *dev)
++{
++	int ret = 0;
++
++	debug("%s\n", __func__);
++	i2c_access_workaround(dev);
++
++	/* Set XTAL 27M */
++	ret = dm_i2c_writeb(dev, XTAL_FRQ_SEL, 0x80);
++	if (ret) {
++		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
++		return -EIO;
++	}
++
++	return 0;
++}
++
++static int anx7625_ocm_loading_check(struct udevice *dev)
++{
++	uint8_t valb = 0;
++
++	debug("%s\n", __func__);
++	i2c_access_workaround(dev);
++
++	/* Check interface workable */
++	dm_i2c_read(dev, FLASH_LOAD_STA, &valb, 1);
++	if ((valb & FLASH_LOAD_STA_CHK) != FLASH_LOAD_STA_CHK)
++		return -ENODEV;
++
++	return 0;
++}
++
++/* Auto rdo means auto pd negotiation */
++static int anx7625_disable_auto_rdo(struct udevice *dev)
++{
++	int ret = 0;
++	uint8_t valb = 0;
++
++	debug("%s\n", __func__);
++	i2c_access_workaround(dev);
++
++	ret = dm_i2c_read(dev, AUTO_PD_MODE, &valb, 1);
++	if (ret) {
++		printf("%s failed, err %d\n", __func__, ret);
++		return -EIO;
++	}
++
++	return dm_i2c_writeb(dev, AUTO_PD_MODE, valb & ~AUTO_PD_ENABLE_BIT);
++}
++
++/* Auto rdo means auto pd negotiation */
++static int anx7625_enable_auto_rdo(struct udevice *dev)
++{
++	int ret = 0;
++	uint8_t valb = 0;
++
++	debug("%s\n", __func__);
++	i2c_access_workaround(dev);
++
++	ret = dm_i2c_read(dev, AUTO_PD_MODE, &valb, 1);
++	if (ret) {
++		printf("%s failed, err %d\n", __func__, ret);
++		return -EIO;
++	}
++
++	return dm_i2c_writeb(dev, AUTO_PD_MODE, valb | AUTO_PD_ENABLE_BIT);
++}
++
++/* We should set role control (hw) before sending anything on CC bus */
++/* Here we configure DFP, UFP or DRP modes */
++static int anx7625_setup_role_control(struct udevice *dev)
++{
++	int ret = 0;
++	uint8_t valb = 0;
++
++	i2c_access_workaround(dev);
++
++	ret = dm_i2c_read(dev, TCPC_ROLE_CONTROL, &valb, 1);
++	if (ret) {
++		printf("%s failed dm_i2c_read TCPC_ROLE_CONTROL, err %d\n", __func__, ret);
++		return -EIO;
++	}
++
++	return dm_i2c_writeb(dev, TCPC_ROLE_CONTROL, valb & ~DRP_CONTROL);
++}
++
++static int anx7625_chip_register_init(struct udevice *dev_p0, struct udevice *dev_typec)
++{
++	int ret;
++	uint8_t valb = 0;
++
++	i2c_access_workaround(dev_p0);
++
++	/* Clearing whole interrupt vector mask */
++	ret = dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT_MASK, INT_MASK_OFF);
++	if (ret) {
++		printf("%s %d dm_i2c_write failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++
++	anx7625_disable_auto_rdo(dev_p0);
++
++	ret = dm_i2c_writeb(dev_p0, MAX_VOLTAGE_SETTING_REG, MAX_VOLTAGE_VALUE);
++	if (ret) {
++		printf("%s %d dm_i2c_write failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++
++	ret = dm_i2c_writeb(dev_p0, MAX_POWER_SETTING_REG, MAX_POWER_VALUE);
++	if (ret) {
++		printf("%s %d dm_i2c_write failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++
++	ret = dm_i2c_writeb(dev_p0, MIN_POWER_SETTING_REG, MIN_POWER_VALUE);
++	if (ret) {
++		printf("%s %d dm_i2c_write failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++
++	/* Try sink or source @TODO: need to read default policy from dts */
++	ret = dm_i2c_read(dev_p0, AUTO_PD_MODE, &valb, 1);
++	if (ret) {
++		printf("%s %d dm_i2c_read failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++
++	/* Try sink or source @TODO: need to read default policy from dts */
++	ret = dm_i2c_writeb(dev_p0, AUTO_PD_MODE, (valb | TRYSNK_EN) & ~TRYSRC_EN);
++	//ret = dm_i2c_writeb(dev_p0, AUTO_PD_MODE, (valb | TRYSRC_EN) & ~TRYSNK_EN);
++	if (ret) {
++		printf("%s %d dm_i2c_write failed, err %d\n", __func__, __LINE__, ret);
++		return -EIO;
++	}
++
++	/* HW setup (DFP/DRP) needs to be done before sending any pd message */
++	anx7625_setup_role_control(dev_typec);
++
++	anx7625_enable_auto_rdo(dev_p0); /* This should triggers OCM to handle negotiation with configured values */
++
++	return 0;
++}
++
++/* There is a known issue with CABLE_DET signal, to be confirmed by Analogix. Cable detection is
++ * done by analog circuitry using the CC pin voltage level. When you have PD data passing on CC pin, this
++ * directly produces a noise on CABLE_DET signal. */
++static int get_cable_det(void)
++{
++	unsigned int count = 10;
++	unsigned int cable_det_count = 0;
++	int val = 0;
++
++	imx_iomux_v3_setup_pad(sai2_cable_det_pad);
++	gpio_direction_input(ANX7625_CABLE_DET_PAD);
++
++	do
++	{
++		val = gpio_get_value(ANX7625_CABLE_DET_PAD);
++		if (val > 0)
++			cable_det_count++;
++		udelay(1000); /* 1ms */
++	}
++	while (count--);
++
++	if (cable_det_count > 7)
++		return 1;
++	else if (cable_det_count < 2)
++		return 0;
++}
++
++// This function is used to understand power role
++static int anx7625_is_power_provider(uint8_t sys_status)
++{
++	if (sys_status & BIT(3))
++		return 1;
++	else
++		return 0;
++}
++
++// This function is used to understand data role
++// where DFP means a host port
++static int anx7625_is_dfp(uint8_t sys_status)
++{
++	if (sys_status & BIT(5))
++		return 1;
++	else
++		return 0;
++}
++
++static int anx7625_setup(struct udevice *dev_typec, struct udevice *dev_p0)
++{
++	int ret = -ENODEV, retry_count, i;
++	uint8_t ver, rver;
++
++	debug("%s\n", __func__);
++	for (retry_count = 0; retry_count < 5; retry_count++) {
++		if(anx7625_power_on(dev_p0)) {
++			return -EIO;
++		}
++
++		if (anx7625_config(dev_p0)) {
++			return -EIO;
++		}
++
++		for (i = 0; i < OCM_LOADING_TIME; i++) {
++			if (anx7625_ocm_loading_check(dev_p0) == 0) {
++				printf("%s: OCM started\n", __func__);
++
++				ret = anx7625_chip_register_init(dev_p0, dev_typec);
++				if (ret)
++					printf("%s: chip init registers failed!\n", __func__);
++				else
++					printf("%s: chip init registers succeeded.\n", __func__);
++
++				/*  @TODO: @MS Cannot see messages below with analyzer, seems not working */
++				/* Any message need to be sent after hw register configuration (anx7625_chip_register_init) */
++				/*ret = anx7625_setup_pd_cap(dev_p0);
++				if (ret) {
++					printf("%s: setup pd cap failed!\n", __func__);
++					return -EIO;
++				}*/
++
++				dm_i2c_read(dev_p0, OCM_FW_VERSION, &ver, 1);
++				dm_i2c_read(dev_p0, OCM_FW_REVERSION, &rver, 1);
++
++				printf("Driver ver %s\n", ANX7625_DRV_VERSION);
++				printf("Firmware ver %02x%02x\n", ver, rver);
++				return 0;
++			}
++			udelay(1000); /* 1ms */
++		}
++		anx7625_standby();
++	}
++
++	return ret;
++}
++
++#ifdef ANX7625_NEGOTIATE_PD
++static void anx7625_print_cc_status(const char *cc, uint8_t cc_status) {
++	switch (cc_status) {
++		case 0x0:
++			debug("%s: SRC.Open\n", cc);
++			break;
++		case 0x1:
++			debug("%s: SRC.Rd\n", cc);
++			break;
++		case 0x2:
++			debug("%s: SRC.Ra\n", cc);
++			break;
++		case 0x4:
++			debug("%s: SNK.Default\n", cc);
++			break;
++		case 0x8:
++			debug("%s: SNK.Power1.5\n", cc);
++			break;
++		case 0xc:
++			debug("%s: SNK.Power3.0\n", cc);
++			break;
++		default:
++			debug("%s: Unknown status (0x%x)\n", cc, cc_status);
++			break;
++	}
++}
++
++/* This function waits until PR_C_GOT_POWER is asserted or timeouts. This bit
++ * is set when anx7625 receive PS_RDY from the hub.
++ * In USB_PD_R2_0 V1.3 - 20170112.pdf p. 280 we find the parameter
++ * tSrcReady_max = 285ms. We rounded up to 300ms.
++ * This time shall be used as timeout value for this function. If no power delivery
++ * negotiation happened in this time span, then the device is considered no power delivery
++ * capable.
++ * */
++static int anx7625_negotiate_pd(struct udevice *dev_typec, struct udevice *dev_p0)
++{
++	int ret, min_power_setting_ma, pd_res = 0;
++	unsigned int count = 0;
++	enum anx7625_pd_msg_type msg_type;
++	uint8_t msg_buffer[32];
++	uint8_t p0_isr, last_cc1 = 0, last_cc2 = 0, valb = 0;
++
++	printf("Request:\n");
++	ret = dm_i2c_read(dev_p0, MAX_VOLTAGE_SETTING_REG, &valb, 1);
++	if (ret) {
++		printf("%s dm_i2c_read MAX_VOLTAGE_SETTING_REG failed, err %d\n", __func__, ret);
++		return -EIO;
++	}
++	printf("  Voltage Max %d [V]\n", RDO_VOLTAGE_UNIT_TO_V(valb));
++
++	ret = dm_i2c_read(dev_p0, MIN_POWER_SETTING_REG, &valb, 1);
++	if (ret) {
++		printf("%s dm_i2c_read MIN_POWER_SETTING_REG failed, err %d\n", __func__, ret);
++		return -EIO;
++        }
++	min_power_setting_ma = RDO_POWER_UNIT_TO_MA(valb);
++	printf("  Power Min 5V @ %d [mA]\n", min_power_setting_ma);
++
++	ret = dm_i2c_read(dev_p0, MAX_POWER_SETTING_REG, &valb, 1);
++	if (ret) {
++		printf("%s dm_i2c_read MAX_POWER_SETTING_REG failed, err %d\n", __func__, ret);
++                return -EIO;
++        }
++	printf("  Power Max 5V @ %d [mA]\n", RDO_POWER_UNIT_TO_MA(valb));
++
++	printf("Begin Negotiation:\n");
++	while (count < POWER_DELIVERY_TIMEOUT) { /* Begin negotiation loop. Every loop lasts 10ms. */
++		if (count % 10 == 0) debug("%s: count:%u\n", __func__, count / 10); /* Print count every 100ms */
++
++		/*  Interface and Status INT */
++		ret = dm_i2c_read(dev_p0, INTERFACE_CHANGE_INT, &p0_isr, 1);
++		if (ret) {
++			printf("%s %d dm_i2c_read INTERFACE_CHANGE_INT failed, err %d\n", __func__, __LINE__, ret);
++			return -EIO;
++		}
++
++#ifdef ANX7625_VERBOSE
++		debug("Interface and Status INT: 0x%02x\n", p0_isr);
++#endif
++
++		/*  Interface Status */
++		ret = dm_i2c_read(dev_p0, INTERFACE_STATUS, &valb, 1);
++		if (ret) {
++			printf("%s %d dm_i2c_read INTERFACE_STATUS failed, err %d\n", __func__, __LINE__, ret);
++			return -EIO;
++		}
++
++#ifdef ANX7625_VERBOSE
++		debug("  Interface Status: 0x%02x\n", valb);
++#endif
++
++		/* Begin Parse Interface and Status INT */
++		if (p0_isr & RECVD_MSG_INT) {
++			ret = anx7625_msg_recv(dev_p0, &msg_type, msg_buffer, &valb, INTERFACE_PD_MSG_RETRIES);
++			if (ret) {
++				printf("%s anx7625_msg_recv failed, err %d\n", __func__, ret);
++			}
++			p0_isr &= ~RECVD_MSG_INT;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++		}
++
++		if (p0_isr & VCONN_CHG_INT) {
++			debug("  INT: VCONN CHANGE\n");
++			p0_isr &= ~VCONN_CHG_INT;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++		}
++
++		if (p0_isr & VBUS_CHG_INT) {
++			debug("  INT: VBUS CHANGE\n");
++			p0_isr &= ~VBUS_CHG_INT;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++		}
++
++		if (p0_isr & CC_STATUS_CHG_INT) {
++			ret = dm_i2c_read(dev_p0, CC_STATUS, &valb, 1);
++			if (ret) {
++				printf("%s %d dm_i2c_read failed, CC_STATUS err %d\n", __func__, __LINE__, ret);
++				return -EIO;
++			}
++
++			if ((last_cc1 != (valb & 0xf)) || (last_cc2 != (valb >> 4))) {
++				last_cc1 = valb & 0xf;
++				last_cc2 = valb >> 4;
++				debug("  INT: CC STATUS CHANGE\n");
++				anx7625_print_cc_status("  CC1", last_cc1);
++				anx7625_print_cc_status("  CC2", last_cc2);
++			}
++
++			p0_isr &= ~CC_STATUS_CHG_INT;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++		}
++
++		if (p0_isr & DATA_ROLE_CHG_INT) {
++			debug("  INT: DATA ROLE CHANGE\n");
++			p0_isr &= ~DATA_ROLE_CHG_INT;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++		}
++
++		if (p0_isr & PR_C_GOT_POWER) {
++			debug("  INT: POWER NEGOTIATION FINISHED\n");
++			ret = dm_i2c_read(dev_p0, MAX_RDO_VOLTAGE_SETTING, &valb, 1);
++			if(ret) {
++				printf("%s %d dm_i2c_read failed, err %d\n", __func__, __LINE__, ret);
++				return -EIO;
++			}
++			debug("  Voltage: %d [V]\n", RDO_VOLTAGE_UNIT_TO_V(valb));
++
++			ret = dm_i2c_read(dev_p0, MAX_RDO_POWER_SETTING, &valb, 1);
++			if(ret) {
++				printf("%s %d dm_i2c_read failed, err %d\n", __func__, __LINE__, ret);
++				return -EIO;
++			}
++			debug("  Power: 5V @ %d [mA]\n", (valb * 500) / 5);
++
++			if (valb < MIN_POWER_VALUE) {
++				printf("Power negotiation failure (5V @ %d [mA] below min setting 5V @ %d [mA])\n",
++					   RDO_POWER_UNIT_TO_MA(valb), MIN_POWER_VALUE_MA);
++				printf("Please change power adapter and/or USB-C hub and retry.\n");
++				pd_res = -EINVAL;
++			}
++
++			printf("Power negotiation COMPLETE\n");
++			p0_isr &= ~PR_C_GOT_POWER;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++#ifdef ANX7625_NEGOTIATE_ENDS_SETUP
++			break;
++#endif
++		}
++
++		if (p0_isr & DP_HPD_CHANGE) {
++			debug("  INT: DP HDP CHANGE\n");
++			p0_isr &= ~DP_HPD_CHANGE;
++			dm_i2c_writeb(dev_p0, INTERFACE_CHANGE_INT, p0_isr);
++		}
++		/* End Parse Interface and Status INT */
++
++		//dm_i2c_writeb(dev_typec, TCPC_INTR_ALERT_1, 0xff); /* Among other things clears the ALERT register. Set 0xCC bit5 as 1 to receive the next message @TODO: necessary? */
++		udelay(10000); /* 10ms */
++		count++;
++	} /* End negotiation loop */
++
++	return pd_res;
++}
++#endif
++
++int anx7625_probe(uint8_t i2c_bus_num)
++{
++	struct udevice *bus_i2c1;
++	struct udevice *dev_typec;
++	struct udevice *dev_p0;
++	uint8_t sys_status = 0, cable_det = 0;
++	int ret = -ENODEV;
++
++	debug("%s: start\n", __func__);
++
++	request_gpios();
++	vbus_off();
++	leds_off();
++
++	if (uclass_get_device_by_seq(UCLASS_I2C, i2c_bus_num, &bus_i2c1)) {
++		printf("%s: Can't find bus\n", __func__);
++		return -EINVAL;
++	}
++
++	if (i2c_get_chip(bus_i2c1, I2C_ADDR_ANX_58, 1, &dev_typec)) {
++		printf("%s: Can't get i2c chip id=0x%x\n",
++		       __func__, I2C_ADDR_ANX_58);
++		return -ENODEV;
++	}
++
++	if (i2c_get_chip(bus_i2c1, I2C_ADDR_ANX_7E, 1, &dev_p0)) {
++		printf("%s: Can't get i2c chip id=0x%x\n",
++			__func__, I2C_ADDR_ANX_7E);
++		return -ENODEV;
++	}
++
++	if (anx7625_setup(dev_typec, dev_p0)) {
++		printf("%s: Failed anx7625 setup\n", __func__);
++		return -EIO;
++	}
++
++	/* USB TypeC cable detect */
++	cable_det = get_cable_det();
++
++	if(cable_det) {
++		printf("USB TypeC cable connected\n");
++#ifdef ANX7625_NEGOTIATE_PD
++		ret = anx7625_negotiate_pd(dev_typec, dev_p0);
++#ifdef ANX7625_LOOP_ON_ERROR
++		if(ret) {
++			while (1) {
++				led_red_on();
++				udelay(200000); /* 200ms */
++				led_red_off();
++				udelay(800000); /* 800ms */
++			}
++		}
++#endif
++		ret = dm_i2c_read(dev_p0, INTERFACE_STATUS, &sys_status, 1);
++		if (ret) {
++			printf("%s %d dm_i2c_read failed, err %d\n", __func__, __LINE__, ret);
++			return -EIO;
++		}
++
++		if (anx7625_is_power_provider(sys_status)) {
++			vbus_on();
++		}
++
++		if (anx7625_is_dfp(sys_status)) {
++			printf("Usbc port is DFP (host)\n");
++		}
++#endif
++	} else {
++		printf("USB TypeC cable not connected\n");
++	}
++
++	free_gpios();
++
++	debug("%s: done\n", __func__);
++	return 0;
++}
+diff --git a/board/freescale/imx8mm_evk/anx7625.h b/board/freescale/imx8mm_evk/anx7625.h
+new file mode 100644
+index 0000000000..48c26b3c16
+--- /dev/null
++++ b/board/freescale/imx8mm_evk/anx7625.h
+@@ -0,0 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2021 Foundries.io
++ */
++
++int anx7625_probe(uint8_t i2c_bus_num);
+diff --git a/board/freescale/imx8mm_evk/imx8mm_evk.c b/board/freescale/imx8mm_evk/imx8mm_evk.c
+index f27da09c65..62d95b3241 100644
+--- a/board/freescale/imx8mm_evk/imx8mm_evk.c
++++ b/board/freescale/imx8mm_evk/imx8mm_evk.c
+@@ -21,14 +21,213 @@
+ #include "../common/tcpc.h"
+ #include <usb.h>
+ 
++#include <imx_sip.h>
++#include <linux/arm-smccc.h>
++#include <power/pmic.h>
++#include <power/bd71837.h>
++#include <mmc.h>
++#include <linux/delay.h>
++
++#include "anx7625.h"
++
++/**
++ * Board model and carrier selection
++ */
++struct portenta_model {
++	const char *board_name;
++	const char *board_rev;
++	bool has_onboard_wifi;
++	bool has_rtmcu;
++	const char *rtmcu_name;
++	bool is_on_carrier;
++	const char *carrier_name;
++	bool has_hat;
++	const char *hat_name;
++};
++
++static const struct portenta_model carrier_unknown = {
++	"portenta-x8",
++	"iMX8MM",
++	true,
++	true,
++	"STM32H7",
++	false,
++	"unknown",
++	false,
++	"unknown",
++};
++
++static const struct portenta_model carrier_breakout = {
++	"portenta-x8",
++	"iMX8MM",
++	true,
++	true,
++	"STM32H7",
++	true,
++	"breakout",
++	false,
++	"unknown",
++};
++
++static const struct portenta_model carrier_max = {
++	"portenta-x8",
++	"iMX8MM",
++	true,
++	true,
++	"STM32H7",
++	true,
++	"max",
++	false,
++	"unknown",
++};
++
++static const struct portenta_model carrier_rasptenta = {
++	"portenta-x8",
++	"iMX8MM",
++	true,
++	true,
++	"STM32H7",
++	true,
++	"rasptenta",
++	false,
++	"unknown",
++};
++
++static struct portenta_model *model;
++
++static void set_breakout_carrier_model()
++{
++	model = &carrier_breakout;
++}
++
++static void set_max_carrier_model()
++{
++	model = &carrier_max;
++}
++
++static void set_rasptenta_carrier_model()
++{
++	model = &carrier_rasptenta;
++}
++
++/**
++ * Carrier and Hat boards EEPROMs
++ */
++#define EEPROM_CARRIER_I2C_BUS 1
++#define EEPROM_CARRIER_I2C_ADR 0x50
++#define EEPROM_HAT_I2C_BUS 2
++#define EEPROM_HAT_I2C_ADR 0x50
++
++uint8_t probe_eeprom(uint8_t i2c_bus, uint8_t addr)
++{
++	struct udevice *bus;
++	struct udevice *dev;
++	int ret;
++
++	printf("eeprom probe\n");
++	ret = uclass_get_device_by_seq(UCLASS_I2C, i2c_bus, &bus);
++	if (ret) {
++		printf("%s: No bus %d\n", __func__, i2c_bus);
++		return 0;
++	}
++
++	ret = dm_i2c_probe(bus, addr, 0, &dev);
++	if (ret) {
++		printf("%s: Can't find device id=0x%x, on bus %d\n",
++			   __func__, addr, i2c_bus);
++		return 0;
++	}
++
++	return 1;
++}
++
++/**
++ * External USB Hub configuration
++ */
++#define EXT_USB_HUB
++#define EXT_USB_HUB_I2C_BUS  2
++#define EXT_USB_HUB_I2C_ADR  0x2C
++
++/**
++ * USB2514B/M2 configuration data
++ */
++static unsigned char ext_usb_hub_cfg_1[] = {
++	0x11,	//data size
++	0x24,	//VID LSB
++	0x04,	//VID_MSB
++	0x14,	//PID LSB
++	0x25,	//PID MSB
++	0x00,	//DID LSB
++	0x00,	//DID MSB
++	0x8D,	//CFG1
++	0x10,	//CFG2
++	0x00,	//CFG3
++	0x00,	//NRD
++	0x00,	//PDS
++	0x00,	//PDB
++	0x01,	//MAXPS
++	0x32,	//MAXPB
++	0x01,	//HCMS
++	0x32,	//HCMB
++	0x32	//PWRT
++};
++
++static unsigned char ext_usb_hub_cfg_2[] = {
++	0x01,
++	0x01
++};
++
++static unsigned char ext_usb_hub_presence = 0;
++
++/**
++ * 4 port External USB HUB initialization
++ */
++void ext_usb_hub_init(void)
++{
++	struct udevice *bus;
++	struct udevice *dev;
++	int ret;
++
++	printf("ext_usb_hub_init\n");
++	ret = uclass_get_device_by_seq(UCLASS_I2C, EXT_USB_HUB_I2C_BUS, &bus);
++	if (ret) {
++		printf("%s: No bus %d\n", __func__, EXT_USB_HUB_I2C_BUS);
++		return;
++	}
++
++	/* @DOC: we use external usb hub present on Max Carrier to perform
++	 * carrier detection */
++	ret = dm_i2c_probe(bus, EXT_USB_HUB_I2C_ADR, 0, &dev);
++	if (ret) {
++		printf("%s: Can't find device id=0x%x, on bus %d\n",
++			   __func__, EXT_USB_HUB_I2C_ADR, EXT_USB_HUB_I2C_BUS);
++		ext_usb_hub_presence = 0;
++		return;
++	}
++
++	ext_usb_hub_presence = 1;
++
++	ret = dm_i2c_write(dev, 0x00, ext_usb_hub_cfg_1, sizeof(ext_usb_hub_cfg_1));
++	if (ret) {
++		printf("%s: Fail to write first configuration\n", __func__);
++		return;
++	}
++
++	ret = dm_i2c_write(dev, 0xFF, ext_usb_hub_cfg_2, sizeof(ext_usb_hub_cfg_2));
++	if (ret) {
++		printf("%s: Fail to write second configuration\n", __func__);
++		return;
++	}
++}
++
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+-#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
++#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1 | PAD_CTL_PUE | PAD_CTL_PE)
+ #define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+ 
+ static iomux_v3_cfg_t const uart_pads[] = {
+-	IMX8MM_PAD_UART2_RXD_UART2_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-	IMX8MM_PAD_UART2_TXD_UART2_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_UART3_RXD_UART3_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_UART3_TXD_UART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+ };
+ 
+ static iomux_v3_cfg_t const wdog_pads[] = {
+@@ -96,7 +295,7 @@ int board_early_init_f(void)
+ 
+ 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
+ 
+-	init_uart_clk(1);
++	init_uart_clk(2);
+ 
+ #ifdef CONFIG_NAND_MXS
+ 	setup_gpmi_nand(); /* SPL will call the board_early_init_f */
+@@ -308,43 +507,86 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
+ 
+ 	return USB_INIT_DEVICE;
+ }
++#else
++int board_usb_init(int index, enum usb_init_type init)
++{
++        imx8m_usb_power(index, true);
++        return 0;
++}
+ 
++int board_usb_cleanup(int index, enum usb_init_type init)
++{
++        imx8m_usb_power(index, false);
++        return 0;
++}
+ #endif
+ 
+-#define I2C_PMIC	0
++#define FEC_RST_PAD       IMX_GPIO_NR(3, 6)
+ 
+-static void set_fdt_file(void)
++static void setup_iomux_fec(void)
+ {
+-	struct udevice *bus;
+-	struct udevice *i2c_dev = NULL;
+-	int ret;
+-	uint8_t is_bd71837 = 0;
+-
+-	ret = uclass_get_device_by_seq(UCLASS_I2C, I2C_PMIC, &bus);
+-	if (!ret)
+-		ret = dm_i2c_probe(bus, 0x4b, 0, &i2c_dev);
+-	if (!ret)
+-		ret = dm_i2c_read(i2c_dev, 0x0, &is_bd71837, 1);
+-
+-	/* BD71837_REV, High Nibble is major version, fix 1010 */
+-	is_bd71837 = !ret && ((is_bd71837 & 0xf0) == 0xa0);
+-
+-	if (!is_bd71837)
+-		env_set("fdt_file", "imx8mm-evk.dtb");
+-	else
+-		env_set("fdt_file", "imx8mm-evk-qca-wifi.dtb");
++	printf("setup_iomux_fec\n");
++
++	/* reset PHY and ensure RX_DV/CLK125_EN is pulled high to enable TX_REF_CLK */
++	gpio_request(FEC_RST_PAD, "fec1_rst");
++	gpio_direction_output(FEC_RST_PAD, 0);
++	udelay(500);
++	gpio_direction_output(FEC_RST_PAD, 1);
++	udelay(100000);
++	gpio_free(FEC_RST_PAD);
+ }
+ 
++#define CONFIG_BREAKOUT_IS_DEFAULT
++
+ int board_init(void)
+ {
++	model = &carrier_unknown;
++
+ #if defined(CONFIG_USB_TCPC) && !defined(CONFIG_SPL_BUILD)
+ 	setup_typec();
+ #endif
+ 
++	setup_iomux_fec();
++
+ #if IS_ENABLED(CONFIG_FEC_MXC)
+ 	setup_fec();
+ #endif
+ 
++	/* ANX7625 usb typec controller and power delivery configuration on portenta-x8 */
++	/* @TODO: selectable with CONFIG_USB_TCPC? */
++#ifndef CONFIG_SPL_BUILD
++	anx7625_probe(1);
++#endif
++
++#ifdef EXT_USB_HUB
++	ext_usb_hub_init();
++#endif
++
++	if (ext_usb_hub_presence) {
++		printf("Max carrier detected!\n");
++		set_max_carrier_model();
++		return 0;
++	}
++
++	if (probe_eeprom(EEPROM_CARRIER_I2C_BUS, EEPROM_CARRIER_I2C_ADR)) {
++		printf("Carrier detected!\n");
++		/* @TODO: carrier model detection */
++		printf("Rasp-Tenta carrier detected!\n");
++		set_rasptenta_carrier_model();
++		if (probe_eeprom(EEPROM_HAT_I2C_BUS, EEPROM_HAT_I2C_ADR)) {
++			printf("Hat detected!\n");
++			model->has_hat = true;
++			/* @TODO: hat model detection */
++		}
++		return 0;
++	}
++
++/* Breakout carrier is not detectable */
++#ifdef CONFIG_BREAKOUT_IS_DEFAULT
++	printf("Breakout carrier detected!\n");
++	set_breakout_carrier_model();
++#endif
++
+ 	return 0;
+ }
+ 
+@@ -356,8 +598,24 @@ int board_late_init(void)
+ 	set_fdt_file();
+ 
+ 	if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
+-		env_set("board_name", "EVK");
+-		env_set("board_rev", "iMX8MM");
++		int boot_device = mmc_get_env_dev();
++
++		env_set_ulong("devnum", boot_device);
++		env_set_ulong("ovldev", boot_device);
++		env_set_ulong("mmcdev", boot_device);
++
++		env_set("board_name", model->board_name);
++		env_set("board_rev", model->board_rev);
++		if (env_get("carrier_custom") == NULL) {
++			if (model->is_on_carrier) {
++				env_set("is_on_carrier", "yes");
++				env_set("carrier_name", model->carrier_name);
++				if (model->has_hat) {
++					env_set("has_hat", "yes");
++					env_set("hat_name", model->hat_name);
++				}
++			}
++		}
+ 	}
+ 
+ 	return 0;
+diff --git a/board/freescale/imx8mm_evk/lpddr4_timing.c b/board/freescale/imx8mm_evk/lpddr4_timing.c
+index 4373ca624e..2dbef3f30d 100644
+--- a/board/freescale/imx8mm_evk/lpddr4_timing.c
++++ b/board/freescale/imx8mm_evk/lpddr4_timing.c
+@@ -1,60 +1,65 @@
+-// SPDX-License-Identifier: GPL-2.0+
+ /*
+- * Copyright 2018-2019 NXP
++ * Copyright 2019 NXP
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
+  *
+  * Generated code from MX8M_DDR_tool
++ *
++ * Align with uboot version:
++ * imx_v2019.04_5.4.x and above version
++ * For imx_v2018.03_4.14.78_1.0.0_ga ~ imx_v2018.04_4.19.35_1.1.0_ga:
++ * please replace #include <asm/arch/ddr.h> with #include <asm/arch/imx8m_ddr.h>
+  */
+ 
+ #include <linux/kernel.h>
+ #include <asm/arch/ddr.h>
+ 
+ struct dram_cfg_param ddr_ddrc_cfg[] = {
+-	/* Initialize DDRC registers */
++	/** Initialize DDRC registers **/
+ 	{ 0x3d400304, 0x1 },
+ 	{ 0x3d400030, 0x1 },
+ 	{ 0x3d400000, 0xa1080020 },
+-	{ 0x3d400020, 0x223 },
+-	{ 0x3d400024, 0x16e3600 },
+-	{ 0x3d400064, 0x5b00d2 },
++	{ 0x3d400020, 0x203 },
++	{ 0x3d400024, 0x3a980 },
++	{ 0x3d400064, 0x5b0087 },
+ 	{ 0x3d4000d0, 0xc00305ba },
+ 	{ 0x3d4000d4, 0x940000 },
+ 	{ 0x3d4000dc, 0xd4002d },
+-	{ 0x3d4000e0, 0x310000 },
++	{ 0x3d4000e0, 0xf10000 },
+ 	{ 0x3d4000e8, 0x66004d },
+ 	{ 0x3d4000ec, 0x16004d },
+ 	{ 0x3d400100, 0x191e1920 },
+ 	{ 0x3d400104, 0x60630 },
+-	{ 0x3d40010c, 0xb0b000 },
++	{ 0x3d40010c, 0x80b000 },
+ 	{ 0x3d400110, 0xe04080e },
+ 	{ 0x3d400114, 0x2040c0c },
+ 	{ 0x3d400118, 0x1010007 },
+ 	{ 0x3d40011c, 0x401 },
+ 	{ 0x3d400130, 0x20600 },
+ 	{ 0x3d400134, 0xc100002 },
+-	{ 0x3d400138, 0xd8 },
++	{ 0x3d400138, 0x8d },
+ 	{ 0x3d400144, 0x96004b },
+ 	{ 0x3d400180, 0x2ee0017 },
+ 	{ 0x3d400184, 0x2605b8e },
+ 	{ 0x3d400188, 0x0 },
+-	{ 0x3d400190, 0x497820a },
++	{ 0x3d400190, 0x49b820a },
+ 	{ 0x3d400194, 0x80303 },
+-	{ 0x3d4001b4, 0x170a },
++	{ 0x3d4001b4, 0x1b0a },
+ 	{ 0x3d4001a0, 0xe0400018 },
+ 	{ 0x3d4001a4, 0xdf00e4 },
+ 	{ 0x3d4001a8, 0x80000000 },
+ 	{ 0x3d4001b0, 0x11 },
+-	{ 0x3d4001c0, 0x1 },
+-	{ 0x3d4001c4, 0x0 },
++	{ 0x3d4001c0, 0x7 },
++	{ 0x3d4001c4, 0x1 },
+ 	{ 0x3d4000f4, 0xc99 },
+-	{ 0x3d400108, 0x70e1617 },
++	{ 0x3d400108, 0x7101817 },
+ 	{ 0x3d400200, 0x1f },
+ 	{ 0x3d40020c, 0x0 },
+ 	{ 0x3d400210, 0x1f1f },
+ 	{ 0x3d400204, 0x80808 },
+ 	{ 0x3d400214, 0x7070707 },
+ 	{ 0x3d400218, 0x7070707 },
+-
+-	/* performance setting */
++	{ 0x3d40021c, 0xf0f },
+ 	{ 0x3d400250, 0x29001701 },
+ 	{ 0x3d400254, 0x2c },
+ 	{ 0x3d40025c, 0x4000030 },
+@@ -66,14 +71,12 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	{ 0x3d400498, 0x620096 },
+ 	{ 0x3d40049c, 0x1100e07 },
+ 	{ 0x3d4004a0, 0xc8012c },
+-
+-	/* P1: 400mts */
+-	{ 0x3d402020, 0x21 },
+-	{ 0x3d402024, 0x30d400 },
++	{ 0x3d402020, 0x1 },
++	{ 0x3d402024, 0x7d00 },
+ 	{ 0x3d402050, 0x20d040 },
+-	{ 0x3d402064, 0xc001c },
++	{ 0x3d402064, 0xc0012 },
+ 	{ 0x3d4020dc, 0x840000 },
+-	{ 0x3d4020e0, 0x310000 },
++	{ 0x3d4020e0, 0xf10000 },
+ 	{ 0x3d4020e8, 0x66004d },
+ 	{ 0x3d4020ec, 0x16004d },
+ 	{ 0x3d402100, 0xa040305 },
+@@ -86,20 +89,19 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	{ 0x3d40211c, 0x301 },
+ 	{ 0x3d402130, 0x20300 },
+ 	{ 0x3d402134, 0xa100002 },
+-	{ 0x3d402138, 0x1d },
++	{ 0x3d402138, 0x13 },
+ 	{ 0x3d402144, 0x14000a },
+ 	{ 0x3d402180, 0x640004 },
+ 	{ 0x3d402190, 0x3818200 },
+ 	{ 0x3d402194, 0x80303 },
+ 	{ 0x3d4021b4, 0x100 },
+-
+-	/* p2: 100mts */
+-	{ 0x3d403020, 0x21 },
+-	{ 0x3d403024, 0xc3500 },
++	{ 0x3d4020f4, 0xc99 },
++	{ 0x3d403020, 0x1 },
++	{ 0x3d403024, 0x1f40 },
+ 	{ 0x3d403050, 0x20d040 },
+-	{ 0x3d403064, 0x30007 },
++	{ 0x3d403064, 0x30005 },
+ 	{ 0x3d4030dc, 0x840000 },
+-	{ 0x3d4030e0, 0x310000 },
++	{ 0x3d4030e0, 0xf10000 },
+ 	{ 0x3d4030e8, 0x66004d },
+ 	{ 0x3d4030ec, 0x16004d },
+ 	{ 0x3d403100, 0xa010102 },
+@@ -112,14 +114,13 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	{ 0x3d40311c, 0x301 },
+ 	{ 0x3d403130, 0x20300 },
+ 	{ 0x3d403134, 0xa100002 },
+-	{ 0x3d403138, 0x8 },
++	{ 0x3d403138, 0x5 },
+ 	{ 0x3d403144, 0x50003 },
+ 	{ 0x3d403180, 0x190004 },
+ 	{ 0x3d403190, 0x3818200 },
+ 	{ 0x3d403194, 0x80303 },
+ 	{ 0x3d4031b4, 0x100 },
+-
+-	/* default boot point */
++	{ 0x3d4030f4, 0xc99 },
+ 	{ 0x3d400028, 0x0 },
+ };
+ 
+@@ -135,20 +136,20 @@ struct dram_cfg_param ddr_ddrphy_cfg[] = {
+ 	{ 0x100a7, 0x7 },
+ 	{ 0x110a0, 0x0 },
+ 	{ 0x110a1, 0x1 },
+-	{ 0x110a2, 0x3 },
+-	{ 0x110a3, 0x4 },
+-	{ 0x110a4, 0x5 },
+-	{ 0x110a5, 0x2 },
+-	{ 0x110a6, 0x7 },
+-	{ 0x110a7, 0x6 },
++	{ 0x110a2, 0x2 },
++	{ 0x110a3, 0x3 },
++	{ 0x110a4, 0x4 },
++	{ 0x110a5, 0x5 },
++	{ 0x110a6, 0x6 },
++	{ 0x110a7, 0x7 },
+ 	{ 0x120a0, 0x0 },
+ 	{ 0x120a1, 0x1 },
+-	{ 0x120a2, 0x3 },
+-	{ 0x120a3, 0x2 },
+-	{ 0x120a4, 0x5 },
+-	{ 0x120a5, 0x4 },
+-	{ 0x120a6, 0x7 },
+-	{ 0x120a7, 0x6 },
++	{ 0x120a2, 0x2 },
++	{ 0x120a3, 0x3 },
++	{ 0x120a4, 0x4 },
++	{ 0x120a5, 0x5 },
++	{ 0x120a6, 0x6 },
++	{ 0x120a7, 0x7 },
+ 	{ 0x130a0, 0x0 },
+ 	{ 0x130a1, 0x1 },
+ 	{ 0x130a2, 0x2 },
+@@ -207,8 +208,8 @@ struct dram_cfg_param ddr_ddrphy_cfg[] = {
+ 	{ 0x220024, 0x1ab },
+ 	{ 0x2003a, 0x0 },
+ 	{ 0x20056, 0x3 },
+-	{ 0x120056, 0xa },
+-	{ 0x220056, 0xa },
++	{ 0x120056, 0x3 },
++	{ 0x220056, 0x3 },
+ 	{ 0x1004d, 0xe00 },
+ 	{ 0x1014d, 0xe00 },
+ 	{ 0x1104d, 0xe00 },
+@@ -316,9 +317,9 @@ struct dram_cfg_param ddr_ddrphy_cfg[] = {
+ 	{ 0x200f6, 0x0 },
+ 	{ 0x200f7, 0xf000 },
+ 	{ 0x20025, 0x0 },
+-	{ 0x2002d, 0x0 },
+-	{ 0x12002d, 0x0 },
+-	{ 0x22002d, 0x0 },
++	{ 0x2002d, 0x1 },
++	{ 0x12002d, 0x1 },
++	{ 0x22002d, 0x1 },
+ 	{ 0x200c7, 0x21 },
+ 	{ 0x1200c7, 0x21 },
+ 	{ 0x2200c7, 0x21 },
+@@ -1061,25 +1062,25 @@ struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0x5400b, 0x2 },
+ 	{ 0x54012, 0x110 },
+ 	{ 0x54019, 0x2dd4 },
+-	{ 0x5401a, 0x31 },
++	{ 0x5401a, 0xf1 },
+ 	{ 0x5401b, 0x4d66 },
+ 	{ 0x5401c, 0x4d00 },
+ 	{ 0x5401e, 0x16 },
+ 	{ 0x5401f, 0x2dd4 },
+-	{ 0x54020, 0x31 },
++	{ 0x54020, 0xf1 },
+ 	{ 0x54021, 0x4d66 },
+ 	{ 0x54022, 0x4d00 },
+ 	{ 0x54024, 0x16 },
+ 	{ 0x5402b, 0x1000 },
+ 	{ 0x5402c, 0x1 },
+ 	{ 0x54032, 0xd400 },
+-	{ 0x54033, 0x312d },
++	{ 0x54033, 0xf12d },
+ 	{ 0x54034, 0x6600 },
+ 	{ 0x54035, 0x4d },
+ 	{ 0x54036, 0x4d },
+ 	{ 0x54037, 0x1600 },
+ 	{ 0x54038, 0xd400 },
+-	{ 0x54039, 0x312d },
++	{ 0x54039, 0xf12d },
+ 	{ 0x5403a, 0x6600 },
+ 	{ 0x5403b, 0x4d },
+ 	{ 0x5403c, 0x4d },
+@@ -1087,6 +1088,7 @@ struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
+ 
++
+ /* P1 message block paremeter for training firmware */
+ struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -1100,25 +1102,25 @@ struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0x5400b, 0x2 },
+ 	{ 0x54012, 0x110 },
+ 	{ 0x54019, 0x84 },
+-	{ 0x5401a, 0x31 },
++	{ 0x5401a, 0xf1 },
+ 	{ 0x5401b, 0x4d66 },
+ 	{ 0x5401c, 0x4d00 },
+ 	{ 0x5401e, 0x16 },
+ 	{ 0x5401f, 0x84 },
+-	{ 0x54020, 0x31 },
++	{ 0x54020, 0xf1 },
+ 	{ 0x54021, 0x4d66 },
+ 	{ 0x54022, 0x4d00 },
+ 	{ 0x54024, 0x16 },
+ 	{ 0x5402b, 0x1000 },
+ 	{ 0x5402c, 0x1 },
+ 	{ 0x54032, 0x8400 },
+-	{ 0x54033, 0x3100 },
++	{ 0x54033, 0xf100 },
+ 	{ 0x54034, 0x6600 },
+ 	{ 0x54035, 0x4d },
+ 	{ 0x54036, 0x4d },
+ 	{ 0x54037, 0x1600 },
+ 	{ 0x54038, 0x8400 },
+-	{ 0x54039, 0x3100 },
++	{ 0x54039, 0xf100 },
+ 	{ 0x5403a, 0x6600 },
+ 	{ 0x5403b, 0x4d },
+ 	{ 0x5403c, 0x4d },
+@@ -1126,6 +1128,7 @@ struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
+ 
++
+ /* P2 message block paremeter for training firmware */
+ struct dram_cfg_param ddr_fsp2_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -1139,25 +1142,25 @@ struct dram_cfg_param ddr_fsp2_cfg[] = {
+ 	{ 0x5400b, 0x2 },
+ 	{ 0x54012, 0x110 },
+ 	{ 0x54019, 0x84 },
+-	{ 0x5401a, 0x31 },
++	{ 0x5401a, 0xf1 },
+ 	{ 0x5401b, 0x4d66 },
+ 	{ 0x5401c, 0x4d00 },
+ 	{ 0x5401e, 0x16 },
+ 	{ 0x5401f, 0x84 },
+-	{ 0x54020, 0x31 },
++	{ 0x54020, 0xf1 },
+ 	{ 0x54021, 0x4d66 },
+ 	{ 0x54022, 0x4d00 },
+ 	{ 0x54024, 0x16 },
+ 	{ 0x5402b, 0x1000 },
+ 	{ 0x5402c, 0x1 },
+ 	{ 0x54032, 0x8400 },
+-	{ 0x54033, 0x3100 },
++	{ 0x54033, 0xf100 },
+ 	{ 0x54034, 0x6600 },
+ 	{ 0x54035, 0x4d },
+ 	{ 0x54036, 0x4d },
+ 	{ 0x54037, 0x1600 },
+ 	{ 0x54038, 0x8400 },
+-	{ 0x54039, 0x3100 },
++	{ 0x54039, 0xf100 },
+ 	{ 0x5403a, 0x6600 },
+ 	{ 0x5403b, 0x4d },
+ 	{ 0x5403c, 0x4d },
+@@ -1165,6 +1168,7 @@ struct dram_cfg_param ddr_fsp2_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
+ 
++
+ /* P0 2D message block paremeter for training firmware */
+ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -1179,25 +1183,25 @@ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0x54010, 0x1f7f },
+ 	{ 0x54012, 0x110 },
+ 	{ 0x54019, 0x2dd4 },
+-	{ 0x5401a, 0x31 },
++	{ 0x5401a, 0xf1 },
+ 	{ 0x5401b, 0x4d66 },
+ 	{ 0x5401c, 0x4d00 },
+ 	{ 0x5401e, 0x16 },
+ 	{ 0x5401f, 0x2dd4 },
+-	{ 0x54020, 0x31 },
++	{ 0x54020, 0xf1 },
+ 	{ 0x54021, 0x4d66 },
+ 	{ 0x54022, 0x4d00 },
+ 	{ 0x54024, 0x16 },
+ 	{ 0x5402b, 0x1000 },
+ 	{ 0x5402c, 0x1 },
+ 	{ 0x54032, 0xd400 },
+-	{ 0x54033, 0x312d },
++	{ 0x54033, 0xf12d },
+ 	{ 0x54034, 0x6600 },
+ 	{ 0x54035, 0x4d },
+ 	{ 0x54036, 0x4d },
+ 	{ 0x54037, 0x1600 },
+ 	{ 0x54038, 0xd400 },
+-	{ 0x54039, 0x312d },
++	{ 0x54039, 0xf12d },
+ 	{ 0x5403a, 0x6600 },
+ 	{ 0x5403b, 0x4d },
+ 	{ 0x5403c, 0x4d },
+@@ -1695,15 +1699,15 @@ struct dram_cfg_param ddr_phy_pie[] = {
+ 	{ 0x400d6, 0x20a },
+ 	{ 0x400d7, 0x20b },
+ 	{ 0x2003a, 0x2 },
+-	{ 0x2000b, 0x5d },
++	{ 0x2000b, 0x34b },
+ 	{ 0x2000c, 0xbb },
+ 	{ 0x2000d, 0x753 },
+ 	{ 0x2000e, 0x2c },
+-	{ 0x12000b, 0xc },
++	{ 0x12000b, 0x70 },
+ 	{ 0x12000c, 0x19 },
+ 	{ 0x12000d, 0xfa },
+ 	{ 0x12000e, 0x10 },
+-	{ 0x22000b, 0x3 },
++	{ 0x22000b, 0x1c },
+ 	{ 0x22000c, 0x6 },
+ 	{ 0x22000d, 0x3e },
+ 	{ 0x22000e, 0x10 },
+@@ -1846,3 +1850,4 @@ struct dram_timing_info dram_timing = {
+ 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
+ 	.fsp_table = { 3000, 400, 100, },
+ };
++
+diff --git a/board/freescale/imx8mm_evk/spl.c b/board/freescale/imx8mm_evk/spl.c
+index ed6d63dd70..cc60c7543e 100644
+--- a/board/freescale/imx8mm_evk/spl.c
++++ b/board/freescale/imx8mm_evk/spl.c
+@@ -62,14 +62,14 @@ void spl_dram_init(void)
+ #define PC MUX_PAD_CTRL(I2C_PAD_CTRL)
+ struct i2c_pads_info i2c_pad_info1 = {
+ 	.scl = {
+-		.i2c_mode = IMX8MM_PAD_I2C1_SCL_I2C1_SCL | PC,
+-		.gpio_mode = IMX8MM_PAD_I2C1_SCL_GPIO5_IO14 | PC,
+-		.gp = IMX_GPIO_NR(5, 14),
++		.i2c_mode = IMX8MM_PAD_I2C2_SCL_I2C2_SCL | PC | ((iomux_v3_cfg_t)(IOMUX_CONFIG_SION) << MUX_MODE_SHIFT),
++		.gpio_mode = IMX8MM_PAD_I2C2_SCL_GPIO5_IO16 | PC,
++		.gp = IMX_GPIO_NR(5, 16),
+ 	},
+ 	.sda = {
+-		.i2c_mode = IMX8MM_PAD_I2C1_SDA_I2C1_SDA | PC,
+-		.gpio_mode = IMX8MM_PAD_I2C1_SDA_GPIO5_IO15 | PC,
+-		.gp = IMX_GPIO_NR(5, 15),
++		.i2c_mode = IMX8MM_PAD_I2C2_SDA_I2C2_SDA | PC | ((iomux_v3_cfg_t)(IOMUX_CONFIG_SION) << MUX_MODE_SHIFT),
++		.gpio_mode = IMX8MM_PAD_I2C2_SDA_GPIO5_IO17 | PC,
++		.gp = IMX_GPIO_NR(5, 17),
+ 	},
+ };
+ 
+@@ -189,7 +189,7 @@ int board_mmc_getcd(struct mmc *mmc)
+ }
+ 
+ #if CONFIG_IS_ENABLED(POWER_LEGACY)
+-#define I2C_PMIC	0
++#define I2C_PMIC	1
+ 
+ int power_init_board(void)
+ {
+@@ -269,6 +269,9 @@ int power_init_board(void)
+ 	pmic_reg_write(p, BD718XX_4TH_NODVS_BUCK_VOLT, 0x28);
+ #endif
+ 
++	/* enable LDO5 and set to 3.0V for ANX7625 */
++	pmic_reg_write(p, BD718XX_LDO5_VOLT, 0xcc);
++
+ 	/* lock the PMIC regs */
+ 	pmic_reg_write(p, BD718XX_REGLOCK, 0x11);
+ #endif
+@@ -295,6 +298,8 @@ int board_fit_config_name_match(const char *name)
+ }
+ #endif
+ 
++#define ANX7625_VBUS_CTL_PAD      IMX_GPIO_NR(4, 13)
++
+ void board_init_f(ulong dummy)
+ {
+ 	int ret;
+@@ -310,6 +315,10 @@ void board_init_f(ulong dummy)
+ 
+ 	preloader_console_init();
+ 
++	printf("Turn Off VBUS\n");
++	gpio_request(ANX7625_VBUS_CTL_PAD, "anx_vbus_ctl"); /* 0 = VBUS On, 1 = VBUS Off */
++	gpio_direction_output(ANX7625_VBUS_CTL_PAD, 1);
++
+ 	ret = spl_init();
+ 	if (ret) {
+ 		debug("spl_init() failed: %d\n", ret);
+@@ -319,10 +328,14 @@ void board_init_f(ulong dummy)
+ 	enable_tzc380();
+ 
+ 	/* Adjust pmic voltage to 1.0V for 800M */
+-	setup_i2c(0, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
++	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
+ 
+ 	power_init_board();
+ 
++	printf("Turn on SE050\n");
++	gpio_request(IMX_GPIO_NR(1, 3), "CRYPTO_EN");
++	gpio_direction_output(IMX_GPIO_NR(1, 3), 1);
++
+ 	/* DDR initialization */
+ 	spl_dram_init();
+ 
+diff --git a/include/configs/imx8mm_evk.h b/include/configs/imx8mm_evk.h
+index 7b6f26640d..9b6691d1fc 100644
+--- a/include/configs/imx8mm_evk.h
++++ b/include/configs/imx8mm_evk.h
+@@ -88,8 +88,8 @@
+ 	"fdt_addr=0x43000000\0"			\
+ 	"fdt_high=0xffffffffffffffff\0" \
+ 	"mtdparts=" MFG_NAND_PARTITION "\0" \
+-	"console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200\0" \
+-	"bootargs=console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200 ubi.mtd=nandrootfs "  \
++	"console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200\0" \
++	"bootargs=console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200 ubi.mtd=nandrootfs "  \
+ 		"root=ubi0:nandrootfs rootfstype=ubifs "		     \
+ 		MFG_NAND_PARTITION \
+ 		"\0" \
+@@ -109,7 +109,7 @@
+ 	"bsp_script=boot.scr\0" \
+ 	"image=Image\0" \
+ 	"splashimage=0x50000000\0" \
+-	"console=ttymxc1,115200\0" \
++	"console=ttymxc2,115200\0" \
+ 	"fdt_addr_r=0x43000000\0"			\
+ 	"fdt_addr=0x43000000\0"			\
+ 	"fdt_high=0xffffffffffffffff\0"		\
+@@ -118,7 +118,7 @@
+ 	"bootm_size=0x10000000\0" \
+ 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
+ 	"mmcpart=1\0" \
+-	"mmcroot=/dev/mmcblk1p2 rootwait rw\0" \
++	"mmcroot=/dev/mmcblk2p2 rootwait rw\0" \
+ 	"mmcautodetect=yes\0" \
+ 	"mmcargs=setenv bootargs ${jh_clk} ${mcore_clk} console=${console} root=${mmcroot}\0 " \
+ 	"loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bsp_script};\0" \
+@@ -181,7 +181,7 @@
+ 
+ #define CFG_FEC_MXC_PHYADDR          0
+ 
+-#define CFG_MXC_UART_BASE		UART_BASE_ADDR(2)
++#define CFG_MXC_UART_BASE		UART_BASE_ADDR(3)
+ 
+ #ifdef CONFIG_TARGET_IMX8MM_DDR4_EVK
+ #define CFG_SYS_FSL_USDHC_NUM	1
