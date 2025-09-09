@@ -1956,7 +1956,7 @@ index 0000000000..48c26b3c16
 +
 +int anx7625_probe(uint8_t i2c_bus_num);
 diff --git a/board/freescale/imx8mm_evk/imx8mm_evk.c b/board/freescale/imx8mm_evk/imx8mm_evk.c
-index f27da09c65..62d95b3241 100644
+index f27da09c65..921dbdd334 100644
 --- a/board/freescale/imx8mm_evk/imx8mm_evk.c
 +++ b/board/freescale/imx8mm_evk/imx8mm_evk.c
 @@ -21,14 +21,213 @@
@@ -2292,8 +2292,11 @@ index f27da09c65..62d95b3241 100644
  	return 0;
  }
  
-@@ -356,8 +598,24 @@ int board_late_init(void)
- 	set_fdt_file();
+@@ -353,11 +595,26 @@ int board_late_init(void)
+ #ifdef CONFIG_ENV_IS_IN_MMC
+ 	board_late_mmc_env_init();
+ #endif
+-	set_fdt_file();
  
  	if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
 -		env_set("board_name", "EVK");
