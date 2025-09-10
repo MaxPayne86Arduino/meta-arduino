@@ -10,4 +10,18 @@ FB: ucmd mmc list
 FB: ucmd mmc dev 2
 FB: ucmd mmc info
 
+# Show partition 1 (usually boot partition) contents
+FB: ucmd echo "\n=== Contents of partition 1 (p1) ==="
+FB: ucmd mmc dev 2 1
+FB: ucmd fatls mmc 2
+
+# Show partition 2 (usually rootfs) contents
+FB: ucmd echo "\n=== Contents of partition 2 (p2) ==="
+FB: ucmd mmc dev 2 2
+FB: ucmd ext4ls mmc 2 /
+
+# Optional: Show specific directories in p2 (rootfs)
+FB: ucmd echo "\n=== Contents of /etc in p2 ==="
+FB: ucmd ext4ls mmc 2 /etc
+
 FB: done
