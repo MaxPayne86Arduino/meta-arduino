@@ -1,0 +1,40 @@
+uuu_version 0.64.43
+
+SDP: boot -f imx-boot-mfgtool
+
+SDPV: delay 1000
+SDPV: write -f u-boot-mfgtool.itb
+SDPV: jump
+
+# Print board info structure, should include ram info
+FB: ucmd bdinfo
+
+# Show base ram address (offset) for ram commands
+FB: ucmd base
+
+# Display 256 bytes from the address where u-boot binary has
+# been loaded
+FB: ucmd md.b 0x40400000 0x100
+
+# Set starting address and download mfgtool kernel fitImage into ram
+FB: ucmd setenv fastboot_buffer ${loadaddr}
+FB: download -f fitImage-portenta-x8-mfgtool
+
+# Display 256 bytes from the address where mfgtool kernel fitImage has
+# been loaded
+FB: ucmd md.b ${loadaddr} 0x100
+
+# Display a single 32-bit word at address 0x1000
+FB: ucmd md.b 0x1000 0x04
+
+# Perform continuous write/read ram tests on the first ram block
+# specified from previous bdinfo command, lmb_dump_all section
+# lmb_dump_all:
+# memory.cnt  = 0x1
+# memory[0]      [0x40000000-0xbdffffff], 0x7e000000 bytes flags: 0
+# reserved.cnt  = 0x1
+# reserved[0]    [0xb5ede280-0xbdffffff], 0x08121d80 bytes flags: 0
+# mtest [start [end [pattern [iterations]]]]
+FB: acmd mtest 0x40000000 0x40040000 0xaa55aa55 0x100
+
+FB: done
