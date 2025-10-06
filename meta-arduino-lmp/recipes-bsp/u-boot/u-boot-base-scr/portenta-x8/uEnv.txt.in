@@ -2,10 +2,10 @@ devtype=mmc
 devnum=2
 mmcpart=1
 fdt_file=arduino_portenta-x8.dtb
-ovlload=ext4load
+ovlload=load
 ovltype=mmc
 ovlpart=1
-ovlpath=/boot/devicetree
+ovlpath=overlays
 fdtovaddr=0x43600000
 set_envsave=if test "${is_on_carrier}" = "yes"; then \
               if env exist old_carrier_name; then \
@@ -39,14 +39,14 @@ bootcmd_ovl_auto_detect=if env exist carrier_custom; then true; \
                           fi \
                         fi
 bootcmd_saveenv=if test "${envsave}" = "1"; then saveenv; fi
-bootcmd_dtb=load ${devtype} ${devnum}:${mmcpart} ${fdt_addr} ${fdt_file}
+bootcmd_dtb=load ${devtype} ${devnum}:${mmcpart} ${fdt_addr} devicetree/${fdt_file}
 bootcmd_ovl=fdt addr ${fdt_addr}; fdt resize 0x${filesize}; \
             for ov in ${overlays}; do; \
               echo overlaying ${ov}... \
               ${ovlload} ${ovltype} ${ovldev}:${ovlpart} ${fdtovaddr} ${ovlpath}/${ov}.dtbo && \
               fdt apply ${fdtovaddr} \
             done
-bootcmd_args=setenv bootargs console=${console} root=/dev/mmcblk${devnum}p${mmcpart} rootwait rw
+bootcmd_args=setenv bootargs console=${console} root=/dev/mmcblk${devnum}p2 rootwait rw
 bootcmd_load_k=load ${devtype} ${devnum}:${mmcpart} ${loadaddr} ${image}
 bootcmd_run=booti ${loadaddr} - ${fdt_addr}
 bootcmd=run bootcmd_ovl_auto_detect; run bootcmd_dtb; run bootcmd_ovl; run bootcmd_args; run bootcmd_load_k; run bootcmd_saveenv; run bootcmd_run
