@@ -10,9 +10,7 @@ do_move_dts_files() {
     fi
 }
 
-python () {
-    bb.build.addtask('do_move_dts_files', 'do_configure', 'do_patch', d)
-}
+addtask do_move_dts_files after do_patch before do_configure
 
 FILES:${PN} += " \
     /boot/devicetree \
