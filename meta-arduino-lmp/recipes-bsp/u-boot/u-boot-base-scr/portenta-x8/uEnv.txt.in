@@ -39,7 +39,7 @@ bootcmd_ovl_auto_detect=if env exist carrier_custom; then true; \
                           fi \
                         fi
 bootcmd_saveenv=if test "${envsave}" = "1"; then saveenv; fi
-bootcmd_dtb=load ${devtype} ${devnum}:${mmcpart} ${fdt_addr} devicetree/${fdt_file}
+bootcmd_dtb=load ${devtype} ${devnum}:${mmcpart} ${fdt_addr} ${fdt_file}
 bootcmd_ovl=fdt addr ${fdt_addr}; fdt resize 0x${filesize}; \
             for ov in ${overlays}; do; \
               echo overlaying ${ov}... \
