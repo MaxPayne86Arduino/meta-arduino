@@ -44,9 +44,12 @@ VIDEOTOOLS = " \
     gstreamer1.0-plugins-bad \
     imx-gst1.0-plugin \
     v4l-utils \
-    gstreamer1.0-bayer2rgb-neon \
-    gst-instruments \
 "
+
+CORE_IMAGE_EXTRA_INSTALL += " \
+    ${VIDEOTOOLS} \
+ "
+
 
 OPENCV = " \
     opencv \
@@ -58,6 +61,10 @@ CORE_IMAGE_BASE_INSTALL += " \
     u-boot-fio-env \
     u-boot-fw-utils \
     u-boot-default-script \
+"
+
+CORE_IMAGE_BASE_INSTALL += " \
+    i2c-tools \
 "
 
 # Custom task to write git SHA to /etc/os-release
