@@ -46,25 +46,21 @@ VIDEOTOOLS = " \
     v4l-utils \
 "
 
-CORE_IMAGE_EXTRA_INSTALL += " \
-    ${VIDEOTOOLS} \
- "
-
-
 OPENCV = " \
     opencv \
 "
 
 CORE_IMAGE_BASE_INSTALL += " \
-    dtc \
-    stress-ng \
-    u-boot-fio-env \
     u-boot-fw-utils \
     u-boot-default-script \
+    u-boot-fio-env \
 "
 
 CORE_IMAGE_BASE_INSTALL += " \
+    dtc \
+    stress-ng \
     i2c-tools \
+    ${VIDEOTOOLS} \
 "
 
 # Custom task to write git SHA to /etc/os-release
