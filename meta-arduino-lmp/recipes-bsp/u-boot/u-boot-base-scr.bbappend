@@ -11,9 +11,7 @@ do_move_boot_script_files() {
     cp ${WORKDIR}/${MACHINE}/uEnv.txt.in ${WORKDIR}/
 }
 
-python () {
-    bb.build.addtask('do_move_boot_script_files', 'do_configure', 'do_patch', d)
-}
+addtask do_move_boot_script_files after do_patch before do_configure
 
 do_install() {
     install -d ${D}/boot
