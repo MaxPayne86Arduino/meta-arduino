@@ -1,4 +1,4 @@
-echo "Using arduino_${fdt_file}"
+echo "Using arduino_${fdtfile}"
 
 # Default boot type and device
 setenv bootlimit 5
@@ -8,7 +8,7 @@ setenv rootpart 2
 setenv ovl_addr 0x43600000
 
 # Boot image files
-setenv fdt_file_final arduino_${fdt_file}
+setenv fdt_file_final arduino_${fdtfile}
 setenv fit_addr 0x43800000
 
 # Boot firmware updates
