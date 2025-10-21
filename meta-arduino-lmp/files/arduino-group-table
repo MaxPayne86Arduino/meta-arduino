@@ -83,3 +83,4 @@ systemd-journal-gateway:x:996:
 systemd-journal-remote:x:997:
 systemd-coredump:x:998:
 nogroup:x:65534:
+arduino:x:1001:
