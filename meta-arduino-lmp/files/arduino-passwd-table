@@ -42,5 +42,4 @@ systemd-journal-gateway:x:996:996::/:/sbin/nologin
 systemd-journal-remote:x:997:997::/:/sbin/nologin
 systemd-coredump:x:998:998::/:/sbin/nologin
 nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
-arduino:x:1001:1001:arduino_user:/home/arduino/:/bin/sh
-fio:x:1000:1000:lmp_user:/home/fio/:/bin/sh
+fio:x:1001:1001:lmp_user:/home/fio/:/bin/sh

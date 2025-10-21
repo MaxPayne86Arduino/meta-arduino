@@ -59,17 +59,5 @@ IMAGE_FSTYPES:append = " wic.zst tar.zst"
 USERADD_UID_TABLES:lmp="files/arduino-passwd-table"
 USERADD_GID_TABLES:lmp="files/arduino-group-table"
 
-# Set empty password for arduino user
-EXTRA_USERS_PARAMS += "usermod -p '' arduino;"
-
-# Create home directory for arduino user and set permissions
-create_arduino_home() {
-    mkdir -p ${IMAGE_ROOTFS}/home/arduino
-    chown 1001:1001 ${IMAGE_ROOTFS}/home/arduino
-}
-
-# add home folder creation for arduino user
-ROOTFS_POSTPROCESS_COMMAND += "create_arduino_home; "
-
 # Set empty password for root user
 EXTRA_USERS_PARAMS += "usermod -p '' root;"
