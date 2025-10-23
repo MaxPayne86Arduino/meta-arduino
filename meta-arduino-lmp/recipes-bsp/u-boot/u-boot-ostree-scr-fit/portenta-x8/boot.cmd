@@ -64,7 +64,7 @@ setenv rasp_base_ovl ' \
 # setenv carrier_custom 1
 # setenv overlays 'ov_name1 ov_name2...'
 
-setenv bootcmd_dtb 'imxtract ${fit_addr}#conf@@FIT_NODE_SEPARATOR@@${fdt_file_final} fdt@@FIT_NODE_SEPARATOR@@${fdt_file_final} ${fdt_addr}; fdt addr ${fdt_addr}'
+setenv bootcmd_dtb 'imxtract ${fit_addr}#conf-${fdt_file_final} fdt-${fdt_file_final} ${fdt_addr}; fdt addr ${fdt_addr}'
 setenv ovl_set_envsave ' \
   if test "${is_on_carrier}" = "yes"; then \
     if env exist old_carrier_name; then \
@@ -101,7 +101,7 @@ setenv bootcmd_ovl_auto_detect ' \
 setenv bootcmd_saveenv 'if test "${envsave}" = "1"; then run saveenv_mmc; fi'
 setenv bootcmd_overlay ' \
   for ov in ${overlays}; do; \
-    if imxtract ${fit_addr}#conf@@FIT_NODE_SEPARATOR@@${fdt_file_final} fdt@@FIT_NODE_SEPARATOR@@${ov}.dtbo ${ovl_addr}; then \
+    if imxtract ${fit_addr}#conf-${fdt_file_final} fdt-${ov}.dtbo ${ovl_addr}; then \
       fdt resize 0x${filesize}; \
       fdt apply ${ovl_addr}; \
       echo "Applied ${ov}.dtbo to DTB"; \
@@ -117,6 +117,7 @@ setenv bootcmd_load_fw ' \
   run bootcmd_saveenv; \
   setenv bootcmd_run \
     bootm ${fit_addr}#conf@@FIT_NODE_SEPARATOR@@${fdt_file_final} ${fit_addr}#conf@@FIT_NODE_SEPARATOR@@${fdt_file_final} ${fdt_addr}'
+
 
 @@INCLUDE_COMMON_IMX@@
 @@INCLUDE_COMMON@@
