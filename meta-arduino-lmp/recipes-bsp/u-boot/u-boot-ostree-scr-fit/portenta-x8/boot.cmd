@@ -116,7 +116,7 @@ setenv bootcmd_load_fw ' \
   run bootcmd_overlay; \
   run bootcmd_saveenv; \
   setenv bootcmd_run \
-    bootm ${fit_addr}#conf@@FIT_NODE_SEPARATOR@@${fdt_file_final} ${fit_addr}#conf@@FIT_NODE_SEPARATOR@@${fdt_file_final} ${fdt_addr}'
+    bootm ${fit_addr}#conf-${fdt_file_final} ${fit_addr}#conf-${fdt_file_final} ${fdt_addr}'
 
 
 @@INCLUDE_COMMON_IMX@@
