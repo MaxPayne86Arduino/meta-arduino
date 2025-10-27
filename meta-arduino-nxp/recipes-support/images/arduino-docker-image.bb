@@ -5,7 +5,7 @@ multimedia packages (VPU and GPU) when available."
 
 LICENSE = "MIT"
 
-require recipes-support/images/arduino-console-image.bb
+require recipes-support/images/arduino-weston-image.bb
 
 # Docker packages
 CORE_IMAGE_EXTRA_INSTALL += " \
