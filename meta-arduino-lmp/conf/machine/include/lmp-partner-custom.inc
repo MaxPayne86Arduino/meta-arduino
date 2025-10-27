@@ -2,7 +2,10 @@
 
 EXTERNAL_KERNEL_DEVICETREE = "${DEPLOY_DIR_IMAGE}/devicetree"
 
-IMAGE_BOOT_FILES:append:lmp-base = " ${DTB_BOOT_FILES}"
+IMAGE_BOOT_FILES:append:lmp-base = " \
+    devicetree/arduino_portenta-x8.dtb;arduino_portenta-x8.dtb \
+    devicetree/*.dtbo;overlays/ \
+"
 
 WKS_FILE:mx8mm-nxp-bsp:lmp:remove = "imx-imx-boot-singlepart.wks.in"
 WKS_FILE:mx8mm-nxp-bsp:lmp:sota = "sdimage-imx8m-spl-sota.wks.in"
