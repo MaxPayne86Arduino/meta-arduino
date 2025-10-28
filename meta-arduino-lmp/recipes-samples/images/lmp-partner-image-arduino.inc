@@ -6,6 +6,7 @@ IMAGE_FEATURES:remove = " ssh-server-openssh"
 IMAGE_FEATURES += "ssh-server-dropbear"
 
 SUDOERS_FILE ?= "sudoers-arduino-lmp"
+
 SRC_URI += "\
     file://${SUDOERS_FILE} \
 "
@@ -38,13 +39,17 @@ CORE_IMAGE_BASE_INSTALL += " \
     ${ARDUINO} \
 "
 
-# No default password is configured for the device
-EXTRA_USERS_PARAMS += "\
-    usermod -p '' ${LMP_USER}; \
-"
-
 # Packages to be installed in Portenta-X8 machine only
 IMAGE_INSTALL:append:portenta-x8 = " openocd"
+
+USERADD_UID_TABLES:lmp="files/arduino-passwd-table"
+USERADD_GID_TABLES:lmp="files/arduino-group-table"
+
+# No default passwords are configured for the device (PSTI Act 2022)
+EXTRA_USERS_PARAMS += "\
+    usermod -p '' root; \
+    usermod -p '' ${LMP_USER}; \
+"
 
 fakeroot do_populate_rootfs_add_custom_sudoers () {
     # Allow sudo group users to use sudo
@@ -55,9 +60,3 @@ fakeroot do_populate_rootfs_add_custom_sudoers () {
 IMAGE_PREPROCESS_COMMAND += "do_populate_rootfs_add_custom_sudoers; "
 
 IMAGE_FSTYPES:append = " wic.zst tar.zst"
-
-USERADD_UID_TABLES:lmp="files/arduino-passwd-table"
-USERADD_GID_TABLES:lmp="files/arduino-group-table"
-
-# Set empty password for root user
-EXTRA_USERS_PARAMS += "usermod -p '' root;"
