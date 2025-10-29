@@ -1,0 +1,35 @@
+From dbfc68d83cb96c7a25dacc1f2d8d94cd2820986e Mon Sep 17 00:00:00 2001
+From: Massimo Pennazio <maxipenna@libero.it>
+Date: Wed, 29 Oct 2025 12:10:21 +0000
+Subject: [PATCH] Fix bcdVersion: kernel expects 0x0100 (USB 1.00), in
+ little-endian order
+
+---
+ adb/usb_linux_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/adb/usb_linux_client.c b/adb/usb_linux_client.c
+index 884e85ef50..31ed11f11c 100644
+--- a/adb/usb_linux_client.c
++++ b/adb/usb_linux_client.c
+@@ -229,7 +229,7 @@ struct usb_ext_compat_desc os_desc_compat = {
+ static struct usb_os_desc_header os_desc_header = {
+     .interface = cpu_to_le32(0),
+     .dwLength = cpu_to_le32(sizeof(os_desc_header) + sizeof(os_desc_compat)),
+-    .bcdVersion = cpu_to_le32(1),
++    .bcdVersion = cpu_to_le32(0x0100),
+     .wIndex = cpu_to_le32(4),
+     .bCount = cpu_to_le32(1),
+     .Reserved = cpu_to_le32(0),
+@@ -238,7 +238,7 @@ static struct usb_os_desc_header os_desc_header = {
+ static struct usb_os_desc_header os_prop_header = {
+     .interface = cpu_to_le32(0),
+     .dwLength = cpu_to_le32(sizeof(os_desc_header) + sizeof(struct usb_ext_prop_values)),
+-    .bcdVersion = cpu_to_le32(1),
++    .bcdVersion = cpu_to_le32(0x0100),
+     .wIndex = cpu_to_le32(5),
+     .wCount = cpu_to_le16(1),
+ };
+-- 
+2.25.1
+
