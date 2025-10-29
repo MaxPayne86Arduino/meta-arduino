@@ -4,22 +4,18 @@ Date: Fri, 8 Nov 2024 11:19:15 +0000
 Subject: [PATCH 4/4] Modified shell command to /bin/bash
 
 ---
- adb/services.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ adb/services.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/adb/services.c b/adb/services.c
-index 21b08dc201..7c989ecfd6 100644
+index d44b0c5068..7c989ecfd6 100644
 --- a/adb/services.c
 +++ b/adb/services.c
-@@ -299,11 +299,7 @@ static int create_subproc_raw(const char *cmd, const char *arg0, const char *arg
+@@ -299,7 +299,7 @@ static int create_subproc_raw(const char *cmd, const char *arg0, const char *arg
  }
  #endif  /* !ABD_HOST */
  
--#if ADB_HOST
 -#define SHELL_COMMAND "/bin/sh"
--#else
--#define SHELL_COMMAND "/system/bin/sh"
--#endif
 +#define SHELL_COMMAND "/bin/bash"
  
  #if !ADB_HOST
