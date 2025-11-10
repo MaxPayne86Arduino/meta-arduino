@@ -51,6 +51,15 @@ EXTRA_USERS_PARAMS += "\
     usermod -p '' ${LMP_USER}; \
 "
 
+# Custom task to write git SHA to /etc/os-release
+write_git_sha() {
+    META_LAYER_DIR="${OEROOT}/layers/meta-arduino"
+    GIT_SHA=$(cd ${META_LAYER_DIR} && git rev-parse HEAD)
+    echo "META_LAYER_GIT_SHA=${GIT_SHA}" >> ${IMAGE_ROOTFS}/etc/os-release
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "write_git_sha; "
+
 fakeroot do_populate_rootfs_add_custom_sudoers () {
     # Allow sudo group users to use sudo
     bbwarn Changing sudoers for arduino ootb!
