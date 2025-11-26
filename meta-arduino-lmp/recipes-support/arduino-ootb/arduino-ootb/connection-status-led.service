@@ -1,6 +1,7 @@
 [Unit]
 Description=Connection status led
-After=network-online.target
+After=network-online.target NetworkManager.service
+Wants=NetworkManager.service
 
 [Service]
 LogLevelMax=err
