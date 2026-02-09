@@ -70,7 +70,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     fbida \
     v4l-utils \
     strace \
-    tmate \
 "
 
 # Change users and passwords
