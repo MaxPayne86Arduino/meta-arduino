@@ -57,8 +57,8 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
    ```
 5. Add the layers:
    ```bash
-   bitbake-layers add-layer meta-arduino/meta-arduino-common
-   bitbake-layers add-layer meta-arduino/meta-arduino-nxp
+   bitbake-layers add-layer ../sources/meta-arduino/meta-arduino-common
+   bitbake-layers add-layer ../sources/meta-arduino/meta-arduino-nxp
    ```
 6. Build the image:
    ```bash
