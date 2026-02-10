@@ -120,4 +120,4 @@ Contributions are welcome! Please submit pull requests or open issues for any bu
 
 ## License
 
-This project is licensed under the [GPL-2.0+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
