@@ -2,6 +2,8 @@
 
 This repository contains the Yocto layers designed to support Arduino microprocessor-based boards.
 
+Main layer maintainer: Massimo Pennazio maxipenna@libero.it
+
 ## Layers Overview
 
 ### 1. `meta-arduino-nxp`
