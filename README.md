@@ -6,16 +6,30 @@ Main layer maintainer: Massimo Pennazio maxipenna@libero.it
 
 ## Layers Overview
 
-### 1. `meta-arduino-nxp`
+### 1. `meta-arduino-common`
+
+This layer contains common components shared across Arduino platforms:
+- Android tools (ADB support)
+- OpenOCD
+- Avahi and network manager configurations
+- M4 proxy
+- Common image recipes (console, docker, weston, v4l2, OTBR)
+- USB gadget configurations (libusbgx-config)
+
+### 2. `meta-arduino-nxp`
 
 This layer supports boards using NXP processors. It includes:
 - Spl/U-Boot & Linux Kernel machines and configurations
 - Device tree overlays
-- Custom systemd unit files for Android Tools ADB support and more
+- Custom recipes specific to NXP platforms
 
-### 2. `meta-arduino-lmp`
+**Dependencies**: `meta-arduino-common`
+
+### 3. `meta-arduino-lmp`
 
 This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundries.io](https://github.com/foundriesio/lmp-manifest).
+
+**Dependencies**: `meta-arduino-common`
 
 ## Getting Started [NXP Builds]
 
@@ -41,9 +55,10 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
    MACHINE=portenta-x8 DISTRO=fsl-imx-xwayland EULA=yes source ./imx-setup-release.sh -b bld-xwayland # First time only
    source setup-environment bld-xwayland # Every login, skip first time
    ```
-5. Add the layer:
+5. Add the layers:
    ```bash
-   bitbake-layers add-layer meta-arduino-nxp
+   bitbake-layers add-layer meta-arduino/meta-arduino-common
+   bitbake-layers add-layer meta-arduino/meta-arduino-nxp
    ```
 6. Build the image:
    ```bash

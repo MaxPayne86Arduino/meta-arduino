@@ -10,4 +10,3 @@ DEPENDS:append:portenta-x8 = " libgpiod"
 
 EXTRA_OECONF:append:portenta-x8 = " --enable-imx_gpio --enable-linuxgpiod --enable-internal-jimtcl"
 PACKAGECONFIG:remove:portenta-x8 = " sysfsgpio"
-
