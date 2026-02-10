@@ -11,7 +11,6 @@ SRC_URI = " \
   file://Makefile \
   file://anx7625.c \
   file://anx7625.h \
-  file://COPYING \
 "
 
 S = "${WORKDIR}"

@@ -10,7 +10,6 @@ PV = "0.1"
 SRC_URI = " \
   file://Makefile \
   file://panel-jadard-ek79202d.c \
-  file://COPYING \
 "
 
 S = "${WORKDIR}"

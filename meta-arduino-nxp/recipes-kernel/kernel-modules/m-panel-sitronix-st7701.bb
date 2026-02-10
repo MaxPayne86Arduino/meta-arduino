@@ -10,7 +10,6 @@ PV = "0.1"
 SRC_URI = " \
   file://Makefile \
   file://panel-sitronix-st7701.c \
-  file://COPYING \
 "
 
 S = "${WORKDIR}"
