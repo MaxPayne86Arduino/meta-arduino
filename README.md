@@ -101,10 +101,12 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
 
 ## Supported Yocto Machines
 
-- portenta-x8 >> In Production
-- portenta-x9 >> Internal Use / Prototype
-- imx8mp-astrial >> Internal Use / Prototype
-- raspberrypi4-64 >> Internal Use / Prototype
+| Machine            | Status                      |
+|--------------------|----------------------------|
+| portenta-x8        | In Production              |
+| portenta-x9        | Internal Use / Prototype   |
+| imx8mp-astrial     | Internal Use / Prototype   |
+| raspberrypi4-64    | Internal Use / Prototype   |
 
 ## Contributing
 
