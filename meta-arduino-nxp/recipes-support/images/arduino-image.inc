@@ -6,19 +6,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     arduino-device-tree \
 "
 
-# Install extra out of tree kernel drivers (som)
-CORE_IMAGE_EXTRA_INSTALL += " \
-    dtbocfg \
-"
-
-# Install extra out of tree kernel drivers (carrier boards)
-CORE_IMAGE_EXTRA_INSTALL += " \
-    panel-simple \
-    imx708 \
-    ov5647-mipi \
-    lan865x \
-"
-
 # Install custom u-boot scripts (mandatory for eMMC / SD Card boot)
 CORE_IMAGE_EXTRA_INSTALL += " \
     u-boot-script-arduino \
