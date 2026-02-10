@@ -99,10 +99,10 @@ This layer provides specific customizations targeting the Linux Micro Platform (
 
 ## Supported Boards
 
-- Portenta X8
-- Portenta X9
-- Raspberry Pi CM4
-- System Electronics Astrial
+- Portenta X8 >> In Production
+- Portenta X9 >> Internal Use / Prototype
+- System Electronics Astrial >> Internal Use / Prototype
+- Raspberry Pi CM4 >> Internal Use / Prototype
 
 ## Building the Image
 
