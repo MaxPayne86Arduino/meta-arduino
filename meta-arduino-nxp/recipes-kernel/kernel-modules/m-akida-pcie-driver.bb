@@ -1,6 +1,6 @@
 SUMMARY = "Akida PCIe driver"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://README.md;md5=4cc86db233f193d7ae82206e187d5505"
+LICENSE = "GPL-2.0-only"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 
 inherit module
 

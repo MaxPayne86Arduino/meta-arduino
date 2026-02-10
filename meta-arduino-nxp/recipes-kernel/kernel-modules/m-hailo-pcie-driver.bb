@@ -1,7 +1,7 @@
 SUMMARY = "Hailo PCIe driver"
 DESCRIPTION = "The Hailo PCIe driver is required for interacting with a Hailo device over the PCIe interface"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://../../LICENSE;md5=39bba7d2cf0ba1036f2a6e2be52fe3f0"
+LICENSE = "GPL-2.0-only"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 
 inherit module
 

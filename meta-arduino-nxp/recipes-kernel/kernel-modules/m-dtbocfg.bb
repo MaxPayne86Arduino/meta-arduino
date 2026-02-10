@@ -8,7 +8,7 @@
 
 SUMMARY = "Device Tree Blob Overlay Configuration File System"
 LICENSE = "BSD-2-Clause"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/BSD-2-Clause;md5=cb641bc04cda31daea161b1bc15da69f"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/BSD-2-Clause;md5=cb641bc04cda31daea161b1bc15da69f"
 
 inherit module
 
