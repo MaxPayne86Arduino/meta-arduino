@@ -30,7 +30,7 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
    ```
 3. Set up the Docker environment:
    ```bash
-   docker run -it -u $(id -u):$(id -g) -v $PWD:/workdir -w /workdir --name yocto-nxp arduino/yocto-lmp-v95 bash # First time only
+   docker run -it -u $(id -u):$(id -g) -v $PWD:/workdir -w /workdir --name yocto-nxp hub.foundries.io/lmp-sdk:95 bash # First time only
    docker start yocto-nxp # Every login, skip first time
    cd ~/yocto/nxp && docker exec -it yocto-nxp bash # Every login, skip first time
    ```
@@ -57,7 +57,7 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
    ```
 3. Set up the Docker environment:
    ```bash
-   docker run -it -u $(id -u):$(id -g) -v $PWD:/workdir -w /workdir --name yocto-lmp arduino/yocto-lmp-v95 bash
+   docker run -it -u $(id -u):$(id -g) -v $PWD:/workdir -w /workdir --name yocto-lmp hub.foundries.io/lmp-sdk:95 bash
    ```
 
 ### Build mfgtools
