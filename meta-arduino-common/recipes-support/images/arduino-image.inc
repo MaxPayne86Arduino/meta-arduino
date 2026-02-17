@@ -31,6 +31,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     u-boot-fw-utils \
     ethtool \
     usbutils \
+    sudo \
 "
 # NOTES:
 # - We install only memtool from imx-test
@@ -82,6 +83,13 @@ create_arduino_home() {
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "create_arduino_home; "
+
+fakeroot add_custom_sudoers () {
+    # Enable sudo group for arduino user
+    sed -i 's/# \(%sudo\tALL=(ALL:ALL) ALL\)/\1/' ${IMAGE_ROOTFS}${sysconfdir}/sudoers
+}
+
+IMAGE_PREPROCESS_COMMAND += "add_custom_sudoers; "
 
 # Custom task to write git SHA to /etc/os-release
 write_git_sha() {
