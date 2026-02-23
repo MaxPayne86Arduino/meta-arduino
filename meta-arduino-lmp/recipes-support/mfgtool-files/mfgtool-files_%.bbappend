@@ -8,7 +8,7 @@ SRC_URI:append:portenta-x8 = " \
     file://erase_emmc.uuu \
 "
 
-do_deploy:prepend:portenta-x8() {
+do_deploy:append:portenta-x8() {
     install -d ${DEPLOYDIR}/${PN}
     install -m 0644 ${WORKDIR}/probe_emmc.uuu ${DEPLOYDIR}/${PN}/probe_emmc.uuu
     install -m 0644 ${WORKDIR}/probe_sdcard.uuu ${DEPLOYDIR}/${PN}/probe_sdcard.uuu
