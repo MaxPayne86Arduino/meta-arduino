@@ -1,0 +1,26 @@
+diff --git a/arch/arm/dts/imx8mm-evk-u-boot.dtsi b/arch/arm/dts/imx8mm-evk-u-boot.dtsi
+index c453536004c..c8cc3583e45 100644
+--- a/arch/arm/dts/imx8mm-evk-u-boot.dtsi
++++ b/arch/arm/dts/imx8mm-evk-u-boot.dtsi
+@@ -128,7 +128,7 @@
+ 	mmc-hs400-1_8v;
+ 	mmc-hs400-enhanced-strobe;
+ 	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
+-	assigned-clock-rates = <400000000>;
++	assigned-clock-rates = <200000000>; /* Reduced from 400MHz for MW2816 eMMC */
+ 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_400M>;
+ };
+ 
+diff --git a/arch/arm/dts/imx8mm-evk.dts b/arch/arm/dts/imx8mm-evk.dts
+index 7ed4c9d2fc6..5061a397ebf 100644
+--- a/arch/arm/dts/imx8mm-evk.dts
++++ b/arch/arm/dts/imx8mm-evk.dts
+@@ -19,7 +19,7 @@
+ 
+ &usdhc3 {
+ 	assigned-clocks = <&clk IMX8MM_CLK_USDHC3_ROOT>;
+-	assigned-clock-rates = <400000000>;
++	assigned-clock-rates = <200000000>; /* Reduced from 400MHz for MW2816 eMMC */
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
