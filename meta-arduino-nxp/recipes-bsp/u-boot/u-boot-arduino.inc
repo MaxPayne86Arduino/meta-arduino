@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-arduino:"
 
 SRC_URI:append:portenta-x8 = " \
     file://portenta-x8.cfg \
+    file://patches/usdhc_emmc_clock_debug_prints.patch \
     file://Makefile \
     file://board/Makefile \
     file://imx8mm_evk_defconfig \

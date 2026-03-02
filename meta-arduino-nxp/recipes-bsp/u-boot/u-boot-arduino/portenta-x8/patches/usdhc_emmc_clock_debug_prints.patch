@@ -1,0 +1,21 @@
+diff --git a/drivers/mmc/fsl_esdhc_imx.c b/drivers/mmc/fsl_esdhc_imx.c
+index 9eba052d7d..1ac37ca782 100644
+--- a/drivers/mmc/fsl_esdhc_imx.c
++++ b/drivers/mmc/fsl_esdhc_imx.c
+@@ -620,6 +620,7 @@ static void set_sysctl(struct fsl_esdhc_priv *priv, struct mmc *mmc, uint clock)
+ 		div++;
+ 
+ 	mmc->clock = sdhc_clk / pre_div / div / ddr_pre_div;
++	printf("USDHC@0x%lx: PLL=%dHz mode=%d target=%dHz actual=%dHz\n", (ulong)priv->esdhc_regs, sdhc_clk, priv->mode, clock, mmc->clock);
+ 
+ 	pre_div >>= 1;
+ 	div -= 1;
+@@ -1592,6 +1593,8 @@ static int fsl_esdhc_probe(struct udevice *dev)
+ 	}
+ #endif
+ 
++	printf("USDHC@0x%lx: sdhc_clk=%uHz\n", (ulong)priv->esdhc_regs, priv->sdhc_clk);
++
+ 	ret = fsl_esdhc_init(priv, plat);
+ 	if (ret) {
+ 		dev_err(dev, "fsl_esdhc_init failure\n");
