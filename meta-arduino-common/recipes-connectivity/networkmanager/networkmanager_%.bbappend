@@ -5,5 +5,5 @@ SRC_URI:append = " \
 "
 
 do_install:append() {
-    install -Dm 0644 ${WORKDIR}/NetworkManager.conf ${D}${sysconfdir}/NetworkManager/NetworkManager.conf
+    install -Dm 0644 ${WORKDIR}/sources/NetworkManager.conf ${D}${sysconfdir}/NetworkManager/NetworkManager.conf
 }

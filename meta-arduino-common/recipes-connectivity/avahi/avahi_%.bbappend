@@ -7,5 +7,5 @@ SRC_URI += "\
 do_install:append () {
     # Install mDNS broadcasting service for avahi
     install -d ${D}/${sysconfdir}/avahi/services
-    install -m 0644 ${WORKDIR}/sftp-ssh.service ${D}${sysconfdir}/avahi/services/sftp-ssh.service
+    install -m 0644 ${WORKDIR}/sources/sftp-ssh.service ${D}${sysconfdir}/avahi/services/sftp-ssh.service
 }
