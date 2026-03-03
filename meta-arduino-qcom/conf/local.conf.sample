@@ -1,5 +1,6 @@
 MACHINE ??= "imola"
 DISTRO ?= "poky"
+INIT_MANAGER = "systemd"
 USER_CLASSES ?= "buildstats"
 PATCHRESOLVE = "noop"
 
