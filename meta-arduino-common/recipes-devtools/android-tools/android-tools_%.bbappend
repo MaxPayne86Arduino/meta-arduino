@@ -14,7 +14,7 @@ SRC_URI:remove:pn-${PN} = "file://core/0008-adb-Allow-adbd-to-be-ran-as-root.pat
 
 do_install:append () {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/arduino-android-gadget-setup ${D}${bindir}
+    install -m 0755 ${WORKDIR}/sources/arduino-android-gadget-setup ${D}${bindir}
 }
 
 RDEPENDS:${PN}:append = " libusbgx-config"

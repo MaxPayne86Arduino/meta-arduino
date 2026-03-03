@@ -33,7 +33,7 @@ do_install() {
 
     # Systemd service
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/m4-proxy.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${WORKDIR}/sources/m4-proxy.service ${D}${systemd_system_unitdir}/
 }
 
 FILES:${PN} += "\
