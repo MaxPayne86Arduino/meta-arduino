@@ -1,6 +1,5 @@
 MACHINE ??= "imola"
-DISTRO ?= "poky"
-INIT_MANAGER = "systemd"
+DISTRO ?= "poky-altcfg"
 USER_CLASSES ?= "buildstats"
 PATCHRESOLVE = "noop"
 
