@@ -23,7 +23,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     i2c-tools \
     fio \
     stress-ng \
-    imx-test \
     bluez5 \
     libgpiod \
     libgpiod-tools \
@@ -33,8 +32,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     usbutils \
     sudo \
 "
-# NOTES:
-# - We install only memtool from imx-test
 
 # Install extra packages (extra), comment if too big
 CORE_IMAGE_EXTRA_INSTALL += " \
