@@ -90,17 +90,21 @@ IMAGE_PREPROCESS_COMMAND += "add_custom_sudoers; "
 
 # Custom task to write git SHA to /etc/os-release
 write_git_sha() {
-    META_LAYER_DIR="${BSPDIR}/sources/meta-arduino"
-    GIT_SHA=$(cd ${META_LAYER_DIR} && git rev-parse HEAD)
-    GIT_REMOTE=$(cd ${META_LAYER_DIR} && git config --get remote.origin.url)
-    echo "META_LAYER_GIT_SHA=${GIT_SHA}" >> ${IMAGE_ROOTFS}/etc/os-release
-    echo "META_LAYER_GIT_REMOTE=${GIT_REMOTE}" >> ${IMAGE_ROOTFS}/etc/os-release
+    META_LAYER_DIR="${TOPDIR}/../sources/meta-arduino"
+    if [ -d "${META_LAYER_DIR}/.git" ] && command -v git >/dev/null 2>&1; then
+        GIT_SHA=$(cd ${META_LAYER_DIR} && git rev-parse HEAD 2>/dev/null || echo "unknown")
+        GIT_REMOTE=$(cd ${META_LAYER_DIR} && git config --get remote.origin.url 2>/dev/null || echo "unknown")
+        echo "META_LAYER_GIT_SHA=${GIT_SHA}" >> ${IMAGE_ROOTFS}/etc/os-release
+        echo "META_LAYER_GIT_REMOTE=${GIT_REMOTE}" >> ${IMAGE_ROOTFS}/etc/os-release
+    fi
 
-    MANIFEST_DIR="${BSPDIR}/.repo/manifests"
-    GIT_SHA=$(cd ${MANIFEST_DIR} && git rev-parse HEAD)
-    GIT_REMOTE=$(cd ${MANIFEST_DIR} && git config --get remote.origin.url)
-    echo "MANIFEST_GIT_SHA=${GIT_SHA}" >> ${IMAGE_ROOTFS}/etc/os-release
-    echo "MANIFEST_GIT_REMOTE=${GIT_REMOTE}" >> ${IMAGE_ROOTFS}/etc/os-release
+    MANIFEST_DIR="${TOPDIR}/../.repo/manifests"
+    if [ -d "${MANIFEST_DIR}/.git" ] && command -v git >/dev/null 2>&1; then
+        GIT_SHA=$(cd ${MANIFEST_DIR} && git rev-parse HEAD 2>/dev/null || echo "unknown")
+        GIT_REMOTE=$(cd ${MANIFEST_DIR} && git config --get remote.origin.url 2>/dev/null || echo "unknown")
+        echo "MANIFEST_GIT_SHA=${GIT_SHA}" >> ${IMAGE_ROOTFS}/etc/os-release
+        echo "MANIFEST_GIT_REMOTE=${GIT_REMOTE}" >> ${IMAGE_ROOTFS}/etc/os-release
+    fi
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "write_git_sha; "
