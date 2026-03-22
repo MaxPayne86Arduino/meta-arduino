@@ -2,7 +2,7 @@ From bdb64e5d6c85349ac54c06576b444945fa4f653f Mon Sep 17 00:00:00 2001
 From: Massimo Pennazio <maxipenna@libero.it>
 Date: Fri, 8 Nov 2024 11:10:32 +0000
 Subject: [PATCH 1/4] Comment out drop_capabilities_bounding_set_if_needed
-
+Upstream-Status: Pending
 ---
  adb/adb.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)

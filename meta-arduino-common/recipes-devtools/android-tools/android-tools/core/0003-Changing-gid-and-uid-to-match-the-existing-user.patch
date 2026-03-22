@@ -2,6 +2,7 @@ From 675c0d326b78f564fdd60393c2f735ce96f75550 Mon Sep 17 00:00:00 2001
 From: Massimo Pennazio <maxipenna@libero.it>
 Date: Fri, 8 Nov 2024 11:13:40 +0000
 Subject: [PATCH 3/4] Changing gid and uid to match the existing user
+Upstream-Status: Pending
 
 ---
  adb/adb.c | 4 ++--

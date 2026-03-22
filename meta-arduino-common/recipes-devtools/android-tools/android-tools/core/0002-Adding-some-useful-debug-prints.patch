@@ -2,6 +2,7 @@ From 30aba5b06805b245799fb1b97209a38153128be0 Mon Sep 17 00:00:00 2001
 From: Massimo Pennazio <maxipenna@libero.it>
 Date: Fri, 8 Nov 2024 11:12:00 +0000
 Subject: [PATCH 2/4] Adding some useful debug prints
+Upstream-Status: Pending
 
 ---
  adb/adb.c | 6 ++++++

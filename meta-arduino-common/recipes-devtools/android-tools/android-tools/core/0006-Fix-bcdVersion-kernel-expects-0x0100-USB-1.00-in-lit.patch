@@ -3,6 +3,7 @@ From: Massimo Pennazio <maxipenna@libero.it>
 Date: Wed, 29 Oct 2025 12:10:21 +0000
 Subject: [PATCH] Fix bcdVersion: kernel expects 0x0100 (USB 1.00), in
  little-endian order
+Upstream-Status: Pending
 
 ---
  adb/usb_linux_client.c | 4 ++--

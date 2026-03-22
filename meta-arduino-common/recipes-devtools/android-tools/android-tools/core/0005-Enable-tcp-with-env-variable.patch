@@ -2,6 +2,7 @@ From e2f9df212ef4df9c4403bc2183ce237978d92e56 Mon Sep 17 00:00:00 2001
 From: maidnl <d.aimo@arduino.cc>
 Date: Tue, 2 Sep 2025 14:54:08 +0200
 Subject: [PATCH] Enable tcp with env variable
+Upstream-Status: Pending
 
 ---
  adb/adb.c | 17 +++++++++++++----
