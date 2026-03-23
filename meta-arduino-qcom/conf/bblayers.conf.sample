@@ -1,0 +1,25 @@
+# POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+POKY_BBLAYERS_CONF_VERSION = "2"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  /workdir/sources/openembedded-core/meta \
+  /workdir/sources/openembedded-core/../meta-yocto/meta-poky \
+  /workdir/sources/openembedded-core/../meta-yocto/meta-yocto-bsp \
+  /workdir/sources/meta-qcom \
+  /workdir/sources/meta-qcom-3rdparty \
+  /workdir/sources/meta-arduino/meta-arduino-common \
+  /workdir/sources/meta-arduino/meta-arduino-qcom \
+  /workdir/sources/meta-openembedded/meta-oe \
+  /workdir/sources/meta-openembedded/meta-python \
+  /workdir/sources/meta-openembedded/meta-networking \
+  /workdir/sources/meta-openembedded/meta-filesystems \
+  /workdir/sources/meta-clang \
+  /workdir/sources/meta-security \
+  /workdir/sources/meta-virtualization \
+  /workdir/sources/meta-arm/meta-arm-toolchain \
+  /workdir/sources/meta-arm/meta-arm \
+  "
