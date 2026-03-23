@@ -38,4 +38,6 @@ BB_SIGNATURE_HANDLER = "OEBasicHash"
 #INHERIT += "rm_work"
 #INHERIT += "image-buildinfo"
 
+SKIP_META_QCOM_SANITY_CHECK = "1"
+
 CONF_VERSION = "2"
