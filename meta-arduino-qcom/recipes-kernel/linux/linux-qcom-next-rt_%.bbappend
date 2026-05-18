@@ -1,9 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-qcom-next:"
 
-# tag: qcom-next-7.0-rc2-20260306
-LINUX_VERSION:uno-q = "6.19+7.0-rc2"
-SRCREV:uno-q = "a656209cfb5a49f301c377aa8455a10f83a4a719"
-
 LINUX_VERSION:ventuno-q = "6.19.5"
 SRCREV:ventuno-q = "6d944a84a0d57999d3c4aae46470e175245a0839"
 KBUILD_CONFIG_EXTRA:remove:ventuno-q = "${S}/arch/arm64/configs/prune.config ${S}/arch/arm64/configs/qcom.config"
