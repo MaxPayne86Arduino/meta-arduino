@@ -9,17 +9,21 @@ BBLAYERS ?= " \
   /workdir/sources/openembedded-core/meta \
   /workdir/sources/openembedded-core/../meta-yocto/meta-poky \
   /workdir/sources/openembedded-core/../meta-yocto/meta-yocto-bsp \
-  /workdir/sources/meta-qcom \
-  /workdir/sources/meta-qcom-3rdparty \
-  /workdir/sources/meta-arduino/meta-arduino-common \
-  /workdir/sources/meta-arduino/meta-arduino-qcom \
   /workdir/sources/meta-openembedded/meta-oe \
   /workdir/sources/meta-openembedded/meta-python \
   /workdir/sources/meta-openembedded/meta-networking \
   /workdir/sources/meta-openembedded/meta-filesystems \
-  /workdir/sources/meta-clang \
+  /workdir/sources/meta-openembedded/meta-gnome \
+  /workdir/sources/meta-openembedded/meta-multimedia \
+  /workdir/sources/meta-openembedded/meta-xfce \
+  /workdir/sources/meta-selinux \
   /workdir/sources/meta-security \
+  /workdir/sources/meta-security/meta-tpm \
   /workdir/sources/meta-virtualization \
-  /workdir/sources/meta-arm/meta-arm-toolchain \
-  /workdir/sources/meta-arm/meta-arm \
-  "
+  /workdir/sources/meta-updater \
+  /workdir/sources/meta-qcom \
+  /workdir/sources/meta-qcom-distro \
+  /workdir/sources/meta-qcom-3rdparty \
+  /workdir/sources/meta-arduino/meta-arduino-common \
+  /workdir/sources/meta-arduino/meta-arduino-qcom \
+"
