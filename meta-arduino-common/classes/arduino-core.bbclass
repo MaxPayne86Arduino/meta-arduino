@@ -1,5 +1,4 @@
-# arduino-core.bbclass
-# Common Arduino core installation logic using arduino-cli from host/container
+# Common Arduino core installation logic using arduino-cli (native) from STAGING_BINDIR_NATIVE
 
 ARDUINO_CLI ?= "${STAGING_BINDIR_NATIVE}/arduino-cli"
 ARDUINO_CORE ?= ""
