@@ -1,7 +1,7 @@
 # arduino-core.bbclass
 # Common Arduino core installation logic using arduino-cli from host/container
 
-ARDUINO_CLI ?= "arduino-cli"
+ARDUINO_CLI ?= "${STAGING_BINDIR_NATIVE}/arduino-cli"
 ARDUINO_CORE ?= ""
 
 do_install_arduino_core() {

@@ -3,6 +3,8 @@ LICENSE = "MIT"
 
 inherit arduino-core
 
+DEPENDS += "arduino-cli-native"
+
 do_install() {
     do_install_arduino_core
 }
