@@ -5,14 +5,14 @@ inherit arduino-core
 
 DEPENDS += "arduino-cli-native base-passwd"
 
-# Use ARDUINO_ZEPHYR_CORE from machine config
-FW_SRC_DIR = "${WORKDIR}/image/home/arduino/.arduino15/packages/arduino/hardware/zephyr/0.55.0/firmwares"
+# Use ARDUINO_ZEPHYR_LOADER from machine config
+FW_SRC_DIR = "${WORKDIR}/image/home/arduino/.arduino15/packages/arduino/hardware/zephyr/${ARDUINO_CORE_VERSION}/firmwares"
 
 do_install() {
     do_install_arduino_core
     install -d ${D}${libdir}/firmware/arduino
-    install -m 0644 ${FW_SRC_DIR}/${ARDUINO_ZEPHYR_CORE}.bin ${D}${libdir}/firmware/arduino/
-    install -m 0644 ${FW_SRC_DIR}/${ARDUINO_ZEPHYR_CORE}.elf ${D}${libdir}/firmware/arduino/
+    install -m 0644 ${FW_SRC_DIR}/${ARDUINO_ZEPHYR_LOADER}.bin ${D}${libdir}/firmware/arduino/
+    install -m 0644 ${FW_SRC_DIR}/${ARDUINO_ZEPHYR_LOADER}.elf ${D}${libdir}/firmware/arduino/
     rm -rf ${WORKDIR}/image/home # Prune massive .arduino15 data dir
 }
 
