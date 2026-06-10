@@ -16,7 +16,7 @@ do_compile() {
         ${ARDUINO_CLI} lib install ${ARDUINO_SKETCH_LIBS}
     fi
     if [ -n "${ARDUINO_SKETCH}" ]; then
-        bbwarn "Compiling Arduino Sketch: ${ARDUINO_SKETCH}
+        bbwarn "Compiling Arduino Sketch: ${ARDUINO_SKETCH}"
         ${ARDUINO_CLI} compile --fqbn arduino:zephyr:unoq \
             --build-path ${ARDUINO_BUILD_PATH} \
             "${FW_SRC_DIR}/${ARDUINO_SKETCH_PATH}"
