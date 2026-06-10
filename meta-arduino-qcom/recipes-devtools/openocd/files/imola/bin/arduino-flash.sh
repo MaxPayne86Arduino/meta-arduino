@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # SPDX-FileCopyrightText: Copyright (C) Arduino s.r.l. and/or its affiliated companies
 #
@@ -22,8 +22,8 @@ if [ -z "$ZEPHYR" ] ; then
 	echo WARNING: Only flashing the sketch, not the Zephyr core
 	echo
 else
-	CMDS+="; flash write_image erase $ZEPHYR"
+	CMDS="$CMDS; flash write_image erase $ZEPHYR"
 fi
-CMDS+="; flash write_image erase $SKETCH 0x80F0000 bin; reset; shutdown"
+CMDS="$CMDS; flash write_image erase $SKETCH 0x80F0000 bin; reset; shutdown"
 
 $INSTALL_PATH/bin/openocd -d2 -s ${INSTALL_PATH} -f openocd_gpiod.cfg -c "$CMDS"

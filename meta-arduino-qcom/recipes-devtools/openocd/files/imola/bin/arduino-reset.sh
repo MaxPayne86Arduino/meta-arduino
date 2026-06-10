@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # SPDX-FileCopyrightText: Copyright (C) Arduino s.r.l. and/or its affiliated companies
 #
