@@ -17,4 +17,4 @@ repos:
       meta-arduino-qcom:
 
 target:
-  - arduino-docker-image
+  - arduino-container-image
