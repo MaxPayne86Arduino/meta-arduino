@@ -13,7 +13,7 @@ inherit go
 
 BBCLASSEXTEND = "native"
 
-GO_INSTALL = "${GO} build -trimpath -o arduino-app-cli ./cmd/arduino-app-cli"
+GO_INSTALL = "${GO} build -trimpath -o arduino-app-cli ./cmd/arduino-app-cli/main.go"
 
 do_rm_work:prepend() {
     bbwarn "Fixing permissions into ${WORKDIR}/build/pkg/mod"
