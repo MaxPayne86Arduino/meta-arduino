@@ -3,7 +3,6 @@ FILESEXTRAPATHS:prepend:imola := "${THISDIR}/files/imola:"
 # imola: build from the facchinm fork (jomla branch)
 SRC_URI:imola = " \
     gitsm://github.com/facchinm/OpenOCD.git;protocol=https;name=openocd;branch=jomla \
-    git://repo.or.cz/r/git2cl.git;protocol=http;destsuffix=tools/git2cl;name=git2cl;branch=master \
     file://openocd_gpiod.cfg \
     file://stm32u5x.cfg \
     file://stm32x5x_common.cfg \
@@ -15,7 +14,6 @@ SRC_URI:imola = " \
 "
 
 SRCREV_openocd:imola = "e6a2c12f41c9d1131b980c47af7517b4a5aca110"
-SRCREV_git2cl:imola  = "${AUTOREV}"
 
 DEPENDS:append:imola = " libgpiod"
 
