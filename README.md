@@ -33,7 +33,7 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
 
 ## Getting Started
 
-See [DEVELOPERS.md](DEVELOPERS.md) for instructions on setting up the build environment and building NXP and LmP images.
+See [DEVELOPERS.md](DEVELOPERS.md) for instructions on setting up the build environment, building NXP and LmP images, and adding custom devicetree overlays or kernel modules.
 
 ## Supported Hardware
 

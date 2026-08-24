@@ -80,3 +80,13 @@
    ```bash
    bitbake lmp-devel-arduino-image
    ```
+
+## How-To: Add Custom Devicetree Overlay, Kernel Module(s)
+
+Suggesting modifications inside layers maintained here, but you might want to create your own separate Yocto layer.
+
+1. Add your overlay to `recipes-bsp/device-tree/arduino-device-tree/<machine>/overlays`
+2. Add your overlay for compilation in `./recipes-bsp/device-tree/arduino-device-tree.inc` or `./recipes-bsp/device-tree/arduino-device-tree.bbappend`
+3. Corresponding module(s):
+   - **NXP builds**: `meta-arduino-nxp/recipes-kernel/linux/linux-imx/<machine>/defconfig`, or better to keep this intact and add a custom `.cfg`, then add `.cfg` to `SRC_URI` in a `linux-imx.bbappend`
+   - **LmP builds**: `meta-arduino-lmp/recipes-kernel/linux/linux-lmp-fslc-imx/<machine>/<machine>.cfg` (already provides `.cfg`)
