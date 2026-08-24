@@ -39,6 +39,10 @@ See [DEVELOPERS.md](DEVELOPERS.md) for instructions on setting up the build envi
 
 See [HARDWARE.md](HARDWARE.md) for details on supported machines, carrier boards, camera modules, display panels, wireless modules, and secure elements.
 
+## Projects Using meta-arduino
+
+- [meta-pika-spark](https://github.com/pika-spark/meta-pika-spark): Matchbox-sized high-performance computing for mobile robots.
+
 ## Contributing
 
 Contributions are welcome! Please submit pull requests or open issues for any bugs or feature requests.
