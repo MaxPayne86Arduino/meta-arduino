@@ -2,6 +2,16 @@
 
 ## Getting Started [NXP Builds]
 
+Supported machines:
+
+| Machine |
+| --- |
+| portenta-x8 |
+| portenta-x9 |
+| imx8mp-astrial |
+
+For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
+
 1. Initialize and sync the Yocto manifest:
    ```bash
    repo init -u https://github.com/nxp-imx/imx-manifest.git -m imx-6.6.52-2.2.0.xml -b imx-linux-scarthgap
@@ -36,6 +46,15 @@
 
 QCom-based builds use the [kas](https://kas.readthedocs.io/) structure rather than Google Repo.
 
+Supported machines:
+
+| Machine | Board |
+| --- | --- |
+| imola | UNO Q |
+| monza | VentUNO Q |
+
+For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
+
 1. Clone this repository and enter it:
    ```bash
    git clone https://github.com/Arduino/meta-arduino.git
@@ -58,6 +77,15 @@ QCom-based builds use the [kas](https://kas.readthedocs.io/) structure rather th
 Note: Currently, the only supported image for QCom boards is `arduino-container-image.bb` (`arduino-container-image`).
 
 ## Getting Started [LmP Builds]
+
+Supported machines:
+
+| Machine |
+| --- |
+| portenta-x8 |
+| raspberrypi4-64 |
+
+For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
 
 1. Initialize and sync the Yocto manifest:
    ```bash
