@@ -25,7 +25,13 @@ This layer supports boards using NXP processors. It includes:
 
 **Dependencies**: `meta-arduino-common`
 
-### 3. `meta-arduino-lmp`
+### 3. `meta-arduino-qcom`
+
+This layer supports Qualcomm-based boards (such as Imola / Arduino UNO Q and Monza / VentUNO Q). It includes BSP extensions, machine configurations, device trees, and custom recipes for Qualcomm platforms.
+
+**Dependencies**: `meta-arduino-common`
+
+### 4. `meta-arduino-lmp`
 
 This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundries.io](https://github.com/foundriesio/lmp-manifest).
 
@@ -33,7 +39,7 @@ This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundri
 
 ## Getting Started
 
-See [DEVELOPERS.md](DEVELOPERS.md) for instructions on setting up the build environment, building NXP and LmP images, and adding custom devicetree overlays or kernel modules.
+See [DEVELOPERS.md](DEVELOPERS.md) for instructions on setting up the build environment, building NXP, QCom and LmP images, and adding custom devicetree overlays or kernel modules.
 
 ## Supported Hardware
 

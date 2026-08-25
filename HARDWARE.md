@@ -2,12 +2,14 @@
 
 ## Yocto Machines (SoMs)
 
-| Machine            | Status                      |
-|--------------------|----------------------------|
-| portenta-x8        | In Production              |
-| portenta-x9        | Internal Use / Prototype   |
-| imx8mp-astrial     | Internal Use / Prototype   |
-| raspberrypi4-64    | Internal Use / Prototype   |
+| Machine               | Status                      |
+|-----------------------|----------------------------|
+| portenta-x8           | In Production              |
+| portenta-x9           | Internal Use / Prototype   |
+| imx8mp-astrial        | Internal Use / Prototype   |
+| raspberrypi4-64       | Internal Use / Prototype   |
+| imola (Arduino UNO Q) | In Production              |
+| monza (VentUNO Q)     | In Production              |
 
 ## Carrier Boards
 
@@ -47,10 +49,12 @@ All cameras use 2-lane MIPI-CSI interface.
 
 ## WiFi/Bluetooth Modules
 
-| Module                     | Compatible Machines | WiFi Standard     | Frequency Bands | Bluetooth | Status                    |
-|----------------------------|---------------------|-------------------|-----------------|-----------|---------------------------|
-| Murata 1DX                 | portenta-x8         | 802.11b/g/n       | 2.4GHz          | BT 4.2    | In Production             |
-| NXP IW612                  | portenta-x9         | 802.11ax (WiFi 6) | 2.4GHz, 5GHz    | BT 5.4    | Internal Use / Prototype  |
+| Module                     | Compatible Machines | WiFi Standard     | Frequency Bands     | Bluetooth | Status                    |
+|----------------------------|---------------------|-------------------|---------------------|-----------|---------------------------|
+| Murata 1DX                 | portenta-x8         | 802.11b/g/n       | 2.4GHz              | BT 4.2    | In Production             |
+| NXP IW612                  | portenta-x9         | 802.11ax (WiFi 6) | 2.4GHz, 5GHz        | BT 5.4    | Internal Use / Prototype  |
+| WCNBN3536A (WCN3950)       | imola               | 802.11a/b/g/n/ac  | 2.4GHz, 5GHz        | BT 5.0    | In Production             |
+| Qualcomm NFA725B (WCN6855) | monza               | 802.11ax (WiFi 6E)| 2.4GHz, 5GHz, 6GHz  | BT 5.3    | In Production             |
 
 ## Secure Elements
 

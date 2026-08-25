@@ -32,6 +32,26 @@
    bitbake arduino-console-image
    ```
 
+## Getting Started [QCom Builds]
+
+QCom-based builds use the [kas](https://kas.readthedocs.io/) structure rather than Google Repo.
+
+1. Set up the cache environment variables:
+   ```bash
+   export SSTATE_DIR=/mnt/sstate-cache/sstate
+   export DL_DIR=/mnt/sstate-cache/downloads
+   ```
+2. Run `kas-container` to build (e.g., for Imola / Arduino UNO Q):
+   ```bash
+   ./kas-container --runtime-args "--user $(id -u):$(id -g) --memory=48g" build meta-arduino-qcom/ci/imola.yml
+   ```
+   Or for Monza / VentUNO Q:
+   ```bash
+   ./kas-container --runtime-args "--user $(id -u):$(id -g) --memory=48g" build meta-arduino-qcom/ci/monza.yml
+   ```
+
+Note: Currently, the only supported image for QCom boards is `arduino-container-image.bb` (`arduino-container-image`).
+
 ## Getting Started [LmP Builds]
 
 1. Initialize and sync the Yocto manifest:
@@ -90,3 +110,4 @@ Suggesting modifications inside layers maintained here, but you might want to cr
 3. Corresponding module(s):
    - **NXP builds**: `meta-arduino-nxp/recipes-kernel/linux/linux-imx/<machine>/defconfig`, or better to keep this intact and add a custom `.cfg`, then add `.cfg` to `SRC_URI` in a `linux-imx.bbappend`
    - **LmP builds**: `meta-arduino-lmp/recipes-kernel/linux/linux-lmp-fslc-imx/<machine>/<machine>.cfg` (already provides `.cfg`)
+   - **QCom builds**: `meta-arduino-qcom/recipes-kernel/linux/linux-arduino/<machine>.cfg` or via custom `.cfg` in `SRC_URI` in a `linux-arduino_%.bbappend`
