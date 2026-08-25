@@ -36,12 +36,17 @@
 
 QCom-based builds use the [kas](https://kas.readthedocs.io/) structure rather than Google Repo.
 
-1. Set up the cache environment variables:
+1. Clone this repository and enter it:
+   ```bash
+   git clone https://github.com/Arduino/meta-arduino.git
+   cd meta-arduino
+   ```
+2. Set up the cache environment variables:
    ```bash
    export SSTATE_DIR=/mnt/sstate-cache/sstate
    export DL_DIR=/mnt/sstate-cache/downloads
    ```
-2. Run `kas-container` to build (e.g., for Imola / Arduino UNO Q):
+3. Run `kas-container` to build (e.g., for Imola / Arduino UNO Q):
    ```bash
    ./kas-container --runtime-args "--user $(id -u):$(id -g) --memory=48g" build meta-arduino-qcom/ci/imola.yml
    ```
