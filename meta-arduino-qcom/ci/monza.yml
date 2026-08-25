@@ -6,9 +6,4 @@ header:
     - ci/base.yml
     - ci/ci.yml
 
-repos:
-  meta-qcom-3rdparty:
-    branch: qcom-next
-    commit: ca09a43dd5ac48bc63282f541c963732480e3b45
-
 machine: monza
