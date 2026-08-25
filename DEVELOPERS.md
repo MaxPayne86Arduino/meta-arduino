@@ -143,4 +143,4 @@ Suggesting modifications inside layers maintained here, but you might want to cr
 3. Corresponding module(s):
    - **NXP builds**: `meta-arduino-nxp/recipes-kernel/linux/linux-imx/<machine>/defconfig`, or better to keep this intact and add a custom `.cfg`, then add `.cfg` to `SRC_URI` in a `linux-imx.bbappend`
    - **LmP builds**: `meta-arduino-lmp/recipes-kernel/linux/linux-lmp-fslc-imx/<machine>/<machine>.cfg` (already provides `.cfg`)
-   - **QCom builds**: `meta-arduino-qcom/recipes-kernel/linux/linux-arduino/<machine>.cfg` or via custom `.cfg` in `SRC_URI` in a `linux-arduino_%.bbappend`
+   - **QCom builds**: `meta-arduino-qcom/recipes-kernel/linux/linux-arduino/<machine>.cfg` or `meta-arduino-qcom/recipes-kernel/linux/linux-qcom-next/<machine>.cfg`, or via custom `.cfg` in `SRC_URI` in a `linux-arduino_%.bbappend` or `linux-qcom-next_%.bbappend`
