@@ -9,6 +9,7 @@ header:
 repos:
   meta-qcom-3rdparty:
     url: https://github.com/qualcomm-linux/meta-qcom-3rdparty.git
+    branch: main
 
   # meta-arduino is a multi-layer repo; no url = current checkout
   meta-arduino:
