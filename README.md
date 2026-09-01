@@ -10,10 +10,10 @@ Main layer maintainer: Massimo Pennazio maxipenna@libero.it
 
 This layer contains common components shared across Arduino platforms:
 - Android tools (ADB support)
-- OpenOCD
-- Avahi and network manager configurations
-- M4 proxy
-- Common image recipes (console, docker, weston, v4l2, OTBR)
+- Arduino CLI tooling (arduino-cli, arduino-app-cli, arduino-router)
+- Avahi and NetworkManager configurations
+- Legacy: m4-proxy (old arduino-router)
+- Common image recipes (console, container, weston, multimedia, OTBR)
 - USB gadget configurations (libusbgx-config)
 
 ### 2. `meta-arduino-nxp`
