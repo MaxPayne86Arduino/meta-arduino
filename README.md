@@ -23,6 +23,8 @@ This layer supports boards using NXP processors. It includes:
 - Device tree overlays
 - Custom recipes specific to NXP platforms
 
+**Warning**: Only the `scarthgap` branch is supported at the moment.
+
 **Dependencies**: `meta-arduino-common`
 
 ### 3. `meta-arduino-qcom`
@@ -34,6 +36,8 @@ This layer supports Qualcomm-based boards (such as Imola / Arduino UNO Q and Mon
 ### 4. `meta-arduino-lmp`
 
 This adds compatibility to [Linux Micro Platform (LMP) distribution from Foundries.io](https://github.com/foundriesio/lmp-manifest).
+
+**Warning**: Only the `scarthgap` branch is supported at the moment.
 
 **Dependencies**: `meta-arduino-common`
 
