@@ -19,11 +19,6 @@ LMP_EXTRA = " \
     libgpiod-tools \
 "
 
-ADB = " \
-    android-tools \
-    android-tools-adbd \
-"
-
 ARDUINO = " \
     arduino-ootb \
     m4-proxy \
@@ -35,7 +30,6 @@ CORE_IMAGE_BASE_INSTALL += " \
     libdrm \
     usb-modeswitch \
     ${LMP_EXTRA} \
-    ${ADB} \
     ${ARDUINO} \
 "
 

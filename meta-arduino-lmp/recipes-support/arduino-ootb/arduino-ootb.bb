@@ -12,7 +12,6 @@ SRC_URI = " \
     file://ec200a-eu.service \
     file://compose-apps-aklite-offline-run.service \
     file://set_cpu_freq \
-    file://disable-adb \
     file://disable-ssh \
 "
 
@@ -32,7 +31,6 @@ do_install() {
 
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/connection_status_led ${D}${bindir}/
-    install -m 0755 ${WORKDIR}/disable-adb ${D}${bindir}/
     install -m 0755 ${WORKDIR}/disable-ssh ${D}${bindir}/
 }
 
