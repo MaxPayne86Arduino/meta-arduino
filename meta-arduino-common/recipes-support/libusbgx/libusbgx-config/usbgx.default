@@ -1,2 +1,12 @@
-IMPORT_SCHEMAS="acm ffs"
+# USB gadget functions composed by arduino-gadget-setup (usb-gadget.service).
+#
+# Supported schemas:
+#   acm          - CDC ACM serial port (/dev/ttyGS*)
+#   ffs          - FunctionFS instance backing adbd
+#   ncm          - CDC NCM ethernet (usb0)
+#   rndis        - RNDIS ethernet
+#   mass_storage - USB mass storage
+#
+# Drop 'ffs' to ship an image that does not expose adb over USB.
+IMPORT_SCHEMAS="acm ffs ncm"
 ENABLED_SCHEMAS="$IMPORT_SCHEMAS"

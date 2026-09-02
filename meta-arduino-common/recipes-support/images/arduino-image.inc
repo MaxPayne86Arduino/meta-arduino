@@ -11,6 +11,14 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     u-boot-script-arduino \
 "
 
+# USB composite gadget (acm / ffs-adb / ncm), driven by /etc/default/usbgx.
+# Also ships a drop-in making android-tools-adbd (when installed) attach to the
+# ffs.adb function created here instead of composing its own gadget.
+CORE_IMAGE_EXTRA_INSTALL += " \
+    arduino-usb-gadget \
+    libusbgx-config \
+"
+
 # Install extra packages (minimal)
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline-extended \

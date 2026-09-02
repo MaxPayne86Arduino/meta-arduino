@@ -1,0 +1,248 @@
+#!/bin/sh
+#
+# Arduino USB gadget setup
+#
+# Builds a composite USB gadget through configfs, based on the schema list
+# declared in /etc/default/usbgx (ENABLED_SCHEMAS, provided by libusbgx-config).
+#
+# Board specific identity (vid/pid/strings/serial) can be overridden by
+# dropping an /etc/arduino-gadget-setup.machine shell fragment from a BSP layer.
+#
+# Usage: arduino-gadget-setup {start|bind|unbind|stop|restart}
+
+set -e
+
+GADGET_NAME="${GADGET_NAME:-arduino}"
+GADGET_ROOT="/sys/kernel/config/usb_gadget"
+GADGET_PATH="${GADGET_ROOT}/${GADGET_NAME}"
+UDC_DIR="${UDC_DIR:-/sys/class/udc}"
+FFS_ADB_DIR="/dev/usb-ffs/adb"
+
+# Default identity, overridable via /etc/arduino-gadget-setup.machine
+vendor=0x2341
+product=0x0001
+manufacturer="Arduino"
+model="Arduino device"
+conf="Arduino"
+serial=""
+
+load_config() {
+    if [ -r /etc/default/usbgx ]; then
+        # shellcheck disable=SC1091
+        . /etc/default/usbgx
+    fi
+
+    if [ -r /etc/arduino-gadget-setup.machine ]; then
+        # shellcheck disable=SC1091
+        . /etc/arduino-gadget-setup.machine
+    fi
+
+    if [ -z "$serial" ]; then
+        serial=$(sed -n -e '/androidboot.serialno/ s/.*androidboot.serialno=\([^ ]*\).*/\1/gp' /proc/cmdline 2>/dev/null || true)
+    fi
+    if [ -z "$serial" ] && [ -r /sys/devices/soc0/serial_number ]; then
+        serial=$(cat /sys/devices/soc0/serial_number)
+    fi
+    if [ -z "$serial" ] && [ -r /etc/machine-id ]; then
+        serial=$(cat /etc/machine-id)
+    fi
+    # Only letters and digits are allowed in a USB string descriptor serial
+    serial=$(printf '%s' "$serial" | tr -cd 'A-Za-z0-9')
+    [ -n "$serial" ] || serial="0123456789ABCDEF"
+
+    ENABLED_SCHEMAS="${ENABLED_SCHEMAS:-acm}"
+}
+
+# Higher rank means faster controller
+speed_rank() {
+    case "$1" in
+        "super-speed-plus") echo 5 ;;
+        "super-speed")      echo 4 ;;
+        "high-speed")       echo 3 ;;
+        "full-speed")       echo 2 ;;
+        "low-speed")        echo 1 ;;
+        *)                  echo 0 ;;
+    esac
+}
+
+# Pick the UDC to bind to: honour $UDC_ENTRY when set, otherwise select the
+# controller advertising the highest maximum_speed (first one wins on ties).
+select_udc() {
+    if [ -n "$UDC_ENTRY" ]; then
+        echo "$UDC_ENTRY"
+        return 0
+    fi
+
+    [ -d "$UDC_DIR" ] || return 1
+
+    best_udc=""
+    best_rank=-1
+    for udc in $(ls -1 "$UDC_DIR" 2>/dev/null | sort); do
+        [ -e "$UDC_DIR/$udc" ] || continue
+        rank=$(speed_rank "$(cat "$UDC_DIR/$udc/maximum_speed" 2>/dev/null || true)")
+        if [ -z "$best_udc" ] || [ "$rank" -gt "$best_rank" ]; then
+            best_udc="$udc"
+            best_rank="$rank"
+        fi
+    done
+
+    [ -n "$best_udc" ] || return 1
+    echo "$best_udc"
+}
+
+is_mounted() {
+    grep -q " $1 " /proc/self/mounts 2>/dev/null
+}
+
+mount_ffs_adb() {
+    adb_uid=$(id -u adb 2>/dev/null || echo 2000)
+    adb_gid=$(id -g adb 2>/dev/null || echo 2000)
+    mkdir -p "$FFS_ADB_DIR"
+    is_mounted "$FFS_ADB_DIR" || \
+        mount -t functionfs adb "$FFS_ADB_DIR" -o "uid=${adb_uid},gid=${adb_gid}"
+}
+
+start() {
+    load_config
+
+    if [ -d "$GADGET_PATH" ]; then
+        echo "Gadget ${GADGET_NAME} already present, nothing to do"
+        return 0
+    fi
+
+    [ -d "$GADGET_ROOT" ] || modprobe libcomposite
+
+    echo "Creating Arduino USB gadget (schemas: ${ENABLED_SCHEMAS})..."
+
+    mkdir "$GADGET_PATH"
+    cd "$GADGET_PATH"
+
+    echo "$vendor" > idVendor
+    echo "$product" > idProduct
+    # Miscellaneous device / Interface Association Descriptor
+    echo 0xEF > bDeviceClass
+    echo 0x02 > bDeviceSubClass
+    echo 0x01 > bDeviceProtocol
+
+    mkdir strings/0x409
+    echo "$serial" > strings/0x409/serialnumber
+    echo "$manufacturer" > strings/0x409/manufacturer
+    echo "$model" > strings/0x409/product
+
+    mkdir configs/c.1
+    # Self powered
+    echo 0xC0 > configs/c.1/bmAttributes
+    mkdir configs/c.1/strings/0x409
+    echo "$conf: $(echo "$ENABLED_SCHEMAS" | tr ' ' '+')" > configs/c.1/strings/0x409/configuration
+
+    acm_count=0
+    ncm_count=0
+    rndis_count=0
+    for schema in $ENABLED_SCHEMAS; do
+        case "$schema" in
+            acm)
+                mkdir -p "functions/acm.GS${acm_count}"
+                ln -s "functions/acm.GS${acm_count}" configs/c.1
+                acm_count=$((acm_count + 1))
+                ;;
+            ffs)
+                # FunctionFS instance backing adbd
+                mkdir -p functions/ffs.adb
+                ln -s functions/ffs.adb configs/c.1
+                mount_ffs_adb
+                ;;
+            ncm)
+                mkdir -p "functions/ncm.usb${ncm_count}"
+                ln -s "functions/ncm.usb${ncm_count}" configs/c.1
+                ncm_count=$((ncm_count + 1))
+                ;;
+            rndis)
+                mkdir -p "functions/rndis.usb${rndis_count}"
+                ln -s "functions/rndis.usb${rndis_count}" configs/c.1
+                rndis_count=$((rndis_count + 1))
+                ;;
+            mass_storage)
+                mkdir -p functions/mass_storage.0
+                ln -s functions/mass_storage.0 configs/c.1
+                ;;
+            *)
+                echo "Unknown schema: ${schema}, skipping" >&2
+                ;;
+        esac
+    done
+}
+
+bind() {
+    if [ ! -d "$GADGET_PATH" ]; then
+        echo "Error: gadget ${GADGET_NAME} not found, run 'start' first" >&2
+        exit 1
+    fi
+
+    udc=$(select_udc) || {
+        echo "Error: no UDC controller found in ${UDC_DIR}" >&2
+        exit 1
+    }
+
+    if [ -n "$(cat "${GADGET_PATH}/UDC" 2>/dev/null)" ]; then
+        echo "Gadget ${GADGET_NAME} already bound"
+        return 0
+    fi
+
+    echo "Binding Arduino USB gadget to UDC: ${udc}"
+    for attempt in 1 2 3 4 5; do
+        if printf '%s' "$udc" > "${GADGET_PATH}/UDC" 2>/dev/null; then
+            return 0
+        fi
+        echo "Bind attempt ${attempt} failed (controller busy), retrying in ${attempt}s..." >&2
+        sleep "$attempt"
+    done
+
+    echo "Error: failed to bind gadget to UDC after 5 attempts" >&2
+    exit 1
+}
+
+unbind() {
+    [ -d "$GADGET_PATH" ] || return 0
+    echo "" > "${GADGET_PATH}/UDC" 2>/dev/null || true
+}
+
+stop() {
+    [ -d "$GADGET_PATH" ] || return 0
+
+    echo "Removing Arduino USB gadget..."
+    unbind
+
+    cd "$GADGET_PATH"
+
+    # Detach every function from the configuration
+    find configs/c.1 -maxdepth 1 -type l -exec rm -f {} \; 2>/dev/null || true
+
+    if is_mounted "$FFS_ADB_DIR"; then
+        umount "$FFS_ADB_DIR" || true
+    fi
+
+    for func in functions/*; do
+        [ -d "$func" ] && rmdir "$func" 2>/dev/null || true
+    done
+
+    rmdir configs/c.1/strings/0x409 2>/dev/null || true
+    rmdir configs/c.1 2>/dev/null || true
+    rmdir strings/0x409 2>/dev/null || true
+
+    cd "$GADGET_ROOT"
+    rmdir "$GADGET_NAME" 2>/dev/null || true
+}
+
+case "$1" in
+    start)   start ;;
+    bind)    bind ;;
+    unbind)  unbind ;;
+    stop)    stop ;;
+    restart) stop; start; bind ;;
+    *)
+        echo "Usage: $0 {start|bind|unbind|stop|restart}" >&2
+        exit 2
+        ;;
+esac
+
+exit 0
