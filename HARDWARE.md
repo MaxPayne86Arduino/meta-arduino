@@ -61,3 +61,58 @@ All cameras use 2-lane MIPI-CSI interface.
 | Module                     | Compatible Machines | Type         | Status        |
 |----------------------------|---------------------|--------------|---------------|
 | NXP SE05X                  | portenta-x8         | I2C          | In Production |
+
+## Block Diagrams
+
+### Arduino UNO Q (imola)
+
+```mermaid
+%% WARNING: Work in progress
+graph TD
+    subgraph UNO_Q["Arduino UNO Q (imola)"]
+        CPU["Qualcomm Application Processor"]
+        RAM["RAM / Flash Storage"]
+        PMIC["PMIC (PM-4125)"]
+        WIFI["WCN3950 (WiFi 802.11a/b/g/n/ac / BT 5.0)"]
+        USB["USB (ADB / Debug / Host)"]
+        TTY["Serial Console (/dev/ttyUSB0)"]
+        GPIO["GPIO / Peripheral Header"]
+
+        PMIC -->|Power Rails| CPU
+        PMIC -->|Power Rails| RAM
+        CPU <--> RAM
+        CPU <--> WIFI
+        CPU <--> USB
+        CPU <--> TTY
+        CPU <--> GPIO
+    end
+```
+
+### Ventuno Q (monza)
+
+```mermaid
+%% WARNING: Work in progress
+graph TD
+    subgraph Ventuno_Q["Ventuno Q (monza)"]
+        subgraph MODULE["Qualcomm System Module (BGA 1883 balls, 57.5×57.5mm)"]
+            CPU["Qualcomm Application Processor"]
+            RAM["RAM / Flash Storage"]
+            IPMIC["Integrated PMIC (Internal 1.8V & Power Rails)"]
+            CPU <--> RAM
+            IPMIC -->|1.8V & Internal Rails| CPU
+            IPMIC -->|1.8V & Internal Rails| RAM
+        end
+
+        DCDC["External Dedicated DC-DC Buck Regulator (3.3V)"]
+        WIFI["WCN6855 / NFA725B (WiFi 6E 802.11ax / BT 5.3)"]
+        USB["USB (ADB / Debug / Host)"]
+        TTY["Serial Console (/dev/ttyUSB0)"]
+        GPIO["GPIO / Peripheral Header"]
+
+        DCDC -->|3.3V Input| MODULE
+        CPU <--> WIFI
+        CPU <--> USB
+        CPU <--> TTY
+        CPU <--> GPIO
+    end
+```
