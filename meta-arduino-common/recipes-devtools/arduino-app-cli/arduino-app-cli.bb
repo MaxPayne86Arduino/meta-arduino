@@ -36,3 +36,12 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${S}/arduino-app-cli ${D}${bindir}/arduino-app-cli
 }
+
+RDEPENDS:${PN} += " \
+    arduino-router \
+    arduino-cli \
+    openocd \
+"
+
+# Not strictly necessary for now
+#RDEPENDS:${PN} += " arduino-cloud-connector"
