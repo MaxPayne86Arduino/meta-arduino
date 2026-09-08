@@ -13,8 +13,6 @@ DEPENDS = "fastrpc"
 SRC_URI = "git://github.com/qualcomm/libqcnpuperf;protocol=https;nobranch=1"
 SRCREV = "b2ec245d3b0d98cdb3df75f22ba7209e461c8099"
 
-S = "${UNPACKDIR}/git"
-
 inherit cmake pkgconfig
 
 # Disable the ncurses-based CLI sample by default to keep the recipe lean;
