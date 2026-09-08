@@ -76,6 +76,24 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
 
 Note: Currently, the only supported image for QCom boards is `arduino-container-image.bb` (`arduino-container-image`).
 
+### Flashing [Imola]
+
+1. Download the output artifact (`arduino-container-image-imola.rootfs.qcomflash.tar.gz`) from the Yocto deploy directory, extract it, and `cd` into the extracted folder.
+2. Locally on your host PC, use `qdl` from inside the extracted archive:
+   ```bash
+   qdl --storage emmc --debug prog_firehose_ddr.elf rawprogram0.xml patch0.xml
+   ```
+
+### Flashing [Monza]
+
+1. Download the output artifact (`arduino-container-image-monza.rootfs.qcomflash.tar.gz`) from the Yocto deploy directory, extract it, and `cd` into the extracted folder.
+2. Locally on your host PC, use `qdl` from inside the extracted archive:
+   ```bash
+   qdl --storage spinor --debug prog_firehose_ddr.elf sail_nor/rawprogram*.xml sail_nor/patch*.xml --allow-missing
+   qdl --storage emmc --debug prog_firehose_ddr.elf rawprogram1.xml patch1.xml
+   qdl --storage emmc --debug prog_firehose_ddr.elf rawprogram0.xml patch0.xml
+   ```
+
 ## Getting Started [LmP Builds]
 
 Supported machines:
