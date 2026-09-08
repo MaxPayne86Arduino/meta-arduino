@@ -36,6 +36,3 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${S}/arduino-cli ${D}${bindir}/arduino-cli
 }
-
-# For target, you may want to set additional RDEPENDS or RRECOMMENDS
-# RDEPENDS:${PN} += "libc"
