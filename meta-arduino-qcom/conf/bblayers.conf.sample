@@ -21,6 +21,7 @@ BBLAYERS ?= " \
   /workdir/sources/meta-security/meta-tpm \
   /workdir/sources/meta-virtualization \
   /workdir/sources/meta-updater \
+  /workdir/sources/meta-ai \
   /workdir/sources/meta-qcom \
   /workdir/sources/meta-qcom-distro \
   /workdir/sources/meta-qcom-3rdparty \
