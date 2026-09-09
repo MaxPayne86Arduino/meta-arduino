@@ -15,6 +15,7 @@ CORE_IMAGE_EXTRA_INSTALL:append = " \
 CORE_IMAGE_EXTRA_INSTALL:append = " \
     camera-service \
     camx-dlkm \
+    camx-hamoa \
     camx-kodiak \
     camx-lemans \
     camx-nhx \
@@ -23,6 +24,7 @@ CORE_IMAGE_EXTRA_INSTALL:append = " \
     iris-video-dlkm \
     kgsl-dlkm \
     libdiag-bin \
+    onnxruntime-qnn \
     qcom-adreno \
     qcom-sensors-binaries \
     qwes \
