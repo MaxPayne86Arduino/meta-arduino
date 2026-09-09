@@ -15,10 +15,12 @@ SRCREV = "b2ec245d3b0d98cdb3df75f22ba7209e461c8099"
 
 inherit cmake pkgconfig
 
-# Disable the ncurses-based CLI sample by default to keep the recipe lean;
-# enable with PACKAGECONFIG += "cli" if you want the qcnpuperf_cli binary.
-PACKAGECONFIG ??= ""
+# Enable the ncurses-based CLI sample built into its own subpackage libqcnpuperf-cli.
+PACKAGECONFIG ??= "cli"
 PACKAGECONFIG[cli] = "-DQCNPU_PERF_BUILD_CLI=ON,-DQCNPU_PERF_BUILD_CLI=OFF,ncurses"
+
+PACKAGES =+ "${PN}-cli"
+FILES:${PN}-cli = "${bindir}/qcnpuperf_cli"
 
 # Build and runtime require aarch64 with Hexagon DSP / FastRPC support.
 COMPATIBLE_MACHINE = "^$"

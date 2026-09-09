@@ -34,7 +34,7 @@ CORE_IMAGE_EXTRA_INSTALL:append:aarch64 = " \
     gst-plugins-imsdk-python \
 "
 
-CORE_IMAGE_EXTRA_INSTALL:append:monza = " libqcnpuperf"
+CORE_IMAGE_EXTRA_INSTALL:append:monza = " libqcnpuperf libqcnpuperf-cli"
 
 # QCOM targets always use Wayland; guard against incomplete distro configs.
 REQUIRED_DISTRO_FEATURES += "wayland"
