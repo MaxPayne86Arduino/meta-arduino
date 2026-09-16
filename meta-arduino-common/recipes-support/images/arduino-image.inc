@@ -21,6 +21,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 CORE_IMAGE_EXTRA_INSTALL += " \
     arduino-usb-gadget \
     libusbgx-config \
+    expand-rootfs \
 "
 
 # Install extra packages (minimal)
