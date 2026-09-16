@@ -59,6 +59,7 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
    ```bash
    git clone https://github.com/Arduino/meta-arduino.git
    cd meta-arduino
+   ln -s meta-arduino-qcom/ci ci
    ```
 2. Set up the cache environment variables:
    ```bash
@@ -67,14 +68,19 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
    ```
 3. Run `kas-container` to build (e.g., for Imola / Arduino UNO Q):
    ```bash
-   ./kas-container --runtime-args "--user $(id -u):$(id -g) --memory=48g" build meta-arduino-qcom/ci/imola.yml
+   ./kas-container --runtime-args "--memory=48g" build ci/imola.yml
    ```
    Or for Monza / VentUNO Q:
    ```bash
-   ./kas-container --runtime-args "--user $(id -u):$(id -g) --memory=48g" build meta-arduino-qcom/ci/monza.yml
+   ./kas-container --runtime-args "--memory=48g" build ci/monza.yml
    ```
 
 Note: Currently, the only supported image for QCom boards is `arduino-container-image.bb` (`arduino-container-image`).
+
+Note on updating dependencies: The repository includes committed `.lock.yml` files (e.g., `ci/imola.lock.yml`) to ensure reproducible builds. If you need to update or regenerate lockfiles after updating base YAML definitions or upstream branch targets, run:
+```bash
+./kas-container lock ci/imola.yml # or ci/monza.yml
+```
 
 ### Flashing [Imola]
 
