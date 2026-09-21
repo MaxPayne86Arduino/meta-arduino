@@ -4,6 +4,8 @@ header:
   version: 14
   includes:
     - repo: meta-qcom-3rdparty
+      file: ci/base.yml
+    - repo: meta-qcom-3rdparty
       file: ci/qcom-distro.yml
 
 repos:
