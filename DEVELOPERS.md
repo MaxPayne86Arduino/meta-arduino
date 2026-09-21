@@ -61,27 +61,41 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
    ```bash
    git clone https://github.com/Arduino/meta-arduino.git
    cd meta-arduino
+   ```
+2. Set up the persistent host directories and cache environment variables:
+   ```bash
+   mkdir -p "$PWD/mnt"/{build,sources,downloads,sstate-cache}
+
+   export KAS_WORK_DIR="$PWD/mnt/sources"
+   export KAS_BUILD_DIR="$PWD/mnt/build"
+   export DL_DIR="$PWD/mnt/downloads"
+   export SSTATE_DIR="$PWD/mnt/sstate-cache"
+   ```
+3. Download `kas-container` and create the `ci` symlink:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/siemens/kas/master/kas-container -o kas-container
+   chmod +x kas-container
    ln -s meta-arduino-qcom/ci ci
    ```
-2. Set up the cache environment variables:
+4. Run `kas-container` to open an interactive shell or build (e.g., for Imola / Arduino UNO Q):
    ```bash
-   export SSTATE_DIR=/mnt/sstate-cache/sstate
-   export DL_DIR=/mnt/sstate-cache/downloads
-   ```
-3. Run `kas-container` to build (e.g., for Imola / Arduino UNO Q):
-   ```bash
-   ./kas-container --runtime-args "--memory=48g" build ci/imola.yml
+   ./kas-container --runtime-args "--memory=48g" shell meta-arduino-qcom/ci/imola.yml
+   # or build directly:
+   ./kas-container --runtime-args "--memory=48g" build meta-arduino-qcom/ci/imola.yml
    ```
    Or for Monza / VentUNO Q:
    ```bash
-   ./kas-container --runtime-args "--memory=48g" build ci/monza.yml
+   ./kas-container --runtime-args "--memory=48g" shell meta-arduino-qcom/ci/monza.yml
+   # or build directly:
+   ./kas-container --runtime-args "--memory=48g" build meta-arduino-qcom/ci/monza.yml
    ```
 
 Note: Currently, the only supported image for QCom boards is `arduino-container-image.bb` (`arduino-container-image`).
 
-Note on updating dependencies: The repository includes committed `.lock.yml` files (e.g., `ci/imola.lock.yml`) to ensure reproducible builds. If you need to update or regenerate lockfiles after updating base YAML definitions or upstream branch targets, run:
+Note on updating dependencies: The repository includes committed `.lock.yml` files (e.g., `meta-arduino-qcom/ci/imola.lock.yml`) to ensure reproducible builds. If you need to update or regenerate lockfiles after updating base YAML definitions or upstream branch targets, run:
 ```bash
-./kas-container lock ci/imola.yml # or ci/monza.yml
+./kas-container lock meta-arduino-qcom/ci/imola.yml
+./kas-container lock meta-arduino-qcom/ci/monza.yml
 ```
 
 ### Flashing [Imola]
