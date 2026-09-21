@@ -162,13 +162,36 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
    bitbake lmp-devel-arduino-image
    ```
 
-## How-To: Add Custom Devicetree Overlay, Kernel Module(s)
+## How-To: Add Custom Devicetree Overlays and Kernel Configurations
 
-Suggesting modifications inside layers maintained here, but you might want to create your own separate Yocto layer.
+> **Best Practice Note**: The examples below demonstrate modifications directly inside the layers provided in this repository. For project-specific customizations or proprietary add-ons, create your own separate Yocto layer and use `.bbappend` files rather than modifying these base layers directly.
 
-1. Add your overlay to `recipes-bsp/device-tree/arduino-device-tree/<machine>/overlays`
-2. Add your overlay for compilation in `./recipes-bsp/device-tree/arduino-device-tree.inc` or `./recipes-bsp/device-tree/arduino-device-tree.bbappend`
-3. Corresponding module(s):
-   - **NXP builds**: `meta-arduino-nxp/recipes-kernel/linux/linux-imx/<machine>/defconfig`, or better to keep this intact and add a custom `.cfg`, then add `.cfg` to `SRC_URI` in a `linux-imx.bbappend`
-   - **LmP builds**: `meta-arduino-lmp/recipes-kernel/linux/linux-lmp-fslc-imx/<machine>/<machine>.cfg` (already provides `.cfg`)
-   - **QCom builds**: `meta-arduino-qcom/recipes-kernel/linux/linux-arduino/<machine>.cfg` or `meta-arduino-qcom/recipes-kernel/linux/linux-qcom-next/<machine>.cfg`, or via custom `.cfg` in `SRC_URI` in a `linux-arduino_%.bbappend` or `linux-qcom-next_%.bbappend`
+### 1. Adding a Devicetree Overlay
+
+1. **Add the overlay file**:
+   Place your overlay source file (`<overlay_name>.dts`) in the appropriate machine overlays directory:
+   - **NXP / LmP**: `meta-arduino-nxp/recipes-bsp/device-tree/arduino-device-tree/<machine>/overlays/<overlay_name>.dts`
+   - **QCom**: `meta-arduino-qcom/recipes-bsp/device-tree/arduino-device-tree/<machine>/overlays/<overlay_name>.dts`
+
+2. **Register the overlay for compilation**:
+   Append the overlay to `DTB_OVERLAYS` in `arduino-device-tree.inc` (or in your custom `arduino-device-tree.bbappend`):
+   ```bitbake
+   DTB_OVERLAYS:append:<machine> = " \
+       file://<machine>/overlays/<overlay_name>.dts \
+   "
+   ```
+
+### 2. Adding Kernel Modules and Configuration Fragments (`.cfg`)
+
+Rather than editing the default `defconfig` directly, Yocto best practice is to supply a configuration fragment (`.cfg`):
+
+- **NXP builds (`linux-imx`)**:
+  Keep the base `defconfig` intact. Place your custom `.cfg` in your layer's files directory and append it to `SRC_URI` in a `linux-imx_%.bbappend`:
+  ```bitbake
+  FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+  SRC_URI:append:<machine> = " file://my-custom-feature.cfg"
+  ```
+- **LmP builds (`linux-lmp-fslc-imx`)**:
+  Add required kernel options to the machine-specific configuration fragment at `meta-arduino-lmp/recipes-kernel/linux/linux-lmp-fslc-imx/<machine>/<machine>.cfg`, or append a custom `.cfg` via a `linux-lmp-fslc-imx_%.bbappend`.
+- **QCom builds (`linux-arduino` / `linux-qcom-next`)**:
+  Add options directly to `meta-arduino-qcom/recipes-kernel/linux/linux-arduino/<machine>.cfg` (or `linux-qcom-next/<machine>.cfg`), or append a custom `.cfg` via `SRC_URI` in a `linux-arduino_%.bbappend` or `linux-qcom-next_%.bbappend`.
