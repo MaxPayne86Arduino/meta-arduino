@@ -2,6 +2,8 @@
 
 ## Getting Started [NXP Builds]
 
+> **Warning**: Only the `scarthgap` branch is supported at the moment.
+
 Supported machines:
 
 | Machine |
@@ -23,7 +25,7 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
    git clone https://github.com/Arduino/meta-arduino.git
    cd meta-arduino && git checkout scarthgap
    ```
-3. Set up the Docker environment:
+2. Set up the Docker environment:
    ```bash
    docker run -it -u $(id -u):$(id -g) -v $PWD:/workdir -w /workdir --name yocto-nxp hub.foundries.io/lmp-sdk:95 bash
    ```
@@ -102,6 +104,8 @@ Note on updating dependencies: The repository includes committed `.lock.yml` fil
 
 ## Getting Started [LmP Builds]
 
+> **Warning**: Only the `scarthgap` branch is supported at the moment.
+
 Supported machines:
 
 | Machine |
@@ -113,10 +117,10 @@ For more hardware details and lifecycle status, see [HARDWARE.md](HARDWARE.md).
 
 1. Initialize and sync the Yocto manifest:
    ```bash
-   repo init -u https://source.foundries.io/factories/arduino/lmp-manifest.git -m arduino.xml -b main
+   repo init -u https://github.com/arduino/lmp-manifest.git -m arduino.xml -b main
    repo sync -j1 --fail-fast
    ```
-3. Set up the Docker environment:
+2. Set up the Docker environment:
    ```bash
    docker run -it -u $(id -u):$(id -g) -v $PWD:/workdir -w /workdir --name yocto-lmp hub.foundries.io/lmp-sdk:95 bash
    ```
