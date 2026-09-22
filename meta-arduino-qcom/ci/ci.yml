@@ -3,6 +3,6 @@
 header:
   version: 14
   includes:
-    - ci/meta-qcom-3rdparty.yml
-    - repo: meta-qcom-3rdparty
+    - ci/meta-qcom-arduino.yml
+    - repo: meta-qcom-arduino
       file: ci/ci.yml

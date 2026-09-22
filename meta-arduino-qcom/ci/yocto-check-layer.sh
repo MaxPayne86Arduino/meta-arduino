@@ -36,7 +36,7 @@ CMD="$CMD --no-auto"
 CMD="$CMD --dependency"
 CMD="$CMD $WORK_DIR/oe-core/meta"
 CMD="$CMD $WORK_DIR/meta-qcom"
-CMD="$CMD $WORK_DIR/meta-qcom-3rdparty"
+CMD="$CMD $WORK_DIR/meta-qcom-arduino"
 CMD="$CMD meta-arduino/meta-arduino-common"
 # Disable automatic testing of dependencies
 CMD="$CMD --no-auto-dependency"

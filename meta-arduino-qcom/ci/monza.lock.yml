@@ -20,5 +20,5 @@ overrides:
       commit: 9f1d5c17b1a39081b6070e07c5514e3db051b5fd
     meta-security:
       commit: 0339b65f63877ed36fcffa44953e57c3bb969ca9
-    meta-qcom-3rdparty:
-      commit: 8927b428bcaea0c47186beeb9d9446061c785e9c
+    meta-qcom-arduino:
+      commit: 35f3dfdd4dca56d0df60b621ff8fd70a8043bcfd

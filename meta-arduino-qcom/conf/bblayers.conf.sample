@@ -24,7 +24,7 @@ BBLAYERS ?= " \
   /workdir/sources/meta-ai \
   /workdir/sources/meta-qcom \
   /workdir/sources/meta-qcom-distro \
-  /workdir/sources/meta-qcom-3rdparty \
+  /workdir/sources/meta-qcom-arduino \
   /workdir/sources/meta-arduino/meta-arduino-common \
   /workdir/sources/meta-arduino/meta-arduino-qcom \
 "

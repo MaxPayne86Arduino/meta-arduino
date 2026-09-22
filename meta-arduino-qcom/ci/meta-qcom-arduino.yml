@@ -4,6 +4,6 @@ header:
   version: 14
 
 repos:
-  meta-qcom-3rdparty:
-    url: https://github.com/qualcomm-linux/meta-qcom-3rdparty.git
+  meta-qcom-arduino:
+    url: https://github.com/qualcomm-linux/meta-qcom-arduino.git
     branch: main

@@ -3,14 +3,14 @@
 header:
   version: 14
   includes:
-    - repo: meta-qcom-3rdparty
+    - repo: meta-qcom-arduino
       file: ci/base.yml
-    - repo: meta-qcom-3rdparty
+    - repo: meta-qcom-arduino
       file: ci/qcom-distro.yml
 
 repos:
-  meta-qcom-3rdparty:
-    url: https://github.com/qualcomm-linux/meta-qcom-3rdparty.git
+  meta-qcom-arduino:
+    url: https://github.com/qualcomm-linux/meta-qcom-arduino.git
     branch: main
 
   # meta-arduino is a multi-layer repo; no url = current checkout
