@@ -20,8 +20,10 @@ RDEPENDS:${PN} += "ca-certificates"
 
 # Keep go module cache writable for rm_work cleanup.
 do_rm_work:prepend() {
-    bbwarn "Fixing permissions into ${WORKDIR}/build/pkg/mod"
-    chmod -R u+w ${WORKDIR}/build/pkg/mod
+    if [ -d "${WORKDIR}/build/pkg/mod" ]; then
+        bbwarn "Fixing permissions into ${WORKDIR}/build/pkg/mod"
+        chmod -R u+w ${WORKDIR}/build/pkg/mod
+    fi
 }
 
 # Override do_compile to use GO_INSTALL

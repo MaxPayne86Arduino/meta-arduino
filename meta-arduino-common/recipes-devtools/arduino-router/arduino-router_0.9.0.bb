@@ -21,8 +21,10 @@ do_compile() {
 }
 
 do_rm_work:prepend() {
-    bbwarn "Fixing permissions into ${WORKDIR}/build/pkg/mod"
-    chmod -R u+w ${WORKDIR}/build/pkg/mod
+    if [ -d "${WORKDIR}/build/pkg/mod" ]; then
+        bbwarn "Fixing permissions into ${WORKDIR}/build/pkg/mod"
+        chmod -R u+w ${WORKDIR}/build/pkg/mod
+    fi
 }
 
 DEBIAN_DIR = "${S}/debian/arduino-router"
