@@ -94,8 +94,8 @@ Note: Currently, the only supported image for QCom boards is `arduino-container-
 
 Note on updating dependencies: The repository includes committed `.lock.yml` files (e.g., `meta-arduino-qcom/ci/imola.lock.yml`) to ensure reproducible builds. If you need to update or regenerate lockfiles after updating base YAML definitions or upstream branch targets, run:
 ```bash
-./kas-container lock meta-arduino-qcom/ci/imola.yml
-./kas-container lock meta-arduino-qcom/ci/monza.yml
+./kas-container lock meta-arduino-qcom/ci/imola.yml --update
+./kas-container lock meta-arduino-qcom/ci/monza.yml --update
 ```
 
 ### Flashing [Imola]
