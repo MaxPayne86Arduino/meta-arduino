@@ -1,8 +1,8 @@
 # Setup image features
 IMAGE_FEATURES:append = " ssh-server-dropbear"
-
-# inherit image-adbd (matches upstream qcom-minimal-image) to actually start android-tools-adbd, not just install it.
 IMAGE_FEATURES:append = " enable-adbd"
+
+# Necessary to actually start android-tools-adbd, not just install it.
 inherit image-adbd
 
 # Install root devicetree and devicetree overlays
