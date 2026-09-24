@@ -62,6 +62,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     python3-smbus2 \
     python3-periphery \
     python3-pyserial \
+    python3-speedtest-cli \
     fb-test \
     fbida \
     v4l-utils \
