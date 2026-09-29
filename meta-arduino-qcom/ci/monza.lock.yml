@@ -4,6 +4,15 @@ header:
     - repo: meta-qcom
       file: ci/base.lock.yml
 
+# Pin the branch explicitly here too: this file is the last config merged on
+# the kas-container command line, so it must win over meta-qcom-arduino's
+# ci/ci.yml -> ci/meta-qcom.yml, which re-declares meta-qcom on branch:master
+# *after* our override in ci/meta-qcom-arduino.yml is merged.
+repos:
+  meta-qcom:
+    url: https://github.com/qualcomm-linux/meta-qcom.git
+    branch: wrynose
+
 overrides:
   repos:
     meta-qcom:
