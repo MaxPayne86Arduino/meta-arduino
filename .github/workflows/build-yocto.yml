@@ -33,13 +33,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  CACHE_DIR: /efsx/qli/meta-qcom
+  CACHE_DIR: /efs/qli/meta-arduino
   KAS_CLONE_DEPTH: 1
 
 jobs:
   kas-setup:
     if: github.repository_owner == 'arduino'
-    runs-on: [self-hosted, qcom-u2404, amd64]
+    runs-on: ["self-hosted", "arduino-prd-u2404-amd64-large-od-ephem"]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -59,9 +59,20 @@ jobs:
           wget -qO ${KAS_CONTAINER} https://raw.githubusercontent.com/siemens/kas/refs/tags/$LATEST/kas-container
           chmod +x ${KAS_CONTAINER}
 
+      - name: Ensure cache directory permissions
+        run: |
+          if [ -d /efs ]; then
+            docker run --rm \
+              -v /efs:/efs \
+              alpine sh -c \
+              "mkdir -p /efs/qli/meta-arduino/downloads /efs/qli/meta-arduino/sstate-cache && \
+               chmod 777 /efs /efs/qli /efs/qli/meta-arduino /efs/qli/meta-arduino/*"
+          fi
+
       - name: Run kas lock
         run: |
-          ${KAS_CONTAINER} lock ci/imola.yml ci/monza.yml
+          ${KAS_CONTAINER} lock ci/imola.yml
+          ${KAS_CONTAINER} lock ci/monza.yml
 
       - name: Upload kas
         uses: actions/upload-artifact@v6
@@ -134,7 +145,7 @@ jobs:
     if: |
       github.repository_owner == 'arduino' &&
       (inputs.skip_if_github_cached != true || needs.github-cache-check.outputs.cache_hit != 'true')
-    runs-on: [self-hosted, qcom-u2404, amd64]
+    runs-on: ["self-hosted", "arduino-prd-u2404-amd64-large-od-ephem"]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -198,7 +209,7 @@ jobs:
           - type: default
             dirname: ""
             yamlfile: ""
-    uses: qualcomm-linux/meta-qcom/.github/workflows/compile.yml@master
+    uses: ./.github/workflows/compile.yml
     with:
       name: ${{ matrix.machine }}
       enabled: true
