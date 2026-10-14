@@ -20,5 +20,6 @@ repos:
       meta-arduino-qcom:
 
 target:
+  - arduino-console-image
   - arduino-container-image
   - arduino-full-image
