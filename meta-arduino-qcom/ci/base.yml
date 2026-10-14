@@ -21,3 +21,4 @@ repos:
 
 target:
   - arduino-container-image
+  - arduino-full-image
