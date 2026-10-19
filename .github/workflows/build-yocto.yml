@@ -13,6 +13,11 @@ on:
         required: false
         type: boolean
         default: false
+      use_lockfile:
+        description: "Use pinned kas lockfiles (set to false for nightly canary builds against upstream heads)"
+        required: false
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       profile:
@@ -23,6 +28,11 @@ on:
         required: false
         type: boolean
         default: false
+      use_lockfile:
+        description: "Use pinned kas lockfiles (set to false for nightly canary builds against upstream heads)"
+        required: false
+        type: boolean
+        default: true
     outputs:
       build_skipped:
         description: "True when the compile matrix was skipped"
@@ -221,6 +231,7 @@ jobs:
       kernel_yaml: ${{ matrix.kernel.yamlfile }}
       kernel_dirname: ${{ matrix.kernel.dirname }}
       cache_dir: ${{ needs.compile-env.outputs.CACHE_DIR }}
+      use_lockfile: ${{ inputs.use_lockfile }}
 
   publish_summary:
     needs: [github-cache-check, compile]

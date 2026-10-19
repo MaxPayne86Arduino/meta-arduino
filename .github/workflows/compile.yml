@@ -42,6 +42,10 @@ on:
       cache_dir:
         required: true
         type: string
+      use_lockfile:
+        required: false
+        type: boolean
+        default: true
 
 env:
   KAS_CLONE_DEPTH: 1
@@ -82,7 +86,11 @@ jobs:
           # use a single shared sstate cache folder, cleaned up by mtime
           echo "SSTATE_DIR=${INPUTS_CACHE_DIR}/sstate-cache" >> $GITHUB_ENV
           echo "KAS_WORK_DIR=${PWD}/../kas" >> $GITHUB_ENV
-          echo "KAS_YAMLS=ci/ci.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}:ci/build-id.yml" >> $GITHUB_ENV
+          LOCK_YAML=""
+          if [ "${INPUTS_USE_LOCKFILE}" = "true" ] && [ -f "ci/${INPUTS_MACHINE}.lock.yml" ]; then
+            LOCK_YAML=":ci/${INPUTS_MACHINE}.lock.yml"
+          fi
+          echo "KAS_YAMLS=ci/ci.yml:ci/${INPUTS_MACHINE}.yml${LOCK_YAML}${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}:ci/build-id.yml" >> $GITHUB_ENV
           echo "INPUTS_CACHE_DIR=${INPUTS_CACHE_DIR}" >> $GITHUB_ENV
           echo "INPUTS_MACHINE=${INPUTS_MACHINE}" >> $GITHUB_ENV
           echo "INPUTS_DISTRO_YAML=${INPUTS_DISTRO_YAML}" >> $GITHUB_ENV
@@ -105,6 +113,7 @@ jobs:
           INPUTS_MACHINE: ${{ inputs.machine }}
           INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
           INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
+          INPUTS_USE_LOCKFILE: ${{ inputs.use_lockfile }}
           BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Dump kas-build yaml
