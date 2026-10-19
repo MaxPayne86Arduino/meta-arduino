@@ -81,8 +81,15 @@ jobs:
 
       - name: Run kas lock
         run: |
-          ${KAS_CONTAINER} lock ci/imola.yml
-          ${KAS_CONTAINER} lock ci/monza.yml
+          if [ "${USE_LOCKFILE}" = "true" ]; then
+            ${KAS_CONTAINER} lock ci/imola.yml:ci/imola.lock.yml
+            ${KAS_CONTAINER} lock ci/monza.yml:ci/monza.lock.yml
+          else
+            ${KAS_CONTAINER} lock ci/imola.yml
+            ${KAS_CONTAINER} lock ci/monza.yml
+          fi
+        env:
+          USE_LOCKFILE: ${{ inputs.use_lockfile }}
 
       - name: Upload kas
         uses: actions/upload-artifact@v6
