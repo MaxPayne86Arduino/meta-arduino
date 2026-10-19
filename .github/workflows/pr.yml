@@ -1,0 +1,25 @@
+name: Build on PR
+run-name: "${{ github.base_ref }}: ${{ github.event.pull_request.title }}"
+
+on:
+  pull_request:
+    branches:
+      - master
+      - wrynose
+    paths-ignore:
+      - '**/*.md'
+      - '.github/.markdownlint.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-pr:
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+    uses: ./.github/workflows/build-yocto.yml
+    with:
+      profile: pr
+      use_lockfile: true

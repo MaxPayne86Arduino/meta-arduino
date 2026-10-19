@@ -1,0 +1,22 @@
+name: Nightly Build
+run-name: "Nightly Build (${{ github.ref_name }})"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # At 0:22 UTC every day
+    - cron: "22 0 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  build-nightly:
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+    uses: ./.github/workflows/build-yocto.yml
+    with:
+      skip_if_github_cached: false
+      use_lockfile: false
