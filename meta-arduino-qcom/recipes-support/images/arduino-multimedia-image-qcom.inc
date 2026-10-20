@@ -24,7 +24,6 @@ CORE_IMAGE_EXTRA_INSTALL:append = " \
     qairt-sdk \
     qcom-adreno \
     qcom-sensors-binaries \
-    qwes \
 "
 
 CORE_IMAGE_EXTRA_INSTALL:append:aarch64 = " \
